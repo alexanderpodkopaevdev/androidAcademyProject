@@ -11,12 +11,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-
         <ImageView
             android:id="@+id/ivBackground"
             android:layout_width="match_parent"
             android:layout_height="298dp"
-            android:background="@drawable/background_image"
+            android:scaleType="centerCrop"
+            android:src="@drawable/background_image"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="298dp"
             android:scaleType="centerCrop"
             android:src="@drawable/gradient"
             app:layout_constraintEnd_toEndOf="parent"
