@@ -10,4 +10,6 @@
     <color name="colorGrey">#6D6D80</color>
     <color name="colorStoryline">#ECECEC</color>
     <color name="colorName">#D8D8D8</color>
+    <color name="colorStarActive">#FF3365</color>
+    <color name="colorStarNormal">#6D6D80</color>
 </resources>

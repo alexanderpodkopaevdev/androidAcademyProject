@@ -98,56 +98,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
 
-        <ImageView
-            android:id="@+id/ivFirstStar"
+        <RatingBar
+            android:id="@+id/rbStar"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginStart="@dimen/standard"
-            android:layout_marginTop="8dp"
-            app:layout_constraintEnd_toStartOf="@id/ivSecondStar"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvGanre"
-            app:srcCompat="@drawable/ic_star_icon_enable" />
-
-        <ImageView
-            android:id="@+id/ivSecondStar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:layout_constraintEnd_toStartOf="@id/ivThreeStar"
-            app:layout_constraintStart_toEndOf="@id/ivFirstStar"
-            app:layout_constraintTop_toBottomOf="@+id/tvGanre"
-            app:srcCompat="@drawable/ic_star_icon_enable" />
-
-        <ImageView
-            android:id="@+id/ivThreeStar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:layout_constraintEnd_toStartOf="@id/ivFourStar"
-            app:layout_constraintStart_toEndOf="@id/ivSecondStar"
-            app:layout_constraintTop_toBottomOf="@+id/tvGanre"
-            app:srcCompat="@drawable/ic_star_icon_enable" />
-
-        <ImageView
-            android:id="@+id/ivFourStar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:layout_constraintEnd_toStartOf="@id/ivFiveStar"
-            app:layout_constraintStart_toEndOf="@id/ivFourStar"
-            app:layout_constraintTop_toBottomOf="@+id/tvGanre"
-            app:srcCompat="@drawable/ic_star_icon_enable" />
-
-        <ImageView
-            android:id="@+id/ivFiveStar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
+            android:numStars="5"
+            android:rating="4.0"
+            android:theme="@style/CustomRatingBar"
             app:layout_constraintEnd_toStartOf="@id/tvReview"
-            app:layout_constraintStart_toEndOf="@id/ivFourStar"
-            app:layout_constraintTop_toBottomOf="@+id/tvGanre"
-            app:srcCompat="@drawable/ic_star_icon_disable" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvGanre" />
 
         <TextView
             android:id="@+id/tvReview"
@@ -162,7 +124,7 @@
             android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/ivFiveStar"
+            app:layout_constraintStart_toEndOf="@+id/rbStar"
             app:layout_constraintTop_toBottomOf="@+id/tvGanre" />
 
         <androidx.constraintlayout.widget.Barrier
@@ -170,7 +132,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:barrierDirection="bottom"
-            app:constraint_referenced_ids="tvReview,ivFirstStar" />
+            app:constraint_referenced_ids="tvReview,rbStar" />
 
         <TextView
             android:id="@+id/tvStoryline"
@@ -227,8 +189,7 @@
             app:layout_constraintDimensionRatio="H,1:1"
             app:layout_constraintEnd_toStartOf="@id/ivSecondPerson"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvCast">
-        </ImageView>
+            app:layout_constraintTop_toBottomOf="@+id/tvCast"></ImageView>
 
         <TextView
             android:id="@+id/tvFirstPerson"
