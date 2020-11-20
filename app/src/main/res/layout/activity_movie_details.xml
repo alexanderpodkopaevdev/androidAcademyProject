@@ -193,7 +193,7 @@
 
         <TextView
             android:id="@+id/tvFirstPerson"
-            style="@style/ActorName"
+            style="@style/StyleActorName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -221,7 +221,7 @@
 
         <TextView
             android:id="@+id/tvSecondPerson"
-            style="@style/ActorName"
+            style="@style/StyleActorName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -247,7 +247,7 @@
 
         <TextView
             android:id="@+id/tvThreePerson"
-            style="@style/ActorName"
+            style="@style/StyleActorName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -274,7 +274,7 @@
 
         <TextView
             android:id="@+id/tvFourPerson"
-            style="@style/ActorName"
+            style="@style/StyleActorName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"

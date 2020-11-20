@@ -6,12 +6,6 @@
         <item name="colorAccent">@color/white</item>
     </style>
 
-    <style name="ActorName">
-        <item name="android:textColor">@color/colorName</item>
-        <item name="android:textSize">12sp</item>
-        <item name="android:textStyle">bold</item>"
-    </style>
-
     <style name="CustomRatingBar" parent="Widget.AppCompat.RatingBar">
         <item name="colorControlNormal">@color/colorStarNormal</item>
         <item name="colorControlActivated">@color/colorStarActive</item>
