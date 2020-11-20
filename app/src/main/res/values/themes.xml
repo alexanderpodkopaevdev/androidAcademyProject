@@ -1,7 +1,14 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
+
     <style name="Theme.AndroidAcademyProject" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/white</item>
+    </style>
+
+    <style name="CustomRatingBar" parent="Widget.AppCompat.RatingBar">
+        <item name="colorControlNormal">@color/colorStarNormal</item>
+        <item name="colorControlActivated">@color/colorStarActive</item>
+        <item name="ratingBarStyle">@style/Widget.AppCompat.RatingBar.Small</item>
     </style>
 </resources>
