@@ -2,7 +2,7 @@
     <string name="app_name">androidAcademyProject</string>
     <string name="text_back">Back</string>
     <string name="text_age">13+</string>
-    <string name="text_title">Avengers:\nEnd Game</string>
+    <string name="text_title">Avengers: End Game</string>
     <string name="tv_ganre">Action, Adventure, Fantasy</string>
     <string name="text_review">125 Reviews</string>
     <string name="text_storyline">Storyline</string>
@@ -12,4 +12,5 @@
     <string name="chris_evans">Chris Evans</string>
     <string name="mark_ruffalo">Mark Ruffalo</string>
     <string name="chris_hemsworth">Chris Hemsworth</string>
+    <string name="movies_list">Movies list</string>
 </resources>
