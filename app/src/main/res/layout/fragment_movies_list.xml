@@ -99,7 +99,7 @@
         android:layout_height="16dp"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="13dp"
-        android:background="@drawable/ic_favorite"
+        android:src="@drawable/ic_favorite_normal"
         app:layout_constraintEnd_toEndOf="@id/containerMovie"
         app:layout_constraintTop_toTopOf="@id/containerMovie" />
 
@@ -118,15 +118,19 @@
         app:layout_constraintStart_toStartOf="@id/containerMovie"
         app:layout_constraintTop_toTopOf="@id/containerMovie" />
 
-    <RatingBar
+    <com.alexanderpodkopaev.androidacademyproject.utils.RatingBarSvg
         android:id="@+id/rbStar"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="6dp"
         android:numStars="5"
         android:rating="4.0"
-        android:theme="@style/CustomRatingBar"
+        app:drawableHeight="8dp"
+        app:drawableWidth="8dp"
+        android:progressBackgroundTint="@color/colorStarNormal"
+        android:progressDrawable="@drawable/ratingbar_svg_selector"
+        android:secondaryProgressTint="@color/colorStarActive"
         app:layout_constraintEnd_toStartOf="@id/tvReview"
         app:layout_constraintStart_toStartOf="@id/containerMovie"
         app:layout_constraintTop_toBottomOf="@id/tvGanre" />
@@ -135,7 +139,7 @@
         android:id="@+id/tvReview"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="6dp"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="@dimen/standard"
         android:text="@string/text_review"
