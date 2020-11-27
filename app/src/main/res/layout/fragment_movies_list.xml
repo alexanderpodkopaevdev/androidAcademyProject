@@ -124,20 +124,16 @@
             app:layout_constraintStart_toStartOf="@id/containerMovie"
             app:layout_constraintTop_toTopOf="@id/containerMovie" />
 
-        <com.alexanderpodkopaev.androidacademyproject.utils.RatingBarSvg
+        <RatingBar
             android:id="@+id/rbStar"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="6dp"
             android:numStars="5"
-            android:progressBackgroundTint="@color/colorStarNormal"
-            android:progressDrawable="@drawable/ratingbar_svg_selector"
             android:rating="4.0"
-            android:secondaryProgressTint="@color/colorStarActive"
-            app:drawableHeight="8dp"
-            style="@style/Widget.AppCompat.RatingBar.Indicator"
-            app:drawableWidth="8dp"
+            style="@style/Widget.AppCompat.RatingBar.Small"
+            android:progressDrawable="@drawable/ratingbar_small_star"
             app:layout_constraintEnd_toStartOf="@id/tvReview"
             app:layout_constraintStart_toStartOf="@id/containerMovie"
             app:layout_constraintTop_toBottomOf="@id/tvGanre" />
