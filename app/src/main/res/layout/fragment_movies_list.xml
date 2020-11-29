@@ -41,9 +41,9 @@
             android:layout_marginTop="28dp"
             android:layout_marginBottom="12dp"
             android:background="@drawable/gradient_movie_list"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvMovies"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@id/tvMovies" />
 
         <ImageView
             android:id="@+id/ivMovie"
@@ -126,14 +126,14 @@
 
         <RatingBar
             android:id="@+id/rbStar"
+            style="@style/Widget.AppCompat.RatingBar.Small"
             android:layout_width="wrap_content"
             android:layout_height="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="6dp"
             android:numStars="5"
-            android:rating="4.0"
-            style="@style/Widget.AppCompat.RatingBar.Small"
             android:progressDrawable="@drawable/ratingbar_small_star"
+            android:rating="4.0"
             app:layout_constraintEnd_toStartOf="@id/tvReview"
             app:layout_constraintStart_toStartOf="@id/containerMovie"
             app:layout_constraintTop_toBottomOf="@id/tvGanre" />
