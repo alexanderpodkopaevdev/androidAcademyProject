@@ -3,7 +3,7 @@ package com.alexanderpodkopaev.androidacademyproject
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 
-class MainActivity : AppCompatActivity(), ClickListenerItemMovie, ClickListenerCurrentMovie {
+class MainActivity : AppCompatActivity(), ClickListenerItemMovie {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -19,10 +19,6 @@ class MainActivity : AppCompatActivity(), ClickListenerItemMovie, ClickListenerC
             .replace(R.id.flFragment, FragmentMoviesDetails())
             .addToBackStack(null)
             .commit()
-    }
-
-    override fun onClickBack() {
-        supportFragmentManager.popBackStack()
     }
 
 }
