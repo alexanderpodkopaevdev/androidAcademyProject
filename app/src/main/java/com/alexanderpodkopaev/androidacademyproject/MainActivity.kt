@@ -11,14 +11,12 @@ class MainActivity : AppCompatActivity(), ClickListenerItemMovie, ClickListenerC
             supportFragmentManager.beginTransaction()
                 .add(R.id.flFragment, FragmentMoviesList())
                 .commit()
-        } else {
-            supportFragmentManager.findFragmentByTag(TAG_DETAILS) as? FragmentMoviesDetails
         }
     }
 
     override fun onClickItemMovie() {
         supportFragmentManager.beginTransaction()
-            .replace(R.id.flFragment, FragmentMoviesDetails(),TAG_DETAILS)
+            .replace(R.id.flFragment, FragmentMoviesDetails())
             .addToBackStack(null)
             .commit()
     }
@@ -27,7 +25,4 @@ class MainActivity : AppCompatActivity(), ClickListenerItemMovie, ClickListenerC
         supportFragmentManager.popBackStack()
     }
 
-    companion object {
-        private const val TAG_DETAILS = "DETAILS"
-    }
 }
