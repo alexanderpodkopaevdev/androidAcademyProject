@@ -8,9 +8,8 @@
         android:id="@+id/containerMovie"
         android:layout_width="170dp"
         android:layout_height="296dp"
-        android:layout_marginStart="6dp"
-        android:layout_marginTop="6dp"
-        android:layout_marginBottom="6dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
         android:background="@drawable/gradient_movie_list"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -59,6 +58,7 @@
         app:layout_constraintTop_toTopOf="@id/containerMovie" />
 
     <TextView
+        android:id="@+id/tvAge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/text_age"
@@ -131,7 +131,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginBottom="8dp"
-        android:text="@string/_137_min"
+        android:text="@string/text_length"
         android:textAllCaps="true"
         android:textColor="@color/colorTextLength"
         android:textSize="8sp"
