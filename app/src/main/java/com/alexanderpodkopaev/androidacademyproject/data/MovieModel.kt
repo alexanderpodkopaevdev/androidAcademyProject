@@ -8,5 +8,7 @@ data class MovieModel(
     val countReview: Int,
     val picture: Int,
     val length: Int,
-    val actors: List<ActorModel>
+    val actors: List<ActorModel>,
+    val rating: Int,
+    val favorite: Boolean = false
 )

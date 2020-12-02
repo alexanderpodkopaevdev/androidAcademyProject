@@ -12,7 +12,8 @@ fun getMovies(): List<MovieModel> {
             countReview = 125,
             picture = R.drawable.picture_avengers,
             length = 137,
-            actors = getActor()
+            actors = getActor(),
+            rating = 8
         ),
         MovieModel(
             title = "Tenet",
@@ -21,7 +22,9 @@ fun getMovies(): List<MovieModel> {
             countReview = 98,
             picture = R.drawable.picrute_tenet,
             length = 97,
-            actors = getActor()
+            actors = getActor(),
+            rating = 10,
+            favorite = true
         ),
         MovieModel(
             title = "Black Widow",
@@ -30,7 +33,8 @@ fun getMovies(): List<MovieModel> {
             countReview = 38,
             picture = R.drawable.picture_black,
             length = 102,
-            actors = getActor()
+            actors = getActor(),
+            rating = 8
         ),
         MovieModel(
             title = "Wonder Woman 1984",
@@ -39,7 +43,8 @@ fun getMovies(): List<MovieModel> {
             countReview = 74,
             picture = R.drawable.picture_wonder,
             length = 120,
-            actors = getActor()
+            actors = getActor(),
+            rating = 10
         )
     )
 }
