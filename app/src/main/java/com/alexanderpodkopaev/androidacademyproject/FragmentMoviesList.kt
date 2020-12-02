@@ -5,8 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.alexanderpodkopaev.androidacademyproject.adapter.MoviesAdapter
+import com.alexanderpodkopaev.androidacademyproject.data.getMovies
 
 class FragmentMoviesList : Fragment() {
+    private var adapter : MoviesAdapter? = null
+    private var recyclerViewMovies: RecyclerView? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -17,6 +23,11 @@ class FragmentMoviesList : Fragment() {
         view?.findViewById<View>(R.id.containerMovie)?.apply {
             setOnClickListener { onClickItemMovie() }
         }
+        adapter = MoviesAdapter(getMovies().plus(getMovies()))
+        recyclerViewMovies = view.findViewById(R.id.rvMoviesList)
+        recyclerViewMovies?.layoutManager = GridLayoutManager(context,2)
+        recyclerViewMovies?.adapter = adapter
+
         return view
     }
 
