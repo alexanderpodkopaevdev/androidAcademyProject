@@ -54,6 +54,8 @@ fun getActor(): List<ActorModel> {
         ActorModel("Robert Downey Jr.", R.drawable.robertdowney),
         ActorModel("Chris Evans", R.drawable.chrisevans),
         ActorModel("Mark Ruffalo", R.drawable.markruffalo),
+        ActorModel("Chris Evans", R.drawable.chrisevans),
+        ActorModel("Mark Ruffalo", R.drawable.markruffalo),
         ActorModel("Chris Hemsworth", R.drawable.chrishemsworth)
     )
 }
