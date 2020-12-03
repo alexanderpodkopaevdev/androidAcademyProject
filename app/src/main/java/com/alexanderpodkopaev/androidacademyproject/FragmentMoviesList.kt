@@ -15,7 +15,7 @@ import com.alexanderpodkopaev.androidacademyproject.data.getMovies
 class FragmentMoviesList : Fragment(), MovieClickListener {
     private var adapter: MoviesAdapter? = null
     private var recyclerViewMovies: RecyclerView? = null
-    var generatedMovies = getMovies().plus(getMovies())
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,13 +37,18 @@ class FragmentMoviesList : Fragment(), MovieClickListener {
     override fun onMovieClick(movieTitle: String) {
         val movieFragment = FragmentMoviesDetails()
         val bundle = Bundle().apply {
-            putString("TITLE",movieTitle)
+            putString(TITLE,movieTitle)
         }
         movieFragment.arguments = bundle
         fragmentManager?.beginTransaction()
             ?.replace(R.id.flFragment, movieFragment)
             ?.addToBackStack(null)
             ?.commit()
+    }
+
+    companion object {
+        const val TITLE = "TITLE"
+        var generatedMovies = getMovies().plus(getMovies())
     }
 
 }
