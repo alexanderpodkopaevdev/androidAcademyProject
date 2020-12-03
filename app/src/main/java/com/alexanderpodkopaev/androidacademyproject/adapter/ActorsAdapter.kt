@@ -34,9 +34,9 @@ class ActorsAdapter : RecyclerView.Adapter<ActorsAdapter.ActorsViewHolder>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActorsViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.view_holder_actor, parent, false)
-        view.layoutParams.width = (parent.measuredWidth  / 4.5).toInt()
-      //  view.layoutParams.height = (parent.measuredWidth  / 4).toInt()
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.view_holder_actor, parent, false)
+        view.layoutParams.width = (parent.measuredWidth / 4.5).toInt()
         return ActorsViewHolder(view)
     }
 

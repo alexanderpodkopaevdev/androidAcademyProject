@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/colorBackground">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -14,11 +14,13 @@
             android:id="@+id/ivBackground"
             android:layout_width="match_parent"
             android:layout_height="298dp"
+            android:alpha="0.2"
+            android:background="@color/colorBackground"
             android:scaleType="centerCrop"
-            android:src="@drawable/background_image"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/picture_avengers" />
 
         <ImageView
             android:layout_width="match_parent"
@@ -181,13 +183,13 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/standard"
-            android:layout_marginEnd="@dimen/standard"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="@dimen/standard"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvCast"
-            app:layout_constraintBottom_toBottomOf="parent"
-            tools:listitem="@layout/view_holder_actor"/>
+            tools:listitem="@layout/view_holder_actor" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -34,9 +34,11 @@ class FragmentMoviesDetails : Fragment() {
         view.findViewById<RecyclerView>(R.id.rvActors).apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             adapter = actorsAdapter
-            addItemDecoration(DividerItemDecoration(context,LinearLayoutManager.HORIZONTAL).apply { context.getDrawable(R.drawable.divider)?.let {
-                setDrawable(it)
-            } })
+            addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.HORIZONTAL).apply {
+                context.getDrawable(R.drawable.divider)?.let {
+                    setDrawable(it)
+                }
+            })
         }
         view.findViewById<ImageView>(R.id.ivBackground).apply {
             setImageDrawable(resources.getDrawable(movie.picture, context.theme))
