@@ -27,7 +27,7 @@ class FragmentMoviesList : Fragment(), MovieClickListener {
         adapter?.bindMovies(generatedMovies)
         adapter?.onMovieClickListener = this
         recyclerViewMovies = view.findViewById(R.id.rvMoviesList)
-        recyclerViewMovies?.layoutManager = GridLayoutManager(context, 2)
+        recyclerViewMovies?.layoutManager = GridLayoutManager(context,calculateNoOfColumns(context,180f))
         recyclerViewMovies?.adapter = adapter
 
         return view
