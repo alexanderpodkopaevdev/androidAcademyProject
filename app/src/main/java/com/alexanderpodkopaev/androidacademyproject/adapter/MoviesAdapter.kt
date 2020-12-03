@@ -10,8 +10,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.alexanderpodkopaev.androidacademyproject.R
 import com.alexanderpodkopaev.androidacademyproject.data.MovieModel
 
-class MoviesAdapter(val movies: List<MovieModel>) :
+class MoviesAdapter() :
     RecyclerView.Adapter<MoviesAdapter.MoviesViewHolder>() {
+    private var moviesList: MutableList<MovieModel> = mutableListOf()
+    var onMovieClickListener : MovieClickListener? = null
+
 
     inner class MoviesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val ivMovie = itemView.findViewById<ImageView>(R.id.ivMovie)
@@ -38,8 +41,18 @@ class MoviesAdapter(val movies: List<MovieModel>) :
             tvLength.text =
                 itemView.context.getString(R.string.text_length, movie.length.toString())
             tvTitle.text = movie.title
+            itemView.setOnClickListener {
+                onMovieClickListener?.onMovieClick(movie.title)
+            }
         }
     }
+
+    fun bindMovies(movies: List<MovieModel>) {
+        moviesList.clear()
+        moviesList.addAll(movies)
+        notifyDataSetChanged()
+    }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MoviesViewHolder {
         return MoviesViewHolder(
@@ -48,8 +61,12 @@ class MoviesAdapter(val movies: List<MovieModel>) :
     }
 
     override fun onBindViewHolder(holder: MoviesViewHolder, position: Int) {
-        holder.bind(movies[position])
+        holder.bind(moviesList[position])
     }
 
-    override fun getItemCount() = movies.size
+    override fun getItemCount() = moviesList.size
+}
+
+interface MovieClickListener {
+    fun onMovieClick(movieTitle: String)
 }
