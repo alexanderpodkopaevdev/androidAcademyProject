@@ -24,7 +24,7 @@ class CharacterItemDecoration(val offset: Int) : RecyclerView.ItemDecoration() {
         parent: RecyclerView,
         state: RecyclerView.State
     ) {
-        outRect.left = offset / 2
+        //outRect.left = offset / 2
         outRect.right = offset / 2
     }
 }

@@ -32,7 +32,7 @@ class FragmentMoviesDetails : Fragment() {
             view.findViewById<RecyclerView>(R.id.rvActors).apply {
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                 adapter = actorsAdapter
-                addItemDecoration(CharacterItemDecoration(16))
+                addItemDecoration(CharacterItemDecoration(context.resources.getDimension(R.dimen.standard).toInt()))
             }
             view.findViewById<ImageView>(R.id.ivBackground)
                 ?.setImageDrawable(resources.getDrawable(movie.picture, context?.theme))
