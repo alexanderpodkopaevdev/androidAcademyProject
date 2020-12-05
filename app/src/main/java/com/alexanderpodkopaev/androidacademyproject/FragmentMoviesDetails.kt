@@ -24,10 +24,10 @@ class FragmentMoviesDetails : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_movies_details, container, false)
-        view?.findViewById<TextView>(R.id.tvBack)
-            ?.apply { setOnClickListener { fragmentManager?.popBackStack() } }
-        view?.findViewById<ImageView>(R.id.ivBack)
-            ?.apply { setOnClickListener { fragmentManager?.popBackStack() } }
+        view.findViewById<TextView>(R.id.tvBack)
+            .setOnClickListener { fragmentManager?.popBackStack() }
+        view.findViewById<ImageView>(R.id.ivBack)
+            .setOnClickListener { fragmentManager?.popBackStack() }
         val movie = findMovie(arguments?.getString(FragmentMoviesList.TITLE))
         actorsAdapter = ActorsAdapter()
         actorsAdapter?.bindActors(movie.actors)
@@ -40,27 +40,16 @@ class FragmentMoviesDetails : Fragment() {
                 }
             })
         }
-        view.findViewById<ImageView>(R.id.ivBackground).apply {
-            setImageDrawable(resources.getDrawable(movie.picture, context.theme))
-        }
-        view.findViewById<TextView>(R.id.tvTitle).apply {
-            text = movie.title
-        }
-        view.findViewById<TextView>(R.id.tvAge).apply {
-            text = getString(R.string.text_age, movie.age.toString())
-        }
-        view.findViewById<TextView>(R.id.tvGanre).apply {
-            text = movie.genre
-        }
-        view.findViewById<RatingBar>(R.id.rbStar).apply {
-            progress = movie.rating
-        }
-        view.findViewById<TextView>(R.id.tvReview).apply {
-            text = getString(R.string.text_review, movie.countReview.toString())
-        }
-        view.findViewById<TextView>(R.id.tvDescription).apply {
-            text = movie.storyline
-        }
+        view.findViewById<ImageView>(R.id.ivBackground)
+            ?.setImageDrawable(resources.getDrawable(movie.picture, context?.theme))
+        view.findViewById<TextView>(R.id.tvTitle).text = movie.title
+        view.findViewById<TextView>(R.id.tvAge).text =
+            getString(R.string.text_age, movie.age.toString())
+        view.findViewById<TextView>(R.id.tvGanre).text = movie.genre
+        view.findViewById<RatingBar>(R.id.rbStar).progress = movie.rating
+        view.findViewById<TextView>(R.id.tvReview).text =
+            getString(R.string.text_review, movie.countReview.toString())
+        view.findViewById<TextView>(R.id.tvDescription).text = movie.storyline
 
         return view
     }
