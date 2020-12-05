@@ -8,15 +8,12 @@ import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.alexanderpodkopaev.androidacademyproject.adapter.ActorsAdapter
 import com.alexanderpodkopaev.androidacademyproject.data.MovieModel
 
 class FragmentMoviesDetails : Fragment() {
-    private var actorsAdapter: ActorsAdapter? = null
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,16 +26,12 @@ class FragmentMoviesDetails : Fragment() {
         view.findViewById<ImageView>(R.id.ivBack)
             .setOnClickListener { fragmentManager?.popBackStack() }
         val movie = findMovie(arguments?.getString(FragmentMoviesList.TITLE))
-        actorsAdapter = ActorsAdapter()
-        actorsAdapter?.bindActors(movie.actors)
+        val actorsAdapter = ActorsAdapter()
+        actorsAdapter.bindActors(movie.actors)
         view.findViewById<RecyclerView>(R.id.rvActors).apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             adapter = actorsAdapter
-            addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.HORIZONTAL).apply {
-                context.getDrawable(R.drawable.divider)?.let {
-                    setDrawable(it)
-                }
-            })
+            addItemDecoration(CharacterItemDecoration(16))
         }
         view.findViewById<ImageView>(R.id.ivBackground)
             ?.setImageDrawable(resources.getDrawable(movie.picture, context?.theme))
@@ -62,4 +55,6 @@ class FragmentMoviesDetails : Fragment() {
         throw IllegalArgumentException()
     }
 
+
 }
+

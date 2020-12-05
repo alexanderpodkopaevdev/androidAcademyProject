@@ -31,15 +31,7 @@ class FragmentMoviesList : Fragment(), MovieClickListener {
         recyclerViewMovies?.layoutManager =
             GridLayoutManager(context, calculateNoOfColumns(context, 180f))
         recyclerViewMovies?.adapter = adapter
-        recyclerViewMovies?.addItemDecoration(
-            DividerItemDecoration(
-                context,
-                LinearLayoutManager.HORIZONTAL
-            ).apply {
-                context?.getDrawable(R.drawable.divider)?.let {
-                    setDrawable(it)
-                }
-            })
+        recyclerViewMovies?.addItemDecoration(CharacterItemDecoration(8))
 
         return view
     }
