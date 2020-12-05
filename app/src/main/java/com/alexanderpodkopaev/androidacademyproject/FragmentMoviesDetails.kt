@@ -25,34 +25,46 @@ class FragmentMoviesDetails : Fragment() {
             .setOnClickListener { fragmentManager?.popBackStack() }
         view.findViewById<ImageView>(R.id.ivBack)
             .setOnClickListener { fragmentManager?.popBackStack() }
-        val movie = findMovie(arguments?.getString(FragmentMoviesList.TITLE))
-        val actorsAdapter = ActorsAdapter()
-        actorsAdapter.bindActors(movie.actors)
-        view.findViewById<RecyclerView>(R.id.rvActors).apply {
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            adapter = actorsAdapter
-            addItemDecoration(CharacterItemDecoration(16))
+        val movie = findMovie(arguments?.getString(TITLE))
+        if (movie != null) {
+            val actorsAdapter = ActorsAdapter()
+            actorsAdapter.bindActors(movie.actors)
+            view.findViewById<RecyclerView>(R.id.rvActors).apply {
+                layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                adapter = actorsAdapter
+                addItemDecoration(CharacterItemDecoration(16))
+            }
+            view.findViewById<ImageView>(R.id.ivBackground)
+                ?.setImageDrawable(resources.getDrawable(movie.picture, context?.theme))
+            view.findViewById<TextView>(R.id.tvTitle).text = movie.title
+            view.findViewById<TextView>(R.id.tvAge).text =
+                getString(R.string.text_age, movie.age.toString())
+            view.findViewById<TextView>(R.id.tvGanre).text = movie.genre
+            view.findViewById<RatingBar>(R.id.rbStar).progress = movie.rating
+            view.findViewById<TextView>(R.id.tvReview).text =
+                getString(R.string.text_review, movie.countReview.toString())
+            view.findViewById<TextView>(R.id.tvDescription).text = movie.storyline
         }
-        view.findViewById<ImageView>(R.id.ivBackground)
-            ?.setImageDrawable(resources.getDrawable(movie.picture, context?.theme))
-        view.findViewById<TextView>(R.id.tvTitle).text = movie.title
-        view.findViewById<TextView>(R.id.tvAge).text =
-            getString(R.string.text_age, movie.age.toString())
-        view.findViewById<TextView>(R.id.tvGanre).text = movie.genre
-        view.findViewById<RatingBar>(R.id.rbStar).progress = movie.rating
-        view.findViewById<TextView>(R.id.tvReview).text =
-            getString(R.string.text_review, movie.countReview.toString())
-        view.findViewById<TextView>(R.id.tvDescription).text = movie.storyline
 
         return view
     }
 
 
-    private fun findMovie(movieTitle: String?): MovieModel {
-        FragmentMoviesList.generatedMovies.forEach {
-            if (it.title == movieTitle) return it
+    private fun findMovie(movieTitle: String?): MovieModel? {
+        return FragmentMoviesList.generatedMovies.find { it.title == movieTitle }
+    }
+
+
+    companion object {
+        private const val TITLE = "TITLE"
+
+        fun newInstance(movieTitle: String): FragmentMoviesDetails {
+            val movieFragment = FragmentMoviesDetails()
+            val bundle = Bundle()
+            bundle.putString(TITLE, movieTitle)
+            movieFragment.arguments = bundle
+            return movieFragment
         }
-        throw IllegalArgumentException()
     }
 
 

@@ -36,19 +36,13 @@ class FragmentMoviesList : Fragment(), MovieClickListener {
 
 
     override fun onMovieClick(movieTitle: String) {
-        val movieFragment = FragmentMoviesDetails()
-        val bundle = Bundle().apply {
-            putString(TITLE, movieTitle)
-        }
-        movieFragment.arguments = bundle
         fragmentManager?.beginTransaction()
-            ?.replace(R.id.flFragment, movieFragment)
+            ?.replace(R.id.flFragment, FragmentMoviesDetails.newInstance(movieTitle))
             ?.addToBackStack(null)
             ?.commit()
     }
 
     companion object {
-        const val TITLE = "TITLE"
         var generatedMovies = getMovies().plus(getMovies())
     }
 
