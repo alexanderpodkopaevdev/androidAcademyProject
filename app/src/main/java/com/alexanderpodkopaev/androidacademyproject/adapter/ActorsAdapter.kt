@@ -9,24 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.alexanderpodkopaev.androidacademyproject.R
 import com.alexanderpodkopaev.androidacademyproject.data.ActorModel
 
-class ActorsAdapter : RecyclerView.Adapter<ActorsAdapter.ActorsViewHolder>() {
+class ActorsAdapter : RecyclerView.Adapter<ActorsViewHolder>() {
     private val actorsList: MutableList<ActorModel> = mutableListOf()
     private val maxActorsOnScreen = 4.0
-
-    inner class ActorsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val ivActorPhoto = itemView.findViewById<ImageView>(R.id.ivActorPhoto)
-        val tvActorName = itemView.findViewById<TextView>(R.id.tvActorName)
-
-        fun bind(actor: ActorModel) {
-            ivActorPhoto.setImageDrawable(
-                itemView.resources.getDrawable(
-                    actor.image,
-                    itemView.context.theme
-                )
-            )
-            tvActorName.text = actor.name
-        }
-    }
 
     fun bindActors(actors: List<ActorModel>) {
         actorsList.clear()
@@ -47,4 +32,19 @@ class ActorsAdapter : RecyclerView.Adapter<ActorsAdapter.ActorsViewHolder>() {
     }
 
     override fun getItemCount() = actorsList.size
+}
+
+class ActorsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    val ivActorPhoto = itemView.findViewById<ImageView>(R.id.ivActorPhoto)
+    val tvActorName = itemView.findViewById<TextView>(R.id.tvActorName)
+
+    fun bind(actor: ActorModel) {
+        ivActorPhoto.setImageDrawable(
+            itemView.resources.getDrawable(
+                actor.image,
+                itemView.context.theme
+            )
+        )
+        tvActorName.text = actor.name
+    }
 }
