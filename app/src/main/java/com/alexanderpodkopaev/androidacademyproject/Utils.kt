@@ -6,19 +6,18 @@ import android.util.DisplayMetrics
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 
-fun calculateNoOfColumns(
-    context: Context,
-    columnWidthDp: Float
-): Int {
-    val displayMetrics: DisplayMetrics? = context.resources.displayMetrics
-    displayMetrics?.let {
-        val screenWidthDp = displayMetrics.widthPixels// / displayMetrics.density
-        return (screenWidthDp / columnWidthDp).toInt()
+object UiUtils {
+    fun calculateNoOfColumns(
+        context: Context,
+        columnWidthDp: Float
+    ): Int {
+        val displayMetrics: DisplayMetrics? = context.resources.displayMetrics
+        displayMetrics?.let {
+            val screenWidthDp = displayMetrics.widthPixels// / displayMetrics.density
+            return (screenWidthDp / columnWidthDp).toInt()
+        }
+        return 3
     }
-    return 3
-
-
-
 }
 
 class CharacterItemDecoration(val offset: Int) : RecyclerView.ItemDecoration() {
@@ -28,7 +27,7 @@ class CharacterItemDecoration(val offset: Int) : RecyclerView.ItemDecoration() {
         parent: RecyclerView,
         state: RecyclerView.State
     ) {
-        outRect.left = offset/2
-        outRect.right = offset/2
+        outRect.left = offset / 2
+        outRect.right = offset / 2
     }
 }

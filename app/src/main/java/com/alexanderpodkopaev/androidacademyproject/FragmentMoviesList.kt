@@ -5,10 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.alexanderpodkopaev.androidacademyproject.UiUtils.calculateNoOfColumns
 import com.alexanderpodkopaev.androidacademyproject.adapter.MovieClickListener
 import com.alexanderpodkopaev.androidacademyproject.adapter.MoviesAdapter
 import com.alexanderpodkopaev.androidacademyproject.data.getMovies
@@ -27,7 +26,13 @@ class FragmentMoviesList : Fragment(), MovieClickListener {
         adapter.onMovieClickListener = this
         val recyclerViewMovies = view.findViewById<RecyclerView>(R.id.rvMoviesList)
         recyclerViewMovies?.layoutManager =
-            GridLayoutManager(context, calculateNoOfColumns(requireContext(), requireContext().resources.getDimension(R.dimen.movie_width)))
+            GridLayoutManager(
+                context,
+                calculateNoOfColumns(
+                    requireContext(),
+                    requireContext().resources.getDimension(R.dimen.movie_width)
+                )
+            )
         recyclerViewMovies?.adapter = adapter
         recyclerViewMovies?.addItemDecoration(CharacterItemDecoration(8))
 
