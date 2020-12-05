@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.alexanderpodkopaev.androidacademyproject.adapter.ActorsAdapter
 import com.alexanderpodkopaev.androidacademyproject.data.MovieModel
+import com.alexanderpodkopaev.androidacademyproject.data.MoviesRepository
 
 class FragmentMoviesDetails : Fragment() {
 
@@ -51,7 +52,7 @@ class FragmentMoviesDetails : Fragment() {
 
 
     private fun findMovie(movieTitle: String?): MovieModel? {
-        return FragmentMoviesList.generatedMovies.find { it.title == movieTitle }
+        return MoviesRepository().getMovies().find { it.title == movieTitle }
     }
 
 
