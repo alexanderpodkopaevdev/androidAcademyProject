@@ -11,12 +11,9 @@ object UiUtils {
         context: Context,
         columnWidthDp: Float
     ): Int {
-        val displayMetrics: DisplayMetrics? = context.resources.displayMetrics
-        displayMetrics?.let {
-            val screenWidthDp = displayMetrics.widthPixels// / displayMetrics.density
-            return (screenWidthDp / columnWidthDp).toInt()
-        }
-        return 3
+        val displayMetrics: DisplayMetrics = context.resources.displayMetrics
+        val screenWidthDp = displayMetrics.widthPixels// / displayMetrics.density
+        return (screenWidthDp / columnWidthDp).toInt()
     }
 }
 
