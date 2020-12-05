@@ -14,8 +14,6 @@ import com.alexanderpodkopaev.androidacademyproject.adapter.MoviesAdapter
 import com.alexanderpodkopaev.androidacademyproject.data.getMovies
 
 class FragmentMoviesList : Fragment(), MovieClickListener {
-    private var adapter: MoviesAdapter? = null
-    private var recyclerViewMovies: RecyclerView? = null
 
 
     override fun onCreateView(
@@ -24,12 +22,12 @@ class FragmentMoviesList : Fragment(), MovieClickListener {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_movies_list, container, false)
-        adapter = MoviesAdapter()
-        adapter?.bindMovies(generatedMovies)
-        adapter?.onMovieClickListener = this
-        recyclerViewMovies = view.findViewById(R.id.rvMoviesList)
+        val adapter = MoviesAdapter()
+        adapter.bindMovies(generatedMovies)
+        adapter.onMovieClickListener = this
+        val recyclerViewMovies = view.findViewById<RecyclerView>(R.id.rvMoviesList)
         recyclerViewMovies?.layoutManager =
-            GridLayoutManager(context, calculateNoOfColumns(context, 180f))
+            GridLayoutManager(context, calculateNoOfColumns(requireContext(), requireContext().resources.getDimension(R.dimen.movie_width)))
         recyclerViewMovies?.adapter = adapter
         recyclerViewMovies?.addItemDecoration(CharacterItemDecoration(8))
 

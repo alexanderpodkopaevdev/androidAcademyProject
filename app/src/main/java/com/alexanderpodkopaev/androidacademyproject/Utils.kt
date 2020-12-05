@@ -7,13 +7,13 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 
 fun calculateNoOfColumns(
-    context: Context?,
+    context: Context,
     columnWidthDp: Float
 ): Int {
-    val displayMetrics: DisplayMetrics? = context?.resources?.displayMetrics
+    val displayMetrics: DisplayMetrics? = context.resources.displayMetrics
     displayMetrics?.let {
-        val screenWidthDp = displayMetrics.widthPixels / displayMetrics.density
-        return (screenWidthDp / columnWidthDp + 0.5).toInt()
+        val screenWidthDp = displayMetrics.widthPixels// / displayMetrics.density
+        return (screenWidthDp / columnWidthDp).toInt()
     }
     return 3
 
