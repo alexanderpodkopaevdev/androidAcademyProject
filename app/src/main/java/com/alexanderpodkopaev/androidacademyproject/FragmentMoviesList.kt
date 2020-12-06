@@ -35,7 +35,7 @@ class FragmentMoviesList : Fragment(), MovieClickListener {
             )
         recyclerViewMovies.adapter = adapter
         recyclerViewMovies.addItemDecoration(
-            RightOffsetItemDecoration(
+            OffsetItemDecoration(
                 requireContext().resources.getDimension(
                     R.dimen.small
                 ).toInt()
