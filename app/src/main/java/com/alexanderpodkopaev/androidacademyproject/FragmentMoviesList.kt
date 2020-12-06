@@ -30,14 +30,15 @@ class FragmentMoviesList : Fragment(), MovieClickListener {
                 context,
                 calculateNoOfColumns(
                     requireContext(),
-                    requireContext().resources.getDimension(R.dimen.movie_width)
+                    requireContext().resources.getDimension(R.dimen.movie_width) +
+                            requireContext().resources.getDimension(R.dimen.standard)
                 )
             )
         recyclerViewMovies.adapter = adapter
         recyclerViewMovies.addItemDecoration(
             OffsetItemDecoration(
                 requireContext().resources.getDimension(
-                    R.dimen.small
+                    R.dimen.standard
                 ).toInt()
             )
         )

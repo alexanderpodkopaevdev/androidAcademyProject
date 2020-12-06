@@ -13,5 +13,6 @@ class OffsetItemDecoration(val offset: Int) : RecyclerView.ItemDecoration() {
     ) {
         outRect.left = offset / 2
         outRect.right = offset / 2
+        outRect.bottom = offset
     }
 }

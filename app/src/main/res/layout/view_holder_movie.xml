@@ -9,7 +9,7 @@
         android:layout_width="@dimen/movie_width"
         android:layout_height="296dp"
         android:layout_marginTop="4dp"
-        android:layout_marginBottom="4dp"
+
         android:background="@drawable/gradient_movie_list"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
