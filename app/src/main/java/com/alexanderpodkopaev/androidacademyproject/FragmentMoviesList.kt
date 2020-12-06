@@ -22,8 +22,8 @@ class FragmentMoviesList : Fragment(), MovieClickListener {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_movies_list, container, false)
         val adapter = MoviesAdapter()
-        adapter.bindMovies(MoviesRepository().getMovies())
         adapter.onMovieClickListener = this
+        adapter.bindMovies(MoviesRepository().getMovies())
         val recyclerViewMovies = view.findViewById<RecyclerView>(R.id.rvMoviesList)
         recyclerViewMovies.layoutManager =
             GridLayoutManager(
@@ -34,7 +34,13 @@ class FragmentMoviesList : Fragment(), MovieClickListener {
                 )
             )
         recyclerViewMovies.adapter = adapter
-        recyclerViewMovies.addItemDecoration(RightOffsetItemDecoration(requireContext().resources.getDimension(R.dimen.small).toInt()))
+        recyclerViewMovies.addItemDecoration(
+            RightOffsetItemDecoration(
+                requireContext().resources.getDimension(
+                    R.dimen.small
+                ).toInt()
+            )
+        )
 
         return view
     }
