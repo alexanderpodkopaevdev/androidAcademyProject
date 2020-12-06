@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackground">
@@ -13,11 +14,13 @@
             android:id="@+id/ivBackground"
             android:layout_width="match_parent"
             android:layout_height="298dp"
+            android:alpha="0.2"
+            android:background="@color/colorBackground"
             android:scaleType="centerCrop"
-            android:src="@drawable/background_image"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/picture_avengers" />
 
         <ImageView
             android:layout_width="match_parent"
@@ -25,6 +28,7 @@
             android:scaleType="centerCrop"
             android:src="@drawable/gradient"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -174,112 +178,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvDescription" />
 
-        <ImageView
-            android:id="@+id/ivFirstPerson"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:background="@color/colorBackground"
-            android:scaleType="centerCrop"
-            android:src="@drawable/robertdowney"
-            app:layout_constraintDimensionRatio="H,1:1"
-            app:layout_constraintEnd_toStartOf="@id/ivSecondPerson"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvCast"></ImageView>
-
-        <TextView
-            android:id="@+id/tvFirstPerson"
-            style="@style/StyleActorName"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvActors"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:paddingStart="@dimen/standard"
             android:layout_marginTop="8dp"
-            android:layout_marginBottom="16dp"
-            android:text="@string/robert_downey_jr"
+            android:paddingEnd="@dimen/standard"
+            android:clipToPadding="false"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/ivFirstPerson"
-            app:layout_constraintStart_toStartOf="@+id/ivFirstPerson"
-            app:layout_constraintTop_toBottomOf="@+id/ivFirstPerson" />
-
-        <ImageView
-            android:id="@+id/ivSecondPerson"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/chrisevans"
-            app:layout_constraintDimensionRatio="H,1:1"
-            app:layout_constraintEnd_toStartOf="@id/ivThreePerson"
-            app:layout_constraintStart_toEndOf="@id/ivFirstPerson"
-            app:layout_constraintTop_toBottomOf="@+id/tvCast">
-
-        </ImageView>
-
-        <TextView
-            android:id="@+id/tvSecondPerson"
-            style="@style/StyleActorName"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/chris_evans"
-            app:layout_constraintEnd_toEndOf="@+id/ivSecondPerson"
-            app:layout_constraintStart_toStartOf="@+id/ivSecondPerson"
-            app:layout_constraintTop_toBottomOf="@+id/ivSecondPerson" />
-
-        <ImageView
-            android:id="@+id/ivThreePerson"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/markruffalo"
-            app:layout_constraintDimensionRatio="H,1:1"
-            app:layout_constraintEnd_toStartOf="@id/ivFourPerson"
-            app:layout_constraintStart_toEndOf="@id/ivSecondPerson"
-            app:layout_constraintTop_toBottomOf="@+id/tvCast">
-
-        </ImageView>
-
-        <TextView
-            android:id="@+id/tvThreePerson"
-            style="@style/StyleActorName"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/mark_ruffalo"
-            app:layout_constraintEnd_toEndOf="@+id/ivThreePerson"
-            app:layout_constraintStart_toStartOf="@+id/ivThreePerson"
-            app:layout_constraintTop_toBottomOf="@+id/ivThreePerson" />
-
-        <ImageView
-            android:id="@+id/ivFourPerson"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/chrishemsworth"
-            app:layout_constraintDimensionRatio="H,1:1"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/ivThreePerson"
-            app:layout_constraintTop_toBottomOf="@+id/tvCast">
-
-        </ImageView>
-
-        <TextView
-            android:id="@+id/tvFourPerson"
-            style="@style/StyleActorName"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/chris_hemsworth"
-            app:layout_constraintEnd_toEndOf="@+id/ivFourPerson"
-            app:layout_constraintStart_toStartOf="@+id/ivFourPerson"
-            app:layout_constraintTop_toBottomOf="@+id/ivFourPerson" />
-
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvCast"
+            tools:listitem="@layout/view_holder_actor" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

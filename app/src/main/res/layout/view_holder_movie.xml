@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <View
+        android:id="@+id/containerMovie"
+        android:layout_width="@dimen/movie_width"
+        android:layout_height="296dp"
+        android:layout_marginTop="4dp"
+
+        android:background="@drawable/gradient_movie_list"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/ivMovie"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginBottom="48dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/picture_avengers"
+
+        app:layout_constraintBottom_toBottomOf="@id/containerMovie"
+        app:layout_constraintEnd_toEndOf="@id/containerMovie"
+        app:layout_constraintStart_toStartOf="@id/containerMovie"
+        app:layout_constraintTop_toTopOf="@id/containerMovie" />
+
+    <ImageView
+        android:id="@+id/ivMovieBackground"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginBottom="48dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/gradient"
+
+        app:layout_constraintBottom_toBottomOf="@id/containerMovie"
+        app:layout_constraintEnd_toEndOf="@id/containerMovie"
+        app:layout_constraintStart_toStartOf="@id/containerMovie"
+        app:layout_constraintTop_toTopOf="@id/containerMovie" />
+
+    <View
+        android:id="@+id/viewAgeBackground"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/background_age"
+        app:layout_constraintStart_toStartOf="@id/containerMovie"
+        app:layout_constraintTop_toTopOf="@id/containerMovie" />
+
+    <TextView
+        android:id="@+id/tvAge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_age"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/viewAgeBackground"
+        app:layout_constraintEnd_toEndOf="@id/viewAgeBackground"
+        app:layout_constraintStart_toStartOf="@id/viewAgeBackground"
+        app:layout_constraintTop_toTopOf="@id/viewAgeBackground" />
+
+    <ImageView
+        android:id="@+id/ivFavorite"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_marginTop="13dp"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/ic_favorite_normal"
+        app:layout_constraintEnd_toEndOf="@id/containerMovie"
+        app:layout_constraintTop_toTopOf="@id/containerMovie" />
+
+
+    <TextView
+        android:id="@+id/tvGanre"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:layout_marginTop="214dp"
+        android:layout_marginEnd="6dp"
+        android:text="@string/tv_ganre"
+        android:textColor="@color/colorRed"
+        android:textSize="8sp"
+        app:layout_constraintEnd_toEndOf="@id/containerMovie"
+        app:layout_constraintStart_toStartOf="@id/containerMovie"
+        app:layout_constraintTop_toTopOf="@id/containerMovie" />
+
+    <RatingBar
+        android:id="@+id/rbStar"
+        style="@style/Widget.AppCompat.RatingBar.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="6dp"
+        android:numStars="5"
+        android:progressDrawable="@drawable/ratingbar_small_star"
+        android:rating="4.0"
+        app:layout_constraintEnd_toStartOf="@id/tvReview"
+        app:layout_constraintStart_toStartOf="@id/containerMovie"
+        app:layout_constraintTop_toBottomOf="@id/tvGanre" />
+
+    <TextView
+        android:id="@+id/tvReview"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="@dimen/standard"
+        android:text="@string/text_review"
+        android:textAllCaps="true"
+        android:textColor="@color/colorGrey"
+        android:textSize="8sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@id/containerMovie"
+        app:layout_constraintStart_toEndOf="@id/rbStar"
+        app:layout_constraintTop_toBottomOf="@id/tvGanre" />
+
+    <TextView
+        android:id="@+id/tvLength"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/text_length"
+        android:textAllCaps="true"
+        android:textColor="@color/colorTextLength"
+        android:textSize="8sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/containerMovie"
+        app:layout_constraintStart_toStartOf="@id/containerMovie" />
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/text_title"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/tvLength"
+        app:layout_constraintStart_toStartOf="@id/containerMovie" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
