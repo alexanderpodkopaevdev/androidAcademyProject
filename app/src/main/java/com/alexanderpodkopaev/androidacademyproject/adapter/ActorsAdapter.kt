@@ -11,7 +11,7 @@ import com.alexanderpodkopaev.androidacademyproject.data.ActorModel
 
 class ActorsAdapter : RecyclerView.Adapter<ActorsViewHolder>() {
     private val actorsList: MutableList<ActorModel> = mutableListOf()
-    private val maxActorsOnScreen = 4.0
+    private val maxActorsOnScreen = 4
 
     fun bindActors(actors: List<ActorModel>) {
         actorsList.clear()
@@ -22,8 +22,7 @@ class ActorsAdapter : RecyclerView.Adapter<ActorsViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActorsViewHolder {
         val view =
             LayoutInflater.from(parent.context).inflate(R.layout.view_holder_actor, parent, false)
-        val actors : Double = if (actorsList.size < maxActorsOnScreen) actorsList.size.toDouble() else maxActorsOnScreen
-        view.layoutParams.width = ((parent.measuredWidth - (actors) * parent.context.resources.getDimension(R.dimen.standard)) / actors).toInt()
+        view.layoutParams.width = ((parent.measuredWidth - (maxActorsOnScreen) * parent.context.resources.getDimension(R.dimen.small)) / maxActorsOnScreen).toInt()
         return ActorsViewHolder(view)
     }
 
