@@ -37,7 +37,9 @@ private class JsonMovie(
     @SerialName("vote_average")
     val ratings: Float,
     val overview: String,
-    val adult: Boolean
+    val adult: Boolean,
+    @SerialName("vote_count")
+    val voteCount: Int
 )
 
 private suspend fun loadGenres(context: Context): List<Genre> = withContext(Dispatchers.IO) {
@@ -93,6 +95,7 @@ internal fun parseMovies(
             ratings = jsonMovie.ratings,
             adult = jsonMovie.adult,
             runtime = jsonMovie.runtime,
+            voteCount = jsonMovie.voteCount,
             genres = jsonMovie.genreIds.map {
                 genresMap[it] ?: throw IllegalArgumentException("Genre not found")
             },

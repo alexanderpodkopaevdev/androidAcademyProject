@@ -8,14 +8,15 @@ import android.widget.RatingBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.alexanderpodkopaev.androidacademyproject.R
-import com.alexanderpodkopaev.androidacademyproject.data.MovieModel
+import com.alexanderpodkopaev.androidacademyproject.data.Movie
+import com.bumptech.glide.Glide
 
 class MoviesAdapter() :
     RecyclerView.Adapter<MoviesViewHolder>() {
-    private var moviesList: MutableList<MovieModel> = mutableListOf()
+    private var moviesList: MutableList<Movie> = mutableListOf()
     var onMovieClickListener: MovieClickListener? = null
 
-    fun bindMovies(movies: List<MovieModel>) {
+    fun bindMovies(movies: List<Movie>) {
         moviesList.clear()
         moviesList.addAll(movies)
         notifyDataSetChanged()
@@ -50,20 +51,16 @@ class MoviesViewHolder(itemView: View, private val onMovieClickListener: MovieCl
     val tvLength = itemView.findViewById<TextView>(R.id.tvLength)
     val tvTitle = itemView.findViewById<TextView>(R.id.tvTitle)
 
-    fun bind(movie: MovieModel) {
-        ivMovie.setImageDrawable(
-            itemView.context.resources.getDrawable(
-                movie.picture,
-                itemView.context.theme
-            )
-        )
-        tvAge.text = itemView.context.getString(R.string.text_age, movie.age.toString())
-        tvGenre.text = movie.genre
-        rbStar.progress = movie.rating
+    fun bind(movie: Movie) {
+
+        Glide.with(itemView.context).load(movie.poster).into(ivMovie);
+        tvAge.text = itemView.context.getString(R.string.text_age, if (movie.adult) "18" else "13")
+        tvGenre.text = movie.genres.toString().replace("[","").replace("]","")
+        rbStar.progress = movie.ratings.toInt()
         tvReview.text =
-            itemView.context.getString(R.string.text_review, movie.countReview.toString())
+            itemView.context.getString(R.string.text_review, movie.voteCount.toString())
         tvLength.text =
-            itemView.context.getString(R.string.text_length, movie.length.toString())
+            itemView.context.getString(R.string.text_length, movie.runtime.toString())
         tvTitle.text = movie.title
         itemView.setOnClickListener {
             onMovieClickListener?.onMovieClick(movie.title)
