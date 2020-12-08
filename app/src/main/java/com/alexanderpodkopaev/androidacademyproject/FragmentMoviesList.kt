@@ -7,10 +7,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.alexanderpodkopaev.androidacademyproject.UiUtils.calculateNoOfColumns
+import com.alexanderpodkopaev.androidacademyproject.utils.UiUtils.calculateNoOfColumns
 import com.alexanderpodkopaev.androidacademyproject.adapter.MovieClickListener
 import com.alexanderpodkopaev.androidacademyproject.adapter.MoviesAdapter
 import com.alexanderpodkopaev.androidacademyproject.data.MoviesRepository
+import com.alexanderpodkopaev.androidacademyproject.utils.OffsetItemDecoration
 
 class FragmentMoviesList : Fragment(), MovieClickListener {
 

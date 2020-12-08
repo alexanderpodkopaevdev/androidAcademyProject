@@ -1,4 +1,4 @@
-package com.alexanderpodkopaev.androidacademyproject
+package com.alexanderpodkopaev.androidacademyproject.utils
 
 import android.content.Context
 import android.graphics.Rect

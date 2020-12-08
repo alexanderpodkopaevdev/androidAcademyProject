@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.alexanderpodkopaev.androidacademyproject.adapter.ActorsAdapter
 import com.alexanderpodkopaev.androidacademyproject.data.MovieModel
 import com.alexanderpodkopaev.androidacademyproject.data.MoviesRepository
+import com.alexanderpodkopaev.androidacademyproject.utils.RightOffsetItemDecoration
 
 class FragmentMoviesDetails : Fragment() {
 
