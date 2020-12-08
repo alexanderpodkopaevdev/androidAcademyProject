@@ -62,9 +62,9 @@ class FragmentMoviesList : Fragment(), MovieClickListener {
     }
 
 
-    override fun onMovieClick(movieTitle: String) {
+    override fun onMovieClick(movieId: Int) {
         fragmentManager?.beginTransaction()
-            ?.replace(R.id.flFragment, FragmentMoviesDetails.newInstance(movieTitle))
+            ?.replace(R.id.flFragment, FragmentMoviesDetails.newInstance(movieId))
             ?.addToBackStack(null)
             ?.commit()
     }

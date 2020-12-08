@@ -37,7 +37,7 @@ class MoviesAdapter() :
 }
 
 interface MovieClickListener {
-    fun onMovieClick(movieTitle: String)
+    fun onMovieClick(movieId: Int)
 }
 
 class MoviesViewHolder(itemView: View, private val onMovieClickListener: MovieClickListener?) :
@@ -63,7 +63,7 @@ class MoviesViewHolder(itemView: View, private val onMovieClickListener: MovieCl
             itemView.context.getString(R.string.text_length, movie.runtime.toString())
         tvTitle.text = movie.title
         itemView.setOnClickListener {
-            onMovieClickListener?.onMovieClick(movie.title)
+            onMovieClickListener?.onMovieClick(movie.id)
         }
     }
 }

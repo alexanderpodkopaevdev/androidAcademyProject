@@ -27,7 +27,7 @@ class FragmentMoviesDetails : Fragment() {
             .setOnClickListener { fragmentManager?.popBackStack() }
         view.findViewById<ImageView>(R.id.ivBack)
             .setOnClickListener { fragmentManager?.popBackStack() }
-        val movie = findMovie(arguments?.getString(TITLE))
+        val movie = findMovie(arguments?.getString(ID))
         if (movie != null) {
             val actorsAdapter = ActorsAdapter()
             actorsAdapter.bindActors(movie.actors)
@@ -58,12 +58,12 @@ class FragmentMoviesDetails : Fragment() {
 
 
     companion object {
-        private const val TITLE = "TITLE"
+        private const val ID = "ID"
 
-        fun newInstance(movieTitle: String): FragmentMoviesDetails {
+        fun newInstance(movieId: Int): FragmentMoviesDetails {
             val movieFragment = FragmentMoviesDetails()
             val bundle = Bundle()
-            bundle.putString(TITLE, movieTitle)
+            bundle.putInt(ID, movieId)
             movieFragment.arguments = bundle
             return movieFragment
         }
