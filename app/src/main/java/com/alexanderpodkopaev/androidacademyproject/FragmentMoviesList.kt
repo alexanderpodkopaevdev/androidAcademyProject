@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.alexanderpodkopaev.androidacademyproject.adapter.MovieClickListener
 import com.alexanderpodkopaev.androidacademyproject.adapter.MoviesAdapter
-import com.alexanderpodkopaev.androidacademyproject.data.Movie
 import com.alexanderpodkopaev.androidacademyproject.data.loadMovies
 import com.alexanderpodkopaev.androidacademyproject.utils.OffsetItemDecoration
 import com.alexanderpodkopaev.androidacademyproject.utils.UiUtils.calculateNoOfColumns
