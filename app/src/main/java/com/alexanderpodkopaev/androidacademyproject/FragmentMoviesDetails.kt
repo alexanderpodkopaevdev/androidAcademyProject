@@ -60,6 +60,8 @@ class FragmentMoviesDetails : Fragment() {
                     view.findViewById<TextView>(R.id.tvReview).text =
                         getString(R.string.text_review, movie.voteCount.toString())
                     view.findViewById<TextView>(R.id.tvDescription).text = movie.overview
+                    view.findViewById<TextView>(R.id.tvCast).visibility =
+                        if (movie.actors.isEmpty()) View.GONE else View.VISIBLE
                 }
             }
         }
