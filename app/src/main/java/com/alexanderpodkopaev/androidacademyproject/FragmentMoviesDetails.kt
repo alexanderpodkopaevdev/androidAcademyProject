@@ -11,9 +11,11 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.alexanderpodkopaev.androidacademyproject.adapter.ActorsAdapter
-import com.alexanderpodkopaev.androidacademyproject.data.MovieModel
-import com.alexanderpodkopaev.androidacademyproject.data.MoviesRepository
+import com.alexanderpodkopaev.androidacademyproject.data.Movie
+import com.alexanderpodkopaev.androidacademyproject.data.loadMovies
 import com.alexanderpodkopaev.androidacademyproject.utils.RightOffsetItemDecoration
+import com.bumptech.glide.Glide
+import kotlinx.coroutines.*
 
 class FragmentMoviesDetails : Fragment() {
 
@@ -27,33 +29,50 @@ class FragmentMoviesDetails : Fragment() {
             .setOnClickListener { fragmentManager?.popBackStack() }
         view.findViewById<ImageView>(R.id.ivBack)
             .setOnClickListener { fragmentManager?.popBackStack() }
-        val movie = findMovie(arguments?.getString(ID))
-        if (movie != null) {
-            val actorsAdapter = ActorsAdapter()
-            actorsAdapter.bindActors(movie.actors)
-            view.findViewById<RecyclerView>(R.id.rvActors).apply {
-                layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                adapter = actorsAdapter
-                addItemDecoration(RightOffsetItemDecoration(context.resources.getDimension(R.dimen.small).toInt()))
+        GlobalScope.launch {
+            withContext(Dispatchers.Main) {
+                val movie = findMovie(arguments?.getInt(ID))
+                if (movie != null) {
+                    val actorsAdapter = ActorsAdapter()
+                    GlobalScope.launch {
+                        withContext(Dispatchers.Main) {
+                            actorsAdapter.bindActors(movie.actors)
+                        }
+                    }
+                    view.findViewById<RecyclerView>(R.id.rvActors).apply {
+                        layoutManager =
+                            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                        adapter = actorsAdapter
+                        addItemDecoration(
+                            RightOffsetItemDecoration(
+                                context.resources.getDimension(R.dimen.small).toInt()
+                            )
+                        )
+                    }
+                    Glide.with(requireContext()).load(movie.backdrop)
+                        .into(view.findViewById(R.id.ivBackground))
+                    view.findViewById<TextView>(R.id.tvTitle).text = movie.title
+                    view.findViewById<TextView>(R.id.tvAge).text =
+                        getString(R.string.text_age, if (movie.adult) "18" else "13")
+                    view.findViewById<TextView>(R.id.tvGanre).text =
+                        movie.genres.toString().replace("[", "").replace("]", "")
+                    view.findViewById<RatingBar>(R.id.rbStar).progress = movie.ratings.toInt()
+                    view.findViewById<TextView>(R.id.tvReview).text =
+                        getString(R.string.text_review, movie.voteCount.toString())
+                    view.findViewById<TextView>(R.id.tvDescription).text = movie.overview
+                }
             }
-            view.findViewById<ImageView>(R.id.ivBackground)
-                ?.setImageDrawable(resources.getDrawable(movie.picture, context?.theme))
-            view.findViewById<TextView>(R.id.tvTitle).text = movie.title
-            view.findViewById<TextView>(R.id.tvAge).text =
-                getString(R.string.text_age, movie.age.toString())
-            view.findViewById<TextView>(R.id.tvGanre).text = movie.genre
-            view.findViewById<RatingBar>(R.id.rbStar).progress = movie.rating
-            view.findViewById<TextView>(R.id.tvReview).text =
-                getString(R.string.text_review, movie.countReview.toString())
-            view.findViewById<TextView>(R.id.tvDescription).text = movie.storyline
         }
-
         return view
     }
 
 
-    private fun findMovie(movieTitle: String?): MovieModel? {
-        return MoviesRepository().getMovies().find { it.title == movieTitle }
+    private suspend fun findMovie(movieId: Int?): Movie? {
+        var movie: Movie? = null
+        GlobalScope.async {
+            movie = loadMovies(requireContext()).find { it.id == movieId }
+        }.await()
+        return movie
     }
 
 
