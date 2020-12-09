@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.alexanderpodkopaev.androidacademyproject.R
 import com.alexanderpodkopaev.androidacademyproject.data.Movie
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 
 class MoviesAdapter() :
     RecyclerView.Adapter<MoviesViewHolder>() {
@@ -53,9 +55,16 @@ class MoviesViewHolder(itemView: View, private val onMovieClickListener: MovieCl
 
     fun bind(movie: Movie) {
 
-        Glide.with(itemView.context).load(movie.poster).into(ivMovie)
+        Glide.with(itemView.context).load(movie.poster)
+            .transform(
+                CenterCrop(), RoundedCorners(
+                    itemView.context.resources.getDimension(
+                        R.dimen.small
+                    ).toInt()
+                )
+            ).into(ivMovie)
         tvAge.text = itemView.context.getString(R.string.text_age, if (movie.adult) "18" else "13")
-        tvGenre.text = movie.genres.toString().replace("[","").replace("]","")
+        tvGenre.text = movie.genres.toString().replace("[", "").replace("]", "")
         rbStar.progress = movie.ratings.toInt()
         tvReview.text =
             itemView.context.getString(R.string.text_review, movie.voteCount.toString())

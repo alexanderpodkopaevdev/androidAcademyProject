@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.alexanderpodkopaev.androidacademyproject.R
 import com.alexanderpodkopaev.androidacademyproject.data.Actor
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 
 class ActorsAdapter : RecyclerView.Adapter<ActorsViewHolder>() {
     private val actorsList: MutableList<Actor> = mutableListOf()
@@ -40,7 +42,13 @@ class ActorsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val tvActorName = itemView.findViewById<TextView>(R.id.tvActorName)
 
     fun bind(actor: Actor) {
-        Glide.with(itemView.context).load(actor.picture).into(ivActorPhoto)
+        Glide.with(itemView.context).load(actor.picture).transform(
+            CenterCrop(), RoundedCorners(
+                itemView.context.resources.getDimension(
+                    R.dimen.small
+                ).toInt()
+            )
+        ).into(ivActorPhoto)
         tvActorName.text = actor.name
     }
 }
