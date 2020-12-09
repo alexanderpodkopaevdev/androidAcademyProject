@@ -53,7 +53,7 @@ class MoviesViewHolder(itemView: View, private val onMovieClickListener: MovieCl
 
     fun bind(movie: Movie) {
 
-        Glide.with(itemView.context).load(movie.poster).into(ivMovie);
+        Glide.with(itemView.context).load(movie.poster).into(ivMovie)
         tvAge.text = itemView.context.getString(R.string.text_age, if (movie.adult) "18" else "13")
         tvGenre.text = movie.genres.toString().replace("[","").replace("]","")
         rbStar.progress = movie.ratings.toInt()
