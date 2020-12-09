@@ -13,8 +13,8 @@ import com.alexanderpodkopaev.androidacademyproject.data.Movie
 import com.alexanderpodkopaev.androidacademyproject.data.loadMovies
 import com.alexanderpodkopaev.androidacademyproject.utils.OffsetItemDecoration
 import com.alexanderpodkopaev.androidacademyproject.utils.UiUtils.calculateNoOfColumns
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -29,12 +29,8 @@ class FragmentMoviesList : Fragment(), MovieClickListener {
         val view = inflater.inflate(R.layout.fragment_movies_list, container, false)
         val adapter = MoviesAdapter()
         adapter.onMovieClickListener = this
-        var movies = listOf<Movie>()
-        GlobalScope.launch {
-            withContext(Dispatchers.Default) {
-                movies =
-                    loadMovies(requireContext())
-            }
+        CoroutineScope(Dispatchers.IO).launch {
+            val movies = loadMovies(requireContext())
             withContext(Dispatchers.Main) {
                 adapter.bindMovies(movies)
             }

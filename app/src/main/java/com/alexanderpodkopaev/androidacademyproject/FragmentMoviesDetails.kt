@@ -15,7 +15,10 @@ import com.alexanderpodkopaev.androidacademyproject.data.Movie
 import com.alexanderpodkopaev.androidacademyproject.data.loadMovies
 import com.alexanderpodkopaev.androidacademyproject.utils.RightOffsetItemDecoration
 import com.bumptech.glide.Glide
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class FragmentMoviesDetails : Fragment() {
 
@@ -29,16 +32,12 @@ class FragmentMoviesDetails : Fragment() {
             .setOnClickListener { fragmentManager?.popBackStack() }
         view.findViewById<ImageView>(R.id.ivBack)
             .setOnClickListener { fragmentManager?.popBackStack() }
-        GlobalScope.launch {
-            withContext(Dispatchers.Main) {
-                val movie = findMovie(arguments?.getInt(ID))
-                if (movie != null) {
-                    val actorsAdapter = ActorsAdapter()
-                    GlobalScope.launch {
-                        withContext(Dispatchers.Main) {
-                            actorsAdapter.bindActors(movie.actors)
-                        }
-                    }
+        CoroutineScope(Dispatchers.IO).launch {
+            val movie = findMovie(arguments?.getInt(ID))
+            if (movie != null) {
+                val actorsAdapter = ActorsAdapter()
+                withContext(Dispatchers.Main) {
+                    actorsAdapter.bindActors(movie.actors)
                     view.findViewById<RecyclerView>(R.id.rvActors).apply {
                         layoutManager =
                             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -70,11 +69,7 @@ class FragmentMoviesDetails : Fragment() {
 
 
     private suspend fun findMovie(movieId: Int?): Movie? {
-        var movie: Movie? = null
-        GlobalScope.async {
-            movie = loadMovies(requireContext()).find { it.id == movieId }
-        }.await()
-        return movie
+        return loadMovies(requireContext()).find { it.id == movieId }
     }
 
 
