@@ -63,7 +63,7 @@ class MoviesViewHolder(itemView: View, private val onMovieClickListener: MovieCl
                     ).toInt()
                 )
             ).into(ivMovie)
-        tvAge.text = itemView.context.getString(R.string.text_age, if (movie.adult) "18" else "13")
+        tvAge.text = itemView.context.getString(R.string.text_age, if (movie.adult) itemView.context.getString(R.string.text_age_adult) else itemView.context.getString(R.string.text_age_child))
         tvGenre.text = movie.genres.toString().replace("[", "").replace("]", "")
         rbStar.progress = movie.ratings.toInt()
         tvReview.text =

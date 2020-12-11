@@ -2,6 +2,8 @@
     <string name="app_name">androidAcademyProject</string>
     <string name="text_back">Back</string>
     <string name="text_age">%1$s+</string>
+    <string name="text_age_adult">18</string>
+    <string name="text_age_child">13</string>
     <string name="text_title">Avengers: End Game</string>
     <string name="tv_ganre">Action, Adventure, Fantasy</string>
     <string name="text_review">%1$s Reviews</string>

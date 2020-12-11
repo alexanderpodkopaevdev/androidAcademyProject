@@ -80,7 +80,7 @@ class FragmentMoviesDetails : Fragment() {
     private fun bindMovie(movie: Movie) {
         Glide.with(requireContext()).load(movie.backdrop).into(ivBackground)
         tvTitle.text = movie.title
-        tvAge.text = getString(R.string.text_age, if (movie.adult) "18" else "13")
+        tvAge.text = getString(R.string.text_age, if (movie.adult) getString(R.string.text_age_adult) else getString(R.string.text_age_child))
         tvGenre.text =
             movie.genres.toString().replace("[", "").replace("]", "")
         rbStar.progress = movie.ratings.toInt()
