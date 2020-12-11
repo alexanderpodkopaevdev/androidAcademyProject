@@ -85,7 +85,7 @@
             tools:text="@string/text_title" />
 
         <TextView
-            android:id="@+id/tvGanre"
+            android:id="@+id/tvGenre"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/standard"
@@ -108,7 +108,7 @@
             android:theme="@style/CustomRatingBar"
             app:layout_constraintEnd_toStartOf="@id/tvReview"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvGanre"
+            app:layout_constraintTop_toBottomOf="@+id/tvGenre"
             tools:rating="4.0" />
 
         <TextView
@@ -124,7 +124,7 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/rbStar"
-            app:layout_constraintTop_toBottomOf="@+id/tvGanre"
+            app:layout_constraintTop_toBottomOf="@+id/tvGenre"
             tools:text="@string/text_review" />
 
         <androidx.constraintlayout.widget.Barrier

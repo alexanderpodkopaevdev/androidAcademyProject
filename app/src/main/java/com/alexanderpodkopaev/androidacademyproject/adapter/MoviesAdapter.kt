@@ -47,7 +47,7 @@ class MoviesViewHolder(itemView: View, private val onMovieClickListener: MovieCl
     val ivMovie = itemView.findViewById<ImageView>(R.id.ivMovie)
     val tvAge = itemView.findViewById<TextView>(R.id.tvAge)
     val ivFavorite = itemView.findViewById<ImageView>(R.id.ivFavorite)
-    val tvGenre = itemView.findViewById<TextView>(R.id.tvGanre)
+    val tvGenre = itemView.findViewById<TextView>(R.id.tvGenre)
     val rbStar = itemView.findViewById<RatingBar>(R.id.rbStar)
     val tvReview = itemView.findViewById<TextView>(R.id.tvReview)
     val tvLength = itemView.findViewById<TextView>(R.id.tvLength)

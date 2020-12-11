@@ -83,7 +83,7 @@
 
 
     <TextView
-        android:id="@+id/tvGanre"
+        android:id="@+id/tvGenre"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="6dp"
@@ -126,7 +126,7 @@
         app:layout_constraintBottom_toTopOf="@id/tvTitle"
         app:layout_constraintEnd_toEndOf="@id/containerMovie"
         app:layout_constraintStart_toEndOf="@id/rbStar"
-        app:layout_constraintTop_toBottomOf="@id/tvGanre"
+        app:layout_constraintTop_toBottomOf="@id/tvGenre"
         tools:text="@string/text_review" />
 
     <TextView
