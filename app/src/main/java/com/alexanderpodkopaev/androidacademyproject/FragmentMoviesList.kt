@@ -12,12 +12,13 @@ import com.alexanderpodkopaev.androidacademyproject.adapter.MoviesAdapter
 import com.alexanderpodkopaev.androidacademyproject.data.loadMovies
 import com.alexanderpodkopaev.androidacademyproject.utils.OffsetItemDecoration
 import com.alexanderpodkopaev.androidacademyproject.utils.UiUtils.calculateNoOfColumns
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 
 class FragmentMoviesList : Fragment(), MovieClickListener {
+
+    private var coroutineScope: CoroutineScope? = null
+
+    private lateinit var recyclerViewMovies : RecyclerView
 
 
     override fun onCreateView(
@@ -26,15 +27,18 @@ class FragmentMoviesList : Fragment(), MovieClickListener {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_movies_list, container, false)
+        recyclerViewMovies = view.findViewById(R.id.rvMoviesList)
+
         val adapter = MoviesAdapter()
         adapter.onMovieClickListener = this
-        CoroutineScope(Dispatchers.IO).launch {
+        coroutineScope = CoroutineScope(Dispatchers.IO)
+        coroutineScope?.launch {
             val movies = loadMovies(requireContext())
             withContext(Dispatchers.Main) {
                 adapter.bindMovies(movies)
             }
         }
-        val recyclerViewMovies = view.findViewById<RecyclerView>(R.id.rvMoviesList)
+
         recyclerViewMovies.layoutManager =
             GridLayoutManager(
                 context,
@@ -56,6 +60,10 @@ class FragmentMoviesList : Fragment(), MovieClickListener {
         return view
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        coroutineScope?.cancel()
+    }
 
     override fun onMovieClick(movieId: Int) {
         fragmentManager?.beginTransaction()
