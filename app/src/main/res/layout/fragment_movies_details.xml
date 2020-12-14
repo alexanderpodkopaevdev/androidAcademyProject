@@ -62,12 +62,12 @@
             android:layout_marginStart="@dimen/standard"
             android:layout_marginTop="226dp"
             android:layout_marginEnd="@dimen/standard"
-            android:text="@string/text_age"
             android:textColor="@color/white"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/text_age" />
 
         <TextView
             android:id="@+id/tvTitle"
@@ -76,28 +76,27 @@
             android:layout_marginStart="@dimen/standard"
             android:layout_marginTop="12dp"
             android:layout_marginEnd="@dimen/standard"
-            android:text="@string/text_title"
             android:textColor="@color/white"
             android:textSize="40sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tvAge" />
+            app:layout_constraintTop_toTopOf="@id/tvAge"
+            tools:text="@string/text_title" />
 
         <TextView
-            android:id="@+id/tvGanre"
+            android:id="@+id/tvGenre"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/standard"
             android:layout_marginTop="4dp"
             android:layout_marginEnd="@dimen/standard"
-
-            android:text="@string/tv_ganre"
             android:textColor="@color/colorRed"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
+            app:layout_constraintTop_toBottomOf="@+id/tvTitle"
+            tools:text="@string/tv_ganre" />
 
         <RatingBar
             android:id="@+id/rbStar"
@@ -106,11 +105,11 @@
             android:layout_marginStart="@dimen/standard"
             android:layout_marginTop="4dp"
             android:numStars="5"
-            android:rating="4.0"
             android:theme="@style/CustomRatingBar"
             app:layout_constraintEnd_toStartOf="@id/tvReview"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvGanre" />
+            app:layout_constraintTop_toBottomOf="@+id/tvGenre"
+            tools:rating="4.0" />
 
         <TextView
             android:id="@+id/tvReview"
@@ -119,14 +118,14 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
             android:layout_marginEnd="@dimen/standard"
-            android:text="@string/text_review"
             android:textAllCaps="true"
             android:textColor="@color/colorGrey"
             android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/rbStar"
-            app:layout_constraintTop_toBottomOf="@+id/tvGanre" />
+            app:layout_constraintTop_toBottomOf="@+id/tvGenre"
+            tools:text="@string/text_review" />
 
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/barrier"
@@ -157,12 +156,12 @@
             android:layout_marginTop="@dimen/standard"
             android:layout_marginEnd="@dimen/standard"
             android:alpha="0.75"
-            android:text="@string/text_description"
             android:textColor="@color/white"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvStoryline" />
+            app:layout_constraintTop_toBottomOf="@+id/tvStoryline"
+            tools:text="@string/text_description" />
 
         <TextView
             android:id="@+id/tvCast"
@@ -182,10 +181,10 @@
             android:id="@+id/rvActors"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:paddingStart="@dimen/standard"
             android:layout_marginTop="8dp"
-            android:paddingEnd="@dimen/standard"
             android:clipToPadding="false"
+            android:paddingStart="@dimen/standard"
+            android:paddingEnd="@dimen/standard"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

@@ -1,6 +1,7 @@
 package com.alexanderpodkopaev.androidacademyproject.data
 
-data class ActorModel(
+data class Actor(
+    val id: Int,
     val name: String,
-    val image: Int
+    val picture: String
 )

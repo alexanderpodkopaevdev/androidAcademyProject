@@ -7,13 +7,18 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.alexanderpodkopaev.androidacademyproject.UiUtils.calculateNoOfColumns
 import com.alexanderpodkopaev.androidacademyproject.adapter.MovieClickListener
 import com.alexanderpodkopaev.androidacademyproject.adapter.MoviesAdapter
-import com.alexanderpodkopaev.androidacademyproject.data.MoviesRepository
+import com.alexanderpodkopaev.androidacademyproject.data.loadMovies
+import com.alexanderpodkopaev.androidacademyproject.utils.OffsetItemDecoration
+import com.alexanderpodkopaev.androidacademyproject.utils.UiUtils.calculateNoOfColumns
+import kotlinx.coroutines.*
 
 class FragmentMoviesList : Fragment(), MovieClickListener {
 
+    private var coroutineScope: CoroutineScope? = null
+    private lateinit var recyclerViewMovies: RecyclerView
+    private lateinit var moviesAdapter : MoviesAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -21,10 +26,33 @@ class FragmentMoviesList : Fragment(), MovieClickListener {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_movies_list, container, false)
-        val adapter = MoviesAdapter()
-        adapter.onMovieClickListener = this
-        adapter.bindMovies(MoviesRepository().getMovies())
-        val recyclerViewMovies = view.findViewById<RecyclerView>(R.id.rvMoviesList)
+        initRecycler(view)
+        coroutineScope = CoroutineScope(Dispatchers.IO)
+        coroutineScope?.launch {
+            val movies = loadMovies(requireContext())
+            withContext(Dispatchers.Main) {
+                moviesAdapter.bindMovies(movies)
+            }
+        }
+        return view
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        coroutineScope?.cancel()
+    }
+
+    override fun onMovieClick(movieId: Int) {
+        fragmentManager?.beginTransaction()
+            ?.replace(R.id.flFragment, FragmentMoviesDetails.newInstance(movieId))
+            ?.addToBackStack(null)
+            ?.commit()
+    }
+
+    private fun initRecycler(view: View) {
+        recyclerViewMovies = view.findViewById(R.id.rvMoviesList)
+        moviesAdapter = MoviesAdapter()
+        moviesAdapter.onMovieClickListener = this
         recyclerViewMovies.layoutManager =
             GridLayoutManager(
                 context,
@@ -34,7 +62,7 @@ class FragmentMoviesList : Fragment(), MovieClickListener {
                             requireContext().resources.getDimension(R.dimen.standard)
                 )
             )
-        recyclerViewMovies.adapter = adapter
+        recyclerViewMovies.adapter = moviesAdapter
         recyclerViewMovies.addItemDecoration(
             OffsetItemDecoration(
                 requireContext().resources.getDimension(
@@ -42,16 +70,5 @@ class FragmentMoviesList : Fragment(), MovieClickListener {
                 ).toInt()
             )
         )
-
-        return view
     }
-
-
-    override fun onMovieClick(movieTitle: String) {
-        fragmentManager?.beginTransaction()
-            ?.replace(R.id.flFragment, FragmentMoviesDetails.newInstance(movieTitle))
-            ?.addToBackStack(null)
-            ?.commit()
-    }
-
 }
