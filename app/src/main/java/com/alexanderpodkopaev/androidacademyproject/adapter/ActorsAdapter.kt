@@ -16,12 +16,6 @@ class ActorsAdapter : RecyclerView.Adapter<ActorsViewHolder>() {
     private val actorsList: MutableList<Actor> = mutableListOf()
     private val maxActorsOnScreen = 4
 
-    fun bindActors(actors: List<Actor>) {
-        actorsList.clear()
-        actorsList.addAll(actors)
-        notifyDataSetChanged()
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActorsViewHolder {
         val view =
             LayoutInflater.from(parent.context).inflate(R.layout.view_holder_actor, parent, false)
@@ -35,6 +29,12 @@ class ActorsAdapter : RecyclerView.Adapter<ActorsViewHolder>() {
     }
 
     override fun getItemCount() = actorsList.size
+
+    fun bindActors(actors: List<Actor>) {
+        actorsList.clear()
+        actorsList.addAll(actors)
+        notifyDataSetChanged()
+    }
 }
 
 class ActorsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

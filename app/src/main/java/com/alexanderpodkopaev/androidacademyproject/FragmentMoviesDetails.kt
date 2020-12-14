@@ -20,16 +20,16 @@ import kotlinx.coroutines.*
 class FragmentMoviesDetails : Fragment() {
 
     private var coroutineScope: CoroutineScope? = null
-
-    lateinit var ivBackground: ImageView
-    lateinit var tvTitle: TextView
-    lateinit var tvAge: TextView
-    lateinit var tvGenre: TextView
-    lateinit var rbStar: RatingBar
-    lateinit var tvReview: TextView
-    lateinit var tvDescription: TextView
-    lateinit var tvCast: TextView
-    lateinit var rvActors: RecyclerView
+    private lateinit var ivBackground: ImageView
+    private lateinit var tvTitle: TextView
+    private lateinit var tvAge: TextView
+    private lateinit var tvGenre: TextView
+    private lateinit var rbStar: RatingBar
+    private lateinit var tvReview: TextView
+    private lateinit var tvDescription: TextView
+    private lateinit var tvCast: TextView
+    private lateinit var rvActors: RecyclerView
+    private lateinit var actorsAdapter: ActorsAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,6 +37,27 @@ class FragmentMoviesDetails : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_movies_details, container, false)
+        initView(view)
+        initRecycler()
+        coroutineScope = CoroutineScope(Dispatchers.IO)
+        coroutineScope?.launch {
+            val movie = findMovie(arguments?.getInt(ID))
+            if (movie != null) {
+                withContext(Dispatchers.Main) {
+                    actorsAdapter.bindActors(movie.actors)
+                    bindMovie(movie)
+                }
+            }
+        }
+        return view
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        coroutineScope?.cancel()
+    }
+
+    private fun initView(view: View) {
         val tvBack = view.findViewById<TextView>(R.id.tvBack)
         tvBack.setOnClickListener { fragmentManager?.popBackStack() }
         val ivBack = view.findViewById<ImageView>(R.id.ivBack)
@@ -50,23 +71,10 @@ class FragmentMoviesDetails : Fragment() {
         tvDescription = view.findViewById(R.id.tvDescription)
         tvCast = view.findViewById(R.id.tvCast)
         rvActors = view.findViewById(R.id.rvActors)
-
-        coroutineScope = CoroutineScope(Dispatchers.IO)
-        coroutineScope?.launch {
-            val movie = findMovie(arguments?.getInt(ID))
-            if (movie != null) {
-                withContext(Dispatchers.Main) {
-                    bindActorsAdapter(movie)
-                    bindMovie(movie)
-                }
-            }
-        }
-        return view
     }
 
-    private fun bindActorsAdapter(movie: Movie) {
-        val actorsAdapter = ActorsAdapter()
-        actorsAdapter.bindActors(movie.actors)
+    private fun initRecycler() {
+        actorsAdapter = ActorsAdapter()
         rvActors.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         rvActors.adapter = actorsAdapter
@@ -80,18 +88,16 @@ class FragmentMoviesDetails : Fragment() {
     private fun bindMovie(movie: Movie) {
         Glide.with(requireContext()).load(movie.backdrop).into(ivBackground)
         tvTitle.text = movie.title
-        tvAge.text = getString(R.string.text_age, if (movie.adult) getString(R.string.text_age_adult) else getString(R.string.text_age_child))
+        tvAge.text = getString(
+            R.string.text_age,
+            if (movie.adult) getString(R.string.text_age_adult) else getString(R.string.text_age_child)
+        )
         tvGenre.text =
             movie.genres.toString().replace("[", "").replace("]", "")
         rbStar.progress = movie.ratings.toInt()
         tvReview.text = getString(R.string.text_review, movie.voteCount.toString())
         tvDescription.text = movie.overview
         tvCast.visibility = if (movie.actors.isEmpty()) View.GONE else View.VISIBLE
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        coroutineScope?.cancel()
     }
 
     private suspend fun findMovie(movieId: Int?): Movie? {

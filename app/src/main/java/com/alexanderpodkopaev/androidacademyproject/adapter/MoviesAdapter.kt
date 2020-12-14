@@ -15,14 +15,8 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 
 class MoviesAdapter() :
     RecyclerView.Adapter<MoviesViewHolder>() {
-    private var moviesList: MutableList<Movie> = mutableListOf()
     var onMovieClickListener: MovieClickListener? = null
-
-    fun bindMovies(movies: List<Movie>) {
-        moviesList.clear()
-        moviesList.addAll(movies)
-        notifyDataSetChanged()
-    }
+    private var moviesList: MutableList<Movie> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MoviesViewHolder {
         return MoviesViewHolder(
@@ -36,6 +30,12 @@ class MoviesAdapter() :
     }
 
     override fun getItemCount() = moviesList.size
+
+    fun bindMovies(movies: List<Movie>) {
+        moviesList.clear()
+        moviesList.addAll(movies)
+        notifyDataSetChanged()
+    }
 }
 
 interface MovieClickListener {
@@ -54,7 +54,6 @@ class MoviesViewHolder(itemView: View, private val onMovieClickListener: MovieCl
     val tvTitle = itemView.findViewById<TextView>(R.id.tvTitle)
 
     fun bind(movie: Movie) {
-
         Glide.with(itemView.context).load(movie.poster)
             .transform(
                 CenterCrop(), RoundedCorners(
@@ -63,7 +62,12 @@ class MoviesViewHolder(itemView: View, private val onMovieClickListener: MovieCl
                     ).toInt()
                 )
             ).into(ivMovie)
-        tvAge.text = itemView.context.getString(R.string.text_age, if (movie.adult) itemView.context.getString(R.string.text_age_adult) else itemView.context.getString(R.string.text_age_child))
+        tvAge.text = itemView.context.getString(
+            R.string.text_age,
+            if (movie.adult) itemView.context.getString(R.string.text_age_adult) else itemView.context.getString(
+                R.string.text_age_child
+            )
+        )
         tvGenre.text = movie.genres.toString().replace("[", "").replace("]", "")
         rbStar.progress = movie.ratings.toInt()
         tvReview.text =

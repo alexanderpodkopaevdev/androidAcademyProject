@@ -17,9 +17,8 @@ import kotlinx.coroutines.*
 class FragmentMoviesList : Fragment(), MovieClickListener {
 
     private var coroutineScope: CoroutineScope? = null
-
-    private lateinit var recyclerViewMovies : RecyclerView
-
+    private lateinit var recyclerViewMovies: RecyclerView
+    private lateinit var moviesAdapter : MoviesAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -27,36 +26,14 @@ class FragmentMoviesList : Fragment(), MovieClickListener {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_movies_list, container, false)
-        recyclerViewMovies = view.findViewById(R.id.rvMoviesList)
-
-        val adapter = MoviesAdapter()
-        adapter.onMovieClickListener = this
+        initRecycler(view)
         coroutineScope = CoroutineScope(Dispatchers.IO)
         coroutineScope?.launch {
             val movies = loadMovies(requireContext())
             withContext(Dispatchers.Main) {
-                adapter.bindMovies(movies)
+                moviesAdapter.bindMovies(movies)
             }
         }
-
-        recyclerViewMovies.layoutManager =
-            GridLayoutManager(
-                context,
-                calculateNoOfColumns(
-                    requireContext(),
-                    requireContext().resources.getDimension(R.dimen.movie_width) +
-                            requireContext().resources.getDimension(R.dimen.standard)
-                )
-            )
-        recyclerViewMovies.adapter = adapter
-        recyclerViewMovies.addItemDecoration(
-            OffsetItemDecoration(
-                requireContext().resources.getDimension(
-                    R.dimen.standard
-                ).toInt()
-            )
-        )
-
         return view
     }
 
@@ -72,4 +49,26 @@ class FragmentMoviesList : Fragment(), MovieClickListener {
             ?.commit()
     }
 
+    private fun initRecycler(view: View) {
+        recyclerViewMovies = view.findViewById(R.id.rvMoviesList)
+        moviesAdapter = MoviesAdapter()
+        moviesAdapter.onMovieClickListener = this
+        recyclerViewMovies.layoutManager =
+            GridLayoutManager(
+                context,
+                calculateNoOfColumns(
+                    requireContext(),
+                    requireContext().resources.getDimension(R.dimen.movie_width) +
+                            requireContext().resources.getDimension(R.dimen.standard)
+                )
+            )
+        recyclerViewMovies.adapter = moviesAdapter
+        recyclerViewMovies.addItemDecoration(
+            OffsetItemDecoration(
+                requireContext().resources.getDimension(
+                    R.dimen.standard
+                ).toInt()
+            )
+        )
+    }
 }
