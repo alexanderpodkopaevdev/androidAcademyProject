@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.alexanderpodkopaev.androidacademyproject.adapter.ActorsAdapter
@@ -27,7 +28,6 @@ class FragmentMoviesDetails : Fragment() {
     private lateinit var tvCast: TextView
     private lateinit var rvActors: RecyclerView
     private lateinit var actorsAdapter: ActorsAdapter
-    private var movieDetailsViewModel: MovieDetailsViewModel? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,9 +37,9 @@ class FragmentMoviesDetails : Fragment() {
         val view = inflater.inflate(R.layout.fragment_movies_details, container, false)
         initView(view)
         initRecycler()
-        movieDetailsViewModel = MovieDetailsViewModel(activity!!.application)
-        movieDetailsViewModel?.fetchMovie(arguments?.getInt(ID))
-        movieDetailsViewModel?.movie?.observe(viewLifecycleOwner) { movie ->
+        val movieDetailsViewModel = ViewModelProvider(this,ViewModelProvider.AndroidViewModelFactory(activity!!.application)).get(MovieDetailsViewModel::class.java)
+        movieDetailsViewModel.fetchMovie(arguments?.getInt(ID))
+        movieDetailsViewModel.movie.observe(viewLifecycleOwner) { movie ->
             actorsAdapter.bindActors(movie.actors)
             bindMovie(movie)
         }
