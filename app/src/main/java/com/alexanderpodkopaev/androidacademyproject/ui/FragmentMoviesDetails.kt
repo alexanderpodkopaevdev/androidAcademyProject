@@ -1,4 +1,4 @@
-package com.alexanderpodkopaev.androidacademyproject
+package com.alexanderpodkopaev.androidacademyproject.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,6 +11,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.alexanderpodkopaev.androidacademyproject.viewmodel.MovieDetailsViewModel
+import com.alexanderpodkopaev.androidacademyproject.R
 import com.alexanderpodkopaev.androidacademyproject.adapter.ActorsAdapter
 import com.alexanderpodkopaev.androidacademyproject.data.Movie
 import com.alexanderpodkopaev.androidacademyproject.utils.RightOffsetItemDecoration
@@ -37,7 +39,8 @@ class FragmentMoviesDetails : Fragment() {
         val view = inflater.inflate(R.layout.fragment_movies_details, container, false)
         initView(view)
         initRecycler()
-        val movieDetailsViewModel = ViewModelProvider(this,ViewModelProvider.AndroidViewModelFactory(activity!!.application)).get(MovieDetailsViewModel::class.java)
+        val movieDetailsViewModel = ViewModelProvider(this,ViewModelProvider.AndroidViewModelFactory(activity!!.application)).get(
+            MovieDetailsViewModel::class.java)
         movieDetailsViewModel.fetchMovie(arguments?.getInt(ID))
         movieDetailsViewModel.movie.observe(viewLifecycleOwner) { movie ->
             actorsAdapter.bindActors(movie.actors)

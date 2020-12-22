@@ -1,4 +1,4 @@
-package com.alexanderpodkopaev.androidacademyproject
+package com.alexanderpodkopaev.androidacademyproject.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
