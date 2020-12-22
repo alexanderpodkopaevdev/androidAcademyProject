@@ -1,15 +1,14 @@
 package com.alexanderpodkopaev.androidacademyproject.viewmodel
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alexanderpodkopaev.androidacademyproject.data.Movie
-import com.alexanderpodkopaev.androidacademyproject.data.loadMovies
+import com.alexanderpodkopaev.androidacademyproject.repo.MoviesRepository
 import kotlinx.coroutines.launch
 
-class MovieDetailsViewModel(val app: Application) : AndroidViewModel(app) {
+class MovieDetailsViewModel(private val repository: MoviesRepository) : ViewModel() {
 
     private var _movie = MutableLiveData<Movie>()
     var movie: LiveData<Movie> = _movie
@@ -21,6 +20,6 @@ class MovieDetailsViewModel(val app: Application) : AndroidViewModel(app) {
     }
 
     private suspend fun findMovie(movieId: Int?): Movie? {
-        return loadMovies(getApplication()).find { it.id == movieId }
+        return repository.getMovies().find { it.id == movieId }
     }
 }

@@ -15,7 +15,11 @@ import com.alexanderpodkopaev.androidacademyproject.viewmodel.MovieDetailsViewMo
 import com.alexanderpodkopaev.androidacademyproject.R
 import com.alexanderpodkopaev.androidacademyproject.adapter.ActorsAdapter
 import com.alexanderpodkopaev.androidacademyproject.data.Movie
+import com.alexanderpodkopaev.androidacademyproject.repo.MoviesRepoAssetsImpl
+import com.alexanderpodkopaev.androidacademyproject.repo.MoviesRepository
 import com.alexanderpodkopaev.androidacademyproject.utils.RightOffsetItemDecoration
+import com.alexanderpodkopaev.androidacademyproject.viewmodel.MoviesFactory
+import com.alexanderpodkopaev.androidacademyproject.viewmodel.MoviesListViewModel
 import com.bumptech.glide.Glide
 
 class FragmentMoviesDetails : Fragment() {
@@ -30,6 +34,7 @@ class FragmentMoviesDetails : Fragment() {
     private lateinit var tvCast: TextView
     private lateinit var rvActors: RecyclerView
     private lateinit var actorsAdapter: ActorsAdapter
+    private lateinit var moviesRepository: MoviesRepository
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,7 +44,8 @@ class FragmentMoviesDetails : Fragment() {
         val view = inflater.inflate(R.layout.fragment_movies_details, container, false)
         initView(view)
         initRecycler()
-        val movieDetailsViewModel = ViewModelProvider(this,ViewModelProvider.AndroidViewModelFactory(activity!!.application)).get(
+        moviesRepository = MoviesRepoAssetsImpl(requireContext())
+        val movieDetailsViewModel = ViewModelProvider(this, MoviesFactory(moviesRepository)).get(
             MovieDetailsViewModel::class.java)
         movieDetailsViewModel.fetchMovie(arguments?.getInt(ID))
         movieDetailsViewModel.movie.observe(viewLifecycleOwner) { movie ->
