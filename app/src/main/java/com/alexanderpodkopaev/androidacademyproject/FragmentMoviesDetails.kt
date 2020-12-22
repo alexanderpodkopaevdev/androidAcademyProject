@@ -12,14 +12,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.alexanderpodkopaev.androidacademyproject.adapter.ActorsAdapter
 import com.alexanderpodkopaev.androidacademyproject.data.Movie
-import com.alexanderpodkopaev.androidacademyproject.data.loadMovies
 import com.alexanderpodkopaev.androidacademyproject.utils.RightOffsetItemDecoration
 import com.bumptech.glide.Glide
-import kotlinx.coroutines.*
 
 class FragmentMoviesDetails : Fragment() {
 
-    private var coroutineScope: CoroutineScope? = null
     private lateinit var ivBackground: ImageView
     private lateinit var tvTitle: TextView
     private lateinit var tvAge: TextView
@@ -30,6 +27,7 @@ class FragmentMoviesDetails : Fragment() {
     private lateinit var tvCast: TextView
     private lateinit var rvActors: RecyclerView
     private lateinit var actorsAdapter: ActorsAdapter
+    private var movieDetailsViewModel: MovieDetailsViewModel? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,22 +37,13 @@ class FragmentMoviesDetails : Fragment() {
         val view = inflater.inflate(R.layout.fragment_movies_details, container, false)
         initView(view)
         initRecycler()
-        coroutineScope = CoroutineScope(Dispatchers.IO)
-        coroutineScope?.launch {
-            val movie = findMovie(arguments?.getInt(ID))
-            if (movie != null) {
-                withContext(Dispatchers.Main) {
-                    actorsAdapter.bindActors(movie.actors)
-                    bindMovie(movie)
-                }
-            }
+        movieDetailsViewModel = MovieDetailsViewModel(activity!!.application)
+        movieDetailsViewModel?.fetchMovie(arguments?.getInt(ID))
+        movieDetailsViewModel?.movie?.observe(viewLifecycleOwner) { movie ->
+            actorsAdapter.bindActors(movie.actors)
+            bindMovie(movie)
         }
         return view
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        coroutineScope?.cancel()
     }
 
     private fun initView(view: View) {
@@ -98,10 +87,6 @@ class FragmentMoviesDetails : Fragment() {
         tvReview.text = getString(R.string.text_review, movie.voteCount.toString())
         tvDescription.text = movie.overview
         tvCast.visibility = if (movie.actors.isEmpty()) View.GONE else View.VISIBLE
-    }
-
-    private suspend fun findMovie(movieId: Int?): Movie? {
-        return loadMovies(requireContext()).find { it.id == movieId }
     }
 
 
