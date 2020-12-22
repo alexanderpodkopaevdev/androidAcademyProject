@@ -9,16 +9,14 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.alexanderpodkopaev.androidacademyproject.adapter.MovieClickListener
 import com.alexanderpodkopaev.androidacademyproject.adapter.MoviesAdapter
-import com.alexanderpodkopaev.androidacademyproject.data.loadMovies
 import com.alexanderpodkopaev.androidacademyproject.utils.OffsetItemDecoration
 import com.alexanderpodkopaev.androidacademyproject.utils.UiUtils.calculateNoOfColumns
-import kotlinx.coroutines.*
 
 class FragmentMoviesList : Fragment(), MovieClickListener {
 
-    private var coroutineScope: CoroutineScope? = null
     private lateinit var recyclerViewMovies: RecyclerView
-    private lateinit var moviesAdapter : MoviesAdapter
+    private lateinit var moviesAdapter: MoviesAdapter
+    private var viewModel: MoviesListViewModel? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -27,19 +25,12 @@ class FragmentMoviesList : Fragment(), MovieClickListener {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_movies_list, container, false)
         initRecycler(view)
-        coroutineScope = CoroutineScope(Dispatchers.IO)
-        coroutineScope?.launch {
-            val movies = loadMovies(requireContext())
-            withContext(Dispatchers.Main) {
-                moviesAdapter.bindMovies(movies)
-            }
+        viewModel = MoviesListViewModel(activity!!.application)
+        viewModel?.fetchMovies()
+        viewModel?.moviesList?.observe(this) { movies ->
+            moviesAdapter.bindMovies(movies)
         }
         return view
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        coroutineScope?.cancel()
     }
 
     override fun onMovieClick(movieId: Int) {
