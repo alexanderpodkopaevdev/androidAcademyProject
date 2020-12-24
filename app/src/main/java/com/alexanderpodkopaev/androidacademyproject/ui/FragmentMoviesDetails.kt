@@ -48,8 +48,10 @@ class FragmentMoviesDetails : Fragment() {
             MovieDetailsViewModel::class.java)
         movieDetailsViewModel.fetchMovie(arguments?.getInt(ID))
         movieDetailsViewModel.movie.observe(viewLifecycleOwner) { movie ->
-            actorsAdapter.bindActors(movie.actors)
             bindMovie(movie)
+        }
+        movieDetailsViewModel.actors.observe(viewLifecycleOwner) {actors ->
+            actorsAdapter.bindActors(actors)
         }
         return view
     }
