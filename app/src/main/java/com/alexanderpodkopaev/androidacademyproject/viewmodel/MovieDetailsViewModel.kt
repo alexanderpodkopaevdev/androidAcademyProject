@@ -9,16 +9,17 @@ import com.alexanderpodkopaev.androidacademyproject.data.Movie
 import com.alexanderpodkopaev.androidacademyproject.repo.MoviesRepository
 import kotlinx.coroutines.launch
 
-class MovieDetailsViewModel(private val repository: MoviesRepository) : ViewModel() {
+class MovieDetailsViewModel(private val repository: MoviesRepository, private val id: Int?) :
+    ViewModel() {
 
     private var _movie = MutableLiveData<Movie>()
     val movie: LiveData<Movie> = _movie
     private var _actors = MutableLiveData<List<Actor>>()
     val actors: LiveData<List<Actor>> = _actors
 
-    fun fetchMovie(id: Int?) {
+    fun fetchMovie() {
         viewModelScope.launch {
-            _movie.postValue(findMovie(id))
+            _movie.value = findMovie(id)
             _actors.value = movie.value?.actors
         }
     }

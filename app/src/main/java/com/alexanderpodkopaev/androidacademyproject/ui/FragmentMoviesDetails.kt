@@ -18,6 +18,7 @@ import com.alexanderpodkopaev.androidacademyproject.data.Movie
 import com.alexanderpodkopaev.androidacademyproject.repo.AssetsMoviesRepo
 import com.alexanderpodkopaev.androidacademyproject.repo.MoviesRepository
 import com.alexanderpodkopaev.androidacademyproject.utils.RightOffsetItemDecoration
+import com.alexanderpodkopaev.androidacademyproject.viewmodel.MovieDetailsFactory
 import com.alexanderpodkopaev.androidacademyproject.viewmodel.MoviesFactory
 import com.bumptech.glide.Glide
 
@@ -44,9 +45,9 @@ class FragmentMoviesDetails : Fragment() {
         initView(view)
         initRecycler()
         moviesRepository = AssetsMoviesRepo(requireContext())
-        val movieDetailsViewModel = ViewModelProvider(this, MoviesFactory(moviesRepository)).get(
+        val movieDetailsViewModel = ViewModelProvider(this, MovieDetailsFactory(moviesRepository, arguments?.getInt(ID))).get(
             MovieDetailsViewModel::class.java)
-        movieDetailsViewModel.fetchMovie(arguments?.getInt(ID))
+        movieDetailsViewModel.fetchMovie()
         movieDetailsViewModel.movie.observe(viewLifecycleOwner) { movie ->
             bindMovie(movie)
         }

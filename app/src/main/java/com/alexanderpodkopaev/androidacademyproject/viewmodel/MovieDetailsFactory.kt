@@ -5,11 +5,12 @@ import androidx.lifecycle.ViewModelProvider
 import com.alexanderpodkopaev.androidacademyproject.repo.MoviesRepository
 
 
-class MoviesFactory(val repository: MoviesRepository) : ViewModelProvider.NewInstanceFactory() {
+class MovieDetailsFactory(private val repository: MoviesRepository, private val id: Int?) :
+    ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T = when (modelClass) {
-        MoviesListViewModel::class.java -> MoviesListViewModel(repository)
+        MovieDetailsViewModel::class.java -> MovieDetailsViewModel(repository, id)
         else -> throw IllegalArgumentException("$modelClass is not registered ViewModel")
     } as T
 }
