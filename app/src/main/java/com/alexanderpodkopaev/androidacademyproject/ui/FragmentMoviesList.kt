@@ -12,7 +12,7 @@ import com.alexanderpodkopaev.androidacademyproject.viewmodel.MoviesListViewMode
 import com.alexanderpodkopaev.androidacademyproject.R
 import com.alexanderpodkopaev.androidacademyproject.adapter.MovieClickListener
 import com.alexanderpodkopaev.androidacademyproject.adapter.MoviesAdapter
-import com.alexanderpodkopaev.androidacademyproject.repo.MoviesRepoAssetsImpl
+import com.alexanderpodkopaev.androidacademyproject.repo.AssetsMoviesRepo
 import com.alexanderpodkopaev.androidacademyproject.repo.MoviesRepository
 import com.alexanderpodkopaev.androidacademyproject.utils.OffsetItemDecoration
 import com.alexanderpodkopaev.androidacademyproject.utils.UiUtils.calculateNoOfColumns
@@ -31,7 +31,7 @@ class FragmentMoviesList : Fragment(), MovieClickListener {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_movies_list, container, false)
         initRecycler(view)
-        moviesRepository = MoviesRepoAssetsImpl(requireContext())
+        moviesRepository = AssetsMoviesRepo(requireContext())
         val viewModel = ViewModelProvider(this, MoviesFactory(moviesRepository)).get(MoviesListViewModel::class.java)
         viewModel.fetchMovies()
         viewModel.moviesList.observe(viewLifecycleOwner) { movies ->
