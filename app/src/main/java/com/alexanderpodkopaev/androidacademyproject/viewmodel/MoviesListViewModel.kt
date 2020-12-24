@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 
 class MoviesListViewModel(private val repository: MoviesRepository) : ViewModel() {
 
-    private var _moviesList = MutableLiveData<List<Movie>>(emptyList())
+    private val _moviesList = MutableLiveData<List<Movie>>(emptyList())
     val moviesList: LiveData<List<Movie>> = _moviesList
 
     fun fetchMovies() {

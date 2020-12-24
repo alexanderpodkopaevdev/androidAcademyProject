@@ -12,9 +12,9 @@ import kotlinx.coroutines.launch
 class MovieDetailsViewModel(private val repository: MoviesRepository, private val id: Int?) :
     ViewModel() {
 
-    private var _movie = MutableLiveData<Movie>()
+    private val _movie = MutableLiveData<Movie>()
     val movie: LiveData<Movie> = _movie
-    private var _actors = MutableLiveData<List<Actor>>()
+    private val _actors = MutableLiveData<List<Actor>>()
     val actors: LiveData<List<Actor>> = _actors
 
     fun fetchMovie() {
