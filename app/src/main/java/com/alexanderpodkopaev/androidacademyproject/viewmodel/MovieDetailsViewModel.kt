@@ -18,8 +18,8 @@ class MovieDetailsViewModel(private val repository: MoviesRepository, private va
     val actors: LiveData<List<Actor>> = _actors
 
     fun fetchMovie() {
-        viewModelScope.launch {
-            if (movie.value?.id != id) {
+        if (movie.value == null) {
+            viewModelScope.launch {
                 _movie.value = findMovie(id)
                 _actors.value = movie.value?.actors
             }

@@ -14,8 +14,8 @@ class MoviesListViewModel(private val repository: MoviesRepository) : ViewModel(
     val moviesList: LiveData<List<Movie>> = _moviesList
 
     fun fetchMovies() {
-        viewModelScope.launch {
-            if (moviesList.value.isNullOrEmpty()) {
+        if (moviesList.value.isNullOrEmpty()) {
+            viewModelScope.launch {
                 val movies = repository.getMovies()
                 _moviesList.value = movies
             }
