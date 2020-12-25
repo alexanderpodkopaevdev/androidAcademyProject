@@ -1,24 +1,28 @@
-package com.alexanderpodkopaev.androidacademyproject
+package com.alexanderpodkopaev.androidacademyproject.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.alexanderpodkopaev.androidacademyproject.viewmodel.MoviesListViewModel
+import com.alexanderpodkopaev.androidacademyproject.R
 import com.alexanderpodkopaev.androidacademyproject.adapter.MovieClickListener
 import com.alexanderpodkopaev.androidacademyproject.adapter.MoviesAdapter
-import com.alexanderpodkopaev.androidacademyproject.data.loadMovies
+import com.alexanderpodkopaev.androidacademyproject.repo.AssetsMoviesRepo
+import com.alexanderpodkopaev.androidacademyproject.repo.MoviesRepository
 import com.alexanderpodkopaev.androidacademyproject.utils.OffsetItemDecoration
 import com.alexanderpodkopaev.androidacademyproject.utils.UiUtils.calculateNoOfColumns
-import kotlinx.coroutines.*
+import com.alexanderpodkopaev.androidacademyproject.viewmodel.MoviesFactory
 
 class FragmentMoviesList : Fragment(), MovieClickListener {
 
-    private var coroutineScope: CoroutineScope? = null
     private lateinit var recyclerViewMovies: RecyclerView
-    private lateinit var moviesAdapter : MoviesAdapter
+    private lateinit var moviesAdapter: MoviesAdapter
+    private lateinit var moviesRepository: MoviesRepository
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -27,19 +31,13 @@ class FragmentMoviesList : Fragment(), MovieClickListener {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_movies_list, container, false)
         initRecycler(view)
-        coroutineScope = CoroutineScope(Dispatchers.IO)
-        coroutineScope?.launch {
-            val movies = loadMovies(requireContext())
-            withContext(Dispatchers.Main) {
-                moviesAdapter.bindMovies(movies)
-            }
+        moviesRepository = AssetsMoviesRepo(requireContext())
+        val viewModel = ViewModelProvider(this, MoviesFactory(moviesRepository)).get(MoviesListViewModel::class.java)
+        viewModel.fetchMovies()
+        viewModel.moviesList.observe(viewLifecycleOwner) { movies ->
+            moviesAdapter.bindMovies(movies)
         }
         return view
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        coroutineScope?.cancel()
     }
 
     override fun onMovieClick(movieId: Int) {

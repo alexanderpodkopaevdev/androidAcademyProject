@@ -1,4 +1,4 @@
-package com.alexanderpodkopaev.androidacademyproject
+package com.alexanderpodkopaev.androidacademyproject.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,18 +8,22 @@ import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.alexanderpodkopaev.androidacademyproject.viewmodel.MovieDetailsViewModel
+import com.alexanderpodkopaev.androidacademyproject.R
 import com.alexanderpodkopaev.androidacademyproject.adapter.ActorsAdapter
 import com.alexanderpodkopaev.androidacademyproject.data.Movie
-import com.alexanderpodkopaev.androidacademyproject.data.loadMovies
+import com.alexanderpodkopaev.androidacademyproject.repo.AssetsMoviesRepo
+import com.alexanderpodkopaev.androidacademyproject.repo.MoviesRepository
 import com.alexanderpodkopaev.androidacademyproject.utils.RightOffsetItemDecoration
+import com.alexanderpodkopaev.androidacademyproject.viewmodel.MovieDetailsFactory
+import com.alexanderpodkopaev.androidacademyproject.viewmodel.MoviesFactory
 import com.bumptech.glide.Glide
-import kotlinx.coroutines.*
 
 class FragmentMoviesDetails : Fragment() {
 
-    private var coroutineScope: CoroutineScope? = null
     private lateinit var ivBackground: ImageView
     private lateinit var tvTitle: TextView
     private lateinit var tvAge: TextView
@@ -30,6 +34,7 @@ class FragmentMoviesDetails : Fragment() {
     private lateinit var tvCast: TextView
     private lateinit var rvActors: RecyclerView
     private lateinit var actorsAdapter: ActorsAdapter
+    private lateinit var moviesRepository: MoviesRepository
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,22 +44,17 @@ class FragmentMoviesDetails : Fragment() {
         val view = inflater.inflate(R.layout.fragment_movies_details, container, false)
         initView(view)
         initRecycler()
-        coroutineScope = CoroutineScope(Dispatchers.IO)
-        coroutineScope?.launch {
-            val movie = findMovie(arguments?.getInt(ID))
-            if (movie != null) {
-                withContext(Dispatchers.Main) {
-                    actorsAdapter.bindActors(movie.actors)
-                    bindMovie(movie)
-                }
-            }
+        moviesRepository = AssetsMoviesRepo(requireContext())
+        val movieDetailsViewModel = ViewModelProvider(this, MovieDetailsFactory(moviesRepository, arguments?.getInt(ID))).get(
+            MovieDetailsViewModel::class.java)
+        movieDetailsViewModel.fetchMovie()
+        movieDetailsViewModel.movie.observe(viewLifecycleOwner) { movie ->
+            bindMovie(movie)
+        }
+        movieDetailsViewModel.actors.observe(viewLifecycleOwner) {actors ->
+            actorsAdapter.bindActors(actors)
         }
         return view
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        coroutineScope?.cancel()
     }
 
     private fun initView(view: View) {
@@ -98,10 +98,6 @@ class FragmentMoviesDetails : Fragment() {
         tvReview.text = getString(R.string.text_review, movie.voteCount.toString())
         tvDescription.text = movie.overview
         tvCast.visibility = if (movie.actors.isEmpty()) View.GONE else View.VISIBLE
-    }
-
-    private suspend fun findMovie(movieId: Int?): Movie? {
-        return loadMovies(requireContext()).find { it.id == movieId }
     }
 
 
