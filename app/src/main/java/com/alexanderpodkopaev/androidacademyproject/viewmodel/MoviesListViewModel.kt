@@ -13,10 +13,15 @@ class MoviesListViewModel(private val repository: MoviesRepository) : ViewModel(
     private val _moviesList = MutableLiveData<List<Movie>>(emptyList())
     val moviesList: LiveData<List<Movie>> = _moviesList
 
+    private val _isLoading = MutableLiveData(false)
+    val isLoading: LiveData<Boolean> = _isLoading
+
     fun fetchMovies() {
         if (moviesList.value.isNullOrEmpty()) {
             viewModelScope.launch {
+                _isLoading.value = true
                 val movies = repository.getMovies()
+                _isLoading.value = false
                 _moviesList.value = movies
             }
         }
