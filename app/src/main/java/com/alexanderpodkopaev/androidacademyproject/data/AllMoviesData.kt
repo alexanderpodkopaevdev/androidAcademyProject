@@ -1,12 +1,14 @@
 package com.alexanderpodkopaev.androidacademyproject.data
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class AllMoviesData(
     val dates: Dates,
     val page: Int,
-    val results: List<MovieJsonModel>,
+    @SerialName("results")
+    val movies: List<MoviesJsonModel>,
     val total_pages: Int,
     val total_results: Int
 )
@@ -15,6 +17,13 @@ data class AllMoviesData(
 data class Dates(
     val maximum: String,
     val minimum: String
+)
+
+@Serializable
+data class AllActorsData(
+    val id: Int,
+    @SerialName("cast")
+    val actors: List<ActorJsonModel>
 )
 
 @Serializable

@@ -1,6 +1,7 @@
 package com.alexanderpodkopaev.androidacademyproject.data
 
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface MoviesApi {
@@ -12,4 +13,18 @@ interface MoviesApi {
 
     @GET("configuration")
     suspend fun getConfig(@Query("api_key") apiKey: String): Configure
+
+    @GET("movie/{movie_id}")
+    suspend fun getMovie(
+        @Path("movie_id") id: Int?,
+        @Query("api_key") apiKey: String
+
+    ): MovieJsonModel
+
+    @GET("movie/{movie_id}/credits")
+    suspend fun getActors(
+        @Path("movie_id") id: Int?,
+        @Query("api_key") apiKey: String
+    ): AllActorsData
+
 }

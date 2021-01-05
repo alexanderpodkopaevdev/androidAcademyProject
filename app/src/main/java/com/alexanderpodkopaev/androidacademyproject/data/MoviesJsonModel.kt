@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class MovieJsonModel(
+data class MoviesJsonModel(
     val id: Int,
     val title: String,
     val overview: String,
@@ -16,12 +16,14 @@ data class MovieJsonModel(
     val ratings: Float,
     val adult: Boolean,
     val runtime: Int = 0,
-    val genres: List<Genre>,
+    @SerialName("genre_ids")
+    val genres: List<Int>,
     @SerialName("vote_count")
     val voteCount: Int
 )
 
-fun MovieJsonModel.convertToModel(
+fun MoviesJsonModel.convertToModel(
+    genres: List<Genre>,
     imageBaseUrl: String
 ): Movie {
     return Movie(
@@ -33,7 +35,7 @@ fun MovieJsonModel.convertToModel(
         ratings = this.ratings,
         adult = this.adult,
         runtime = this.runtime,
-        genres = this.genres,
+        genres = genres,
         voteCount = this.voteCount
     )
 }

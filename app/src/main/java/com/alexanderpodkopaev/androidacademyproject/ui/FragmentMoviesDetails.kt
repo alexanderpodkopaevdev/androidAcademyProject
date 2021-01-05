@@ -17,6 +17,7 @@ import com.alexanderpodkopaev.androidacademyproject.adapter.ActorsAdapter
 import com.alexanderpodkopaev.androidacademyproject.data.Movie
 import com.alexanderpodkopaev.androidacademyproject.repo.AssetsMoviesRepo
 import com.alexanderpodkopaev.androidacademyproject.repo.MoviesRepository
+import com.alexanderpodkopaev.androidacademyproject.repo.NetworkMoviesRepo
 import com.alexanderpodkopaev.androidacademyproject.utils.RightOffsetItemDecoration
 import com.alexanderpodkopaev.androidacademyproject.viewmodel.MovieDetailsFactory
 import com.bumptech.glide.Glide
@@ -43,7 +44,8 @@ class FragmentMoviesDetails : Fragment() {
         val view = inflater.inflate(R.layout.fragment_movies_details, container, false)
         initView(view)
         initRecycler()
-        moviesRepository = AssetsMoviesRepo(requireContext())
+       // moviesRepository = AssetsMoviesRepo(requireContext())
+        moviesRepository = NetworkMoviesRepo()
         val movieDetailsViewModel = ViewModelProvider(this, MovieDetailsFactory(moviesRepository, arguments?.getInt(ID))).get(
             MovieDetailsViewModel::class.java)
         movieDetailsViewModel.fetchMovie()

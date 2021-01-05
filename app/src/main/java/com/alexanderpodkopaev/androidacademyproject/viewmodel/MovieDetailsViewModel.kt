@@ -20,13 +20,9 @@ class MovieDetailsViewModel(private val repository: MoviesRepository, private va
     fun fetchMovie() {
         if (movie.value == null) {
             viewModelScope.launch {
-                _movie.value = findMovie(id)
-                _actors.value = movie.value?.actors
+                _movie.value = repository.getMovie(id)
+                _actors.value = repository.getActors(id)
             }
         }
-    }
-
-    private suspend fun findMovie(movieId: Int?): Movie? {
-        return repository.getMovies().find { it.id == movieId }
     }
 }

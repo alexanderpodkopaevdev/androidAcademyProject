@@ -14,6 +14,7 @@ object RetrofitModule {
         .build()
     private val json = Json {
         ignoreUnknownKeys = true
+        coerceInputValues = true
     }
     private val retrofit = Retrofit.Builder()
         .client(client)
