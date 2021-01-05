@@ -54,7 +54,7 @@ class MoviesViewHolder(itemView: View, private val onMovieClickListener: MovieCl
     val tvTitle = itemView.findViewById<TextView>(R.id.tvTitle)
 
     fun bind(movie: Movie) {
-        Glide.with(itemView.context).load(movie.poster)
+        Glide.with(itemView.context).load(movie.poster).error(R.drawable.ic_launcher_background)
             .transform(
                 CenterCrop(), RoundedCorners(
                     itemView.context.resources.getDimension(
