@@ -19,7 +19,6 @@ import com.alexanderpodkopaev.androidacademyproject.repo.AssetsMoviesRepo
 import com.alexanderpodkopaev.androidacademyproject.repo.MoviesRepository
 import com.alexanderpodkopaev.androidacademyproject.utils.RightOffsetItemDecoration
 import com.alexanderpodkopaev.androidacademyproject.viewmodel.MovieDetailsFactory
-import com.alexanderpodkopaev.androidacademyproject.viewmodel.MoviesFactory
 import com.bumptech.glide.Glide
 
 class FragmentMoviesDetails : Fragment() {

@@ -14,6 +14,7 @@ import com.alexanderpodkopaev.androidacademyproject.adapter.MovieClickListener
 import com.alexanderpodkopaev.androidacademyproject.adapter.MoviesAdapter
 import com.alexanderpodkopaev.androidacademyproject.repo.AssetsMoviesRepo
 import com.alexanderpodkopaev.androidacademyproject.repo.MoviesRepository
+import com.alexanderpodkopaev.androidacademyproject.repo.NetworkMoviesRepo
 import com.alexanderpodkopaev.androidacademyproject.utils.OffsetItemDecoration
 import com.alexanderpodkopaev.androidacademyproject.utils.UiUtils.calculateNoOfColumns
 import com.alexanderpodkopaev.androidacademyproject.viewmodel.MoviesFactory
@@ -31,7 +32,8 @@ class FragmentMoviesList : Fragment(), MovieClickListener {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_movies_list, container, false)
         initRecycler(view)
-        moviesRepository = AssetsMoviesRepo(requireContext())
+        //moviesRepository = AssetsMoviesRepo(requireContext())
+        moviesRepository = NetworkMoviesRepo()
         val viewModel = ViewModelProvider(this, MoviesFactory(moviesRepository)).get(MoviesListViewModel::class.java)
         viewModel.fetchMovies()
         viewModel.moviesList.observe(viewLifecycleOwner) { movies ->
