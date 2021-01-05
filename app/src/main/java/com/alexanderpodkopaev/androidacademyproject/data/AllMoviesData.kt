@@ -31,3 +31,13 @@ data class Genre(
         return name
     }
 }
+
+@Serializable
+data class Configure(
+    val images: Images
+)
+
+@Serializable
+data class Images(
+    val base_url: String
+)

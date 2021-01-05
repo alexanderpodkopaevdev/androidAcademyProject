@@ -23,14 +23,15 @@ data class MovieJsonModel(
 )
 
 fun MovieJsonModel.convertToModel(
-    genres: List<Genre>
+    genres: List<Genre>,
+    imageBaseUrl: String
 ): Movie {
     return Movie(
         id = this.id,
         title = this.title,
         overview = this.overview,
-        poster = this.poster,
-        backdrop = this.backdrop,
+        poster = imageBaseUrl + "original" + this.poster,
+        backdrop = imageBaseUrl + "original" + this.backdrop,
         ratings = this.ratings,
         adult = this.adult,
         runtime = this.runtime,

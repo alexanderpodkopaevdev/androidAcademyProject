@@ -10,4 +10,6 @@ interface MoviesApi {
     @GET("genre/movie/list")
     suspend fun getGenres(@Query("api_key") apiKey: String): AllGenreData
 
+    @GET("configuration")
+    suspend fun getConfig(@Query("api_key") apiKey: String): Configure
 }
