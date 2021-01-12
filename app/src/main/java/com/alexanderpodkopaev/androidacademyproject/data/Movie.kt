@@ -10,6 +10,6 @@ data class Movie(
     val adult: Boolean,
     val runtime: Int,
     val genres: List<Genre>,
-    val actors: List<Actor> = emptyList(),
+    val actors: List<Actor>,
     val voteCount: Int
 )

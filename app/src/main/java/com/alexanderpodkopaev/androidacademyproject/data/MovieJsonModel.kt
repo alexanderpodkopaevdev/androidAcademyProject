@@ -17,7 +17,7 @@ data class MovieJsonModel(
     @SerialName("vote_average")
     val ratings: Float,
     val adult: Boolean,
-    val runtime: Int = 0,
+    val runtime: Int,
     val genres: List<Genre>,
     @SerialName("vote_count")
     val voteCount: Int
@@ -35,6 +35,7 @@ fun MovieJsonModel.convertToModel(
         ratings = this.ratings,
         adult = this.adult,
         runtime = this.runtime,
+        actors = emptyList(),
         genres = this.genres,
         voteCount = this.voteCount
     )
