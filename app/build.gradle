@@ -8,6 +8,9 @@ android {
     compileSdkVersion 30
     buildToolsVersion "29.0.3"
 
+    def localProperties = new Properties()
+    localProperties.load(new FileInputStream(rootProject.file("local.properties")))
+
     defaultConfig {
         applicationId "com.alexanderpodkopaev.androidacademyproject"
         minSdkVersion 21
@@ -16,6 +19,9 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+
+        buildConfigField "String", "API_KEY", localProperties.getProperty("apikey")
     }
 
     buildTypes {

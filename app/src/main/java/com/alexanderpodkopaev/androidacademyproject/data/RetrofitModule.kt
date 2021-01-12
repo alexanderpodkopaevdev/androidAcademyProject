@@ -8,7 +8,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 
 object RetrofitModule {
-    private const val baseUrl = "https://api.themoviedb.org/3/"
+    private const val BASE_URL = "https://api.themoviedb.org/3/"
     private val client = OkHttpClient().newBuilder()
         .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
         .build()
@@ -18,7 +18,7 @@ object RetrofitModule {
     }
     private val retrofit = Retrofit.Builder()
         .client(client)
-        .baseUrl(baseUrl)
+        .baseUrl(BASE_URL)
         .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
         .build()
 
