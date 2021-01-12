@@ -2,6 +2,7 @@ package com.alexanderpodkopaev.androidacademyproject.repo
 
 import com.alexanderpodkopaev.androidacademyproject.BuildConfig
 import com.alexanderpodkopaev.androidacademyproject.data.*
+import com.alexanderpodkopaev.androidacademyproject.utils.convertToModel
 
 class NetworkMoviesRepo(private val moviesApi: MoviesApi) : MoviesRepository {
 
