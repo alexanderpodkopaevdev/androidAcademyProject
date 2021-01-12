@@ -12,15 +12,15 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.alexanderpodkopaev.androidacademyproject.viewmodel.MovieDetailsViewModel
 import com.alexanderpodkopaev.androidacademyproject.R
 import com.alexanderpodkopaev.androidacademyproject.adapter.ActorsAdapter
 import com.alexanderpodkopaev.androidacademyproject.data.Movie
-import com.alexanderpodkopaev.androidacademyproject.repo.AssetsMoviesRepo
+import com.alexanderpodkopaev.androidacademyproject.data.RetrofitModule
 import com.alexanderpodkopaev.androidacademyproject.repo.MoviesRepository
 import com.alexanderpodkopaev.androidacademyproject.repo.NetworkMoviesRepo
 import com.alexanderpodkopaev.androidacademyproject.utils.RightOffsetItemDecoration
 import com.alexanderpodkopaev.androidacademyproject.viewmodel.MovieDetailsFactory
+import com.alexanderpodkopaev.androidacademyproject.viewmodel.MovieDetailsViewModel
 import com.bumptech.glide.Glide
 
 class FragmentMoviesDetails : Fragment() {
@@ -46,16 +46,20 @@ class FragmentMoviesDetails : Fragment() {
         val view = inflater.inflate(R.layout.fragment_movies_details, container, false)
         initView(view)
         initRecycler()
-        moviesRepository = NetworkMoviesRepo()
-        val movieDetailsViewModel = ViewModelProvider(this, MovieDetailsFactory(moviesRepository, arguments?.getInt(ID))).get(
-            MovieDetailsViewModel::class.java)
+        moviesRepository = NetworkMoviesRepo(RetrofitModule.moviesApi)
+        val movieDetailsViewModel = ViewModelProvider(
+            this,
+            MovieDetailsFactory(moviesRepository, arguments?.getInt(ID))
+        ).get(
+            MovieDetailsViewModel::class.java
+        )
         movieDetailsViewModel.movie.observe(viewLifecycleOwner) { movie ->
             bindMovie(movie)
         }
-        movieDetailsViewModel.actors.observe(viewLifecycleOwner) {actors ->
+        movieDetailsViewModel.actors.observe(viewLifecycleOwner) { actors ->
             actorsAdapter.bindActors(actors)
         }
-        movieDetailsViewModel.isLoading.observe(viewLifecycleOwner) {isLoading ->
+        movieDetailsViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
             pbActors.visibility = if (isLoading) View.VISIBLE else View.GONE
         }
         movieDetailsViewModel.fetchMovie()
