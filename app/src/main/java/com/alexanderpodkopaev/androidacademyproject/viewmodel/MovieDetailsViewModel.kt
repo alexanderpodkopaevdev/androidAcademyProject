@@ -6,10 +6,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alexanderpodkopaev.androidacademyproject.data.Actor
 import com.alexanderpodkopaev.androidacademyproject.data.Movie
+import com.alexanderpodkopaev.androidacademyproject.repo.ActorsRepository
 import com.alexanderpodkopaev.androidacademyproject.repo.MoviesRepository
 import kotlinx.coroutines.launch
 
-class MovieDetailsViewModel(private val repository: MoviesRepository, private val id: Int?) :
+class MovieDetailsViewModel(
+    private val moviesRepository: MoviesRepository,
+    private val actorsRepository: ActorsRepository, private val id: Int?
+) :
     ViewModel() {
 
     private val _movie = MutableLiveData<Movie>()
@@ -23,8 +27,8 @@ class MovieDetailsViewModel(private val repository: MoviesRepository, private va
         if (movie.value == null) {
             viewModelScope.launch {
                 _isLoading.value = true
-                _movie.value = repository.getMovie(id)
-                _actors.value = repository.getActors(id)
+                _movie.value = moviesRepository.getMovie(id)
+                _actors.value = actorsRepository.getActors(id)
                 _isLoading.value = false
             }
         }

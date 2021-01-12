@@ -13,8 +13,4 @@ class AssetsMoviesRepo(val context: Context) : MoviesRepository {
     override suspend fun getMovie(id: Int?): Movie {
         return loadMovies(context).find { it.id == id }!!
     }
-
-    override suspend fun getActors(id: Int?): List<Actor> {
-        return getMovie(id).actors
-    }
 }

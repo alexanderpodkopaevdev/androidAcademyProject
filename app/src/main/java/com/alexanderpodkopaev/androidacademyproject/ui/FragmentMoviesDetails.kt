@@ -16,7 +16,9 @@ import com.alexanderpodkopaev.androidacademyproject.R
 import com.alexanderpodkopaev.androidacademyproject.adapter.ActorsAdapter
 import com.alexanderpodkopaev.androidacademyproject.data.Movie
 import com.alexanderpodkopaev.androidacademyproject.data.RetrofitModule
+import com.alexanderpodkopaev.androidacademyproject.repo.ActorsRepository
 import com.alexanderpodkopaev.androidacademyproject.repo.MoviesRepository
+import com.alexanderpodkopaev.androidacademyproject.repo.NetworkActorsRepo
 import com.alexanderpodkopaev.androidacademyproject.repo.NetworkMoviesRepo
 import com.alexanderpodkopaev.androidacademyproject.utils.RightOffsetItemDecoration
 import com.alexanderpodkopaev.androidacademyproject.viewmodel.MovieDetailsFactory
@@ -36,6 +38,7 @@ class FragmentMoviesDetails : Fragment() {
     private lateinit var rvActors: RecyclerView
     private lateinit var actorsAdapter: ActorsAdapter
     private lateinit var moviesRepository: MoviesRepository
+    private lateinit var actorsRepository : ActorsRepository
     private lateinit var pbActors: ProgressBar
 
     override fun onCreateView(
@@ -47,9 +50,10 @@ class FragmentMoviesDetails : Fragment() {
         initView(view)
         initRecycler()
         moviesRepository = NetworkMoviesRepo(RetrofitModule.moviesApi)
+        actorsRepository = NetworkActorsRepo(RetrofitModule.moviesApi)
         val movieDetailsViewModel = ViewModelProvider(
             this,
-            MovieDetailsFactory(moviesRepository, arguments?.getInt(ID))
+            MovieDetailsFactory(moviesRepository, actorsRepository, arguments?.getInt(ID))
         ).get(
             MovieDetailsViewModel::class.java
         )
