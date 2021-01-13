@@ -20,7 +20,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/picture_avengers" />
+            tools:src="@drawable/ic_launcher_background" />
 
         <ImageView
             android:layout_width="match_parent"
@@ -176,6 +176,16 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvDescription" />
+
+        <ProgressBar
+            android:id="@+id/pbActors"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvCast"/>
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvActors"

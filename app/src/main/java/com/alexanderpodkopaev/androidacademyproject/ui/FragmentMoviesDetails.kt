@@ -5,21 +5,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.RatingBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.alexanderpodkopaev.androidacademyproject.viewmodel.MovieDetailsViewModel
 import com.alexanderpodkopaev.androidacademyproject.R
 import com.alexanderpodkopaev.androidacademyproject.adapter.ActorsAdapter
 import com.alexanderpodkopaev.androidacademyproject.data.Movie
-import com.alexanderpodkopaev.androidacademyproject.repo.AssetsMoviesRepo
+import com.alexanderpodkopaev.androidacademyproject.data.RetrofitModule
+import com.alexanderpodkopaev.androidacademyproject.repo.ActorsRepository
 import com.alexanderpodkopaev.androidacademyproject.repo.MoviesRepository
+import com.alexanderpodkopaev.androidacademyproject.repo.NetworkActorsRepo
+import com.alexanderpodkopaev.androidacademyproject.repo.NetworkMoviesRepo
 import com.alexanderpodkopaev.androidacademyproject.utils.RightOffsetItemDecoration
 import com.alexanderpodkopaev.androidacademyproject.viewmodel.MovieDetailsFactory
-import com.alexanderpodkopaev.androidacademyproject.viewmodel.MoviesFactory
+import com.alexanderpodkopaev.androidacademyproject.viewmodel.MovieDetailsViewModel
 import com.bumptech.glide.Glide
 
 class FragmentMoviesDetails : Fragment() {
@@ -35,6 +38,8 @@ class FragmentMoviesDetails : Fragment() {
     private lateinit var rvActors: RecyclerView
     private lateinit var actorsAdapter: ActorsAdapter
     private lateinit var moviesRepository: MoviesRepository
+    private lateinit var actorsRepository: ActorsRepository
+    private lateinit var pbActors: ProgressBar
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,17 +47,28 @@ class FragmentMoviesDetails : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_movies_details, container, false)
-        initView(view)
-        initRecycler()
-        moviesRepository = AssetsMoviesRepo(requireContext())
-        val movieDetailsViewModel = ViewModelProvider(this, MovieDetailsFactory(moviesRepository, arguments?.getInt(ID))).get(
-            MovieDetailsViewModel::class.java)
-        movieDetailsViewModel.fetchMovie()
-        movieDetailsViewModel.movie.observe(viewLifecycleOwner) { movie ->
-            bindMovie(movie)
-        }
-        movieDetailsViewModel.actors.observe(viewLifecycleOwner) {actors ->
-            actorsAdapter.bindActors(actors)
+        val movieId = arguments?.getInt(ID)
+        if (movieId != null) {
+            initView(view)
+            initRecycler()
+            moviesRepository = NetworkMoviesRepo(RetrofitModule.moviesApi)
+            actorsRepository = NetworkActorsRepo(RetrofitModule.moviesApi)
+            val movieDetailsViewModel = ViewModelProvider(
+                this,
+                MovieDetailsFactory(moviesRepository, actorsRepository, movieId)
+            ).get(
+                MovieDetailsViewModel::class.java
+            )
+            movieDetailsViewModel.movie.observe(viewLifecycleOwner) { movie ->
+                bindMovie(movie)
+            }
+            movieDetailsViewModel.actors.observe(viewLifecycleOwner) { actors ->
+                actorsAdapter.bindActors(actors)
+            }
+            movieDetailsViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+                pbActors.visibility = if (isLoading) View.VISIBLE else View.GONE
+            }
+            movieDetailsViewModel.fetchMovie()
         }
         return view
     }
@@ -71,6 +87,7 @@ class FragmentMoviesDetails : Fragment() {
         tvDescription = view.findViewById(R.id.tvDescription)
         tvCast = view.findViewById(R.id.tvCast)
         rvActors = view.findViewById(R.id.rvActors)
+        pbActors = view.findViewById(R.id.pbActors)
     }
 
     private fun initRecycler() {

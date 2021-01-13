@@ -30,7 +30,7 @@
         app:layout_constraintEnd_toEndOf="@id/containerMovie"
         app:layout_constraintStart_toStartOf="@id/containerMovie"
         app:layout_constraintTop_toTopOf="@id/containerMovie"
-        tools:src="@drawable/picture_avengers" />
+        tools:src="@drawable/ic_launcher_background" />
 
     <ImageView
         android:id="@+id/ivMovieBackground"

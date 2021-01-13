@@ -13,6 +13,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 
 class ActorsAdapter : RecyclerView.Adapter<ActorsViewHolder>() {
+
     private val actorsList: MutableList<Actor> = mutableListOf()
     private val maxActorsOnScreen = 4
 
@@ -42,7 +43,7 @@ class ActorsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val tvActorName = itemView.findViewById<TextView>(R.id.tvActorName)
 
     fun bind(actor: Actor) {
-        Glide.with(itemView.context).load(actor.picture).transform(
+        Glide.with(itemView.context).load(actor.picture).error(R.drawable.ic_baseline_person_24).transform(
             CenterCrop(), RoundedCorners(
                 itemView.context.resources.getDimension(
                     R.dimen.small

@@ -15,7 +15,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:background="@color/colorBackground"
-        tools:src="@drawable/robertdowney" />
+        tools:src="@drawable/ic_baseline_person_24" />
 
     <TextView
         android:id="@+id/tvActorName"
