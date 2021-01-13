@@ -5,5 +5,5 @@ import com.alexanderpodkopaev.androidacademyproject.data.Movie
 
 interface MoviesRepository {
     suspend fun getMovies() : List<Movie>
-    suspend fun getMovie(id: Int?) : Movie
+    suspend fun getMovie(id: Int) : Movie
 }

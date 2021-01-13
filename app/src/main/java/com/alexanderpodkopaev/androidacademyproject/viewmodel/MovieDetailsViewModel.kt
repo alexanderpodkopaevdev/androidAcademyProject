@@ -12,7 +12,8 @@ import kotlinx.coroutines.launch
 
 class MovieDetailsViewModel(
     private val moviesRepository: MoviesRepository,
-    private val actorsRepository: ActorsRepository, private val id: Int?
+    private val actorsRepository: ActorsRepository,
+    private val id: Int
 ) :
     ViewModel() {
 

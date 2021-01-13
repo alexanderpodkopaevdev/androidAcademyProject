@@ -38,7 +38,7 @@ class FragmentMoviesDetails : Fragment() {
     private lateinit var rvActors: RecyclerView
     private lateinit var actorsAdapter: ActorsAdapter
     private lateinit var moviesRepository: MoviesRepository
-    private lateinit var actorsRepository : ActorsRepository
+    private lateinit var actorsRepository: ActorsRepository
     private lateinit var pbActors: ProgressBar
 
     override fun onCreateView(
@@ -47,26 +47,29 @@ class FragmentMoviesDetails : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_movies_details, container, false)
-        initView(view)
-        initRecycler()
-        moviesRepository = NetworkMoviesRepo(RetrofitModule.moviesApi)
-        actorsRepository = NetworkActorsRepo(RetrofitModule.moviesApi)
-        val movieDetailsViewModel = ViewModelProvider(
-            this,
-            MovieDetailsFactory(moviesRepository, actorsRepository, arguments?.getInt(ID))
-        ).get(
-            MovieDetailsViewModel::class.java
-        )
-        movieDetailsViewModel.movie.observe(viewLifecycleOwner) { movie ->
-            bindMovie(movie)
+        val movieId = arguments?.getInt(ID)
+        if (movieId != null) {
+            initView(view)
+            initRecycler()
+            moviesRepository = NetworkMoviesRepo(RetrofitModule.moviesApi)
+            actorsRepository = NetworkActorsRepo(RetrofitModule.moviesApi)
+            val movieDetailsViewModel = ViewModelProvider(
+                this,
+                MovieDetailsFactory(moviesRepository, actorsRepository, movieId)
+            ).get(
+                MovieDetailsViewModel::class.java
+            )
+            movieDetailsViewModel.movie.observe(viewLifecycleOwner) { movie ->
+                bindMovie(movie)
+            }
+            movieDetailsViewModel.actors.observe(viewLifecycleOwner) { actors ->
+                actorsAdapter.bindActors(actors)
+            }
+            movieDetailsViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+                pbActors.visibility = if (isLoading) View.VISIBLE else View.GONE
+            }
+            movieDetailsViewModel.fetchMovie()
         }
-        movieDetailsViewModel.actors.observe(viewLifecycleOwner) { actors ->
-            actorsAdapter.bindActors(actors)
-        }
-        movieDetailsViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
-            pbActors.visibility = if (isLoading) View.VISIBLE else View.GONE
-        }
-        movieDetailsViewModel.fetchMovie()
         return view
     }
 

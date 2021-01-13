@@ -8,7 +8,7 @@ import com.alexanderpodkopaev.androidacademyproject.repo.MoviesRepository
 
 class MovieDetailsFactory(
     private val moviesRepository: MoviesRepository, private val actorsRepository: ActorsRepository,
-    private val id: Int?
+    private val id: Int
 ) :
     ViewModelProvider.NewInstanceFactory() {
 
