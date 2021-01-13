@@ -13,6 +13,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 
 class ActorsAdapter : RecyclerView.Adapter<ActorsViewHolder>() {
+
     private val actorsList: MutableList<Actor> = mutableListOf()
     private val maxActorsOnScreen = 4
 

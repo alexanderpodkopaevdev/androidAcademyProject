@@ -13,8 +13,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 
-class MoviesAdapter() :
-    RecyclerView.Adapter<MoviesViewHolder>() {
+class MoviesAdapter : RecyclerView.Adapter<MoviesViewHolder>() {
+
     var onMovieClickListener: MovieClickListener? = null
     private var moviesList: MutableList<Movie> = mutableListOf()
 
