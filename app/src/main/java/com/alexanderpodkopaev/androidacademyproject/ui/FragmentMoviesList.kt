@@ -12,7 +12,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.alexanderpodkopaev.androidacademyproject.R
 import com.alexanderpodkopaev.androidacademyproject.adapter.MovieClickListener
 import com.alexanderpodkopaev.androidacademyproject.adapter.MoviesAdapter
+import com.alexanderpodkopaev.androidacademyproject.data.MoviesDatabase
 import com.alexanderpodkopaev.androidacademyproject.data.RetrofitModule
+import com.alexanderpodkopaev.androidacademyproject.repo.DatabaseMoviesRepo
 import com.alexanderpodkopaev.androidacademyproject.repo.MoviesRepository
 import com.alexanderpodkopaev.androidacademyproject.repo.NetworkMoviesRepo
 import com.alexanderpodkopaev.androidacademyproject.utils.OffsetItemDecoration
@@ -26,6 +28,9 @@ class FragmentMoviesList : Fragment(), MovieClickListener {
     private lateinit var progressBar: ProgressBar
     private lateinit var moviesAdapter: MoviesAdapter
     private lateinit var moviesRepository: MoviesRepository
+    private lateinit var dbRepository: DatabaseMoviesRepo
+    private lateinit var database: MoviesDatabase
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,10 +40,12 @@ class FragmentMoviesList : Fragment(), MovieClickListener {
         val view = inflater.inflate(R.layout.fragment_movies_list, container, false)
         initRecycler(view)
         progressBar = view.findViewById(R.id.pbMovies)
+        database = MoviesDatabase.create(requireContext())
         moviesRepository = NetworkMoviesRepo(RetrofitModule.moviesApi)
+        dbRepository = DatabaseMoviesRepo(database)
         val viewModel = ViewModelProvider(
             this,
-            MoviesFactory(moviesRepository)
+            MoviesFactory(moviesRepository, dbRepository)
         ).get(MoviesListViewModel::class.java)
         viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
             progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
