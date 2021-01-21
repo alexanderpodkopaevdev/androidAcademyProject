@@ -1,7 +1,6 @@
 package com.alexanderpodkopaev.androidacademyproject.repo
 
-import android.content.Context
-import com.alexanderpodkopaev.androidacademyproject.data.Actor
+import com.alexanderpodkopaev.androidacademyproject.data.model.Actor
 
 class AssertsActorsRepo(val repo: MoviesRepository) : ActorsRepository {
 

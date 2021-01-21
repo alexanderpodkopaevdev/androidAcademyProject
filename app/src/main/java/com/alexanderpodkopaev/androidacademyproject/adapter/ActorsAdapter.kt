@@ -7,7 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.alexanderpodkopaev.androidacademyproject.R
-import com.alexanderpodkopaev.androidacademyproject.data.Actor
+import com.alexanderpodkopaev.androidacademyproject.data.model.Actor
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -43,13 +43,14 @@ class ActorsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val tvActorName = itemView.findViewById<TextView>(R.id.tvActorName)
 
     fun bind(actor: Actor) {
-        Glide.with(itemView.context).load(actor.picture).error(R.drawable.ic_baseline_person_24).transform(
-            CenterCrop(), RoundedCorners(
-                itemView.context.resources.getDimension(
-                    R.dimen.small
-                ).toInt()
-            )
-        ).into(ivActorPhoto)
+        Glide.with(itemView.context).load(actor.picture).error(R.drawable.ic_baseline_person_24)
+            .transform(
+                CenterCrop(), RoundedCorners(
+                    itemView.context.resources.getDimension(
+                        R.dimen.small
+                    ).toInt()
+                )
+            ).into(ivActorPhoto)
         tvActorName.text = actor.name
     }
 }

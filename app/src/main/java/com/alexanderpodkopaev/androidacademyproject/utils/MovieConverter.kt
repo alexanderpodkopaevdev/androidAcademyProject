@@ -1,11 +1,11 @@
 package com.alexanderpodkopaev.androidacademyproject.utils
 
-import com.alexanderpodkopaev.androidacademyproject.data.Genre
-import com.alexanderpodkopaev.androidacademyproject.data.Movie
-import com.alexanderpodkopaev.androidacademyproject.data.MovieJsonModel
 import com.alexanderpodkopaev.androidacademyproject.data.entity.GenreEntity
 import com.alexanderpodkopaev.androidacademyproject.data.entity.MovieEntity
 import com.alexanderpodkopaev.androidacademyproject.data.entity.MovieWithGenres
+import com.alexanderpodkopaev.androidacademyproject.data.json.MovieJsonModel
+import com.alexanderpodkopaev.androidacademyproject.data.model.Genre
+import com.alexanderpodkopaev.androidacademyproject.data.model.Movie
 
 fun MovieJsonModel.convertToModel(
     imageBaseUrl: String

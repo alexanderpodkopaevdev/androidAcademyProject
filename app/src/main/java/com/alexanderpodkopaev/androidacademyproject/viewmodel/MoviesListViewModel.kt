@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.alexanderpodkopaev.androidacademyproject.data.Movie
+import com.alexanderpodkopaev.androidacademyproject.data.model.Movie
 import com.alexanderpodkopaev.androidacademyproject.repo.DatabaseMoviesRepo
 import com.alexanderpodkopaev.androidacademyproject.repo.MoviesRepository
 import kotlinx.coroutines.Dispatchers
@@ -37,7 +37,7 @@ class MoviesListViewModel(
 
     private suspend fun loadFromDb(): List<Movie> {
         return withContext(Dispatchers.IO) {
-             dbRepository.getMovies()
+            dbRepository.getMovies()
         }
     }
 

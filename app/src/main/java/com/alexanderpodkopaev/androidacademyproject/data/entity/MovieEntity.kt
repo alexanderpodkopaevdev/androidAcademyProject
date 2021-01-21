@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "movies")
-data class MovieEntity (
+data class MovieEntity(
 
     @PrimaryKey
     val mId: Long,

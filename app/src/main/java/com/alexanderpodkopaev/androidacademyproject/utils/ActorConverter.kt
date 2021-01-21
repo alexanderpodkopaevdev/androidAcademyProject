@@ -1,7 +1,7 @@
 package com.alexanderpodkopaev.androidacademyproject.utils
 
-import com.alexanderpodkopaev.androidacademyproject.data.Actor
-import com.alexanderpodkopaev.androidacademyproject.data.ActorJsonModel
+import com.alexanderpodkopaev.androidacademyproject.data.json.ActorJsonModel
+import com.alexanderpodkopaev.androidacademyproject.data.model.Actor
 
 fun ActorJsonModel.convertToModel(imageBaseUrl: String): Actor {
     return Actor(

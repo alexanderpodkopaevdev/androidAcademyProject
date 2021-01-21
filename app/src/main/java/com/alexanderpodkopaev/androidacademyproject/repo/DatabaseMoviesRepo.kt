@@ -1,8 +1,8 @@
 package com.alexanderpodkopaev.androidacademyproject.repo
 
-import com.alexanderpodkopaev.androidacademyproject.data.Movie
 import com.alexanderpodkopaev.androidacademyproject.data.MoviesDatabase
 import com.alexanderpodkopaev.androidacademyproject.data.entity.MovieGenre
+import com.alexanderpodkopaev.androidacademyproject.data.model.Movie
 import com.alexanderpodkopaev.androidacademyproject.utils.convertToEntityModel
 import com.alexanderpodkopaev.androidacademyproject.utils.convertToModel
 

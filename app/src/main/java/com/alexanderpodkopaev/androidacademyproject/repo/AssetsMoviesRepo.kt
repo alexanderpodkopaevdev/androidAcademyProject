@@ -1,9 +1,8 @@
 package com.alexanderpodkopaev.androidacademyproject.repo
 
 import android.content.Context
-import com.alexanderpodkopaev.androidacademyproject.data.Actor
-import com.alexanderpodkopaev.androidacademyproject.data.Movie
-import com.alexanderpodkopaev.androidacademyproject.data.loadMovies
+import com.alexanderpodkopaev.androidacademyproject.data.json.loadMovies
+import com.alexanderpodkopaev.androidacademyproject.data.model.Movie
 
 class AssetsMoviesRepo(val context: Context) : MoviesRepository {
 

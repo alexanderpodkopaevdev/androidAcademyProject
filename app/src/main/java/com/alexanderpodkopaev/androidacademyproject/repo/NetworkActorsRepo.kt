@@ -1,8 +1,8 @@
 package com.alexanderpodkopaev.androidacademyproject.repo
 
 import com.alexanderpodkopaev.androidacademyproject.BuildConfig
-import com.alexanderpodkopaev.androidacademyproject.data.Actor
 import com.alexanderpodkopaev.androidacademyproject.data.MoviesApi
+import com.alexanderpodkopaev.androidacademyproject.data.model.Actor
 import com.alexanderpodkopaev.androidacademyproject.utils.convertToModel
 
 class NetworkActorsRepo(private val moviesApi: MoviesApi) : ActorsRepository {

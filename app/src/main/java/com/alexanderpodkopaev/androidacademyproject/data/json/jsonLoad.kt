@@ -1,6 +1,9 @@
-package com.alexanderpodkopaev.androidacademyproject.data
+package com.alexanderpodkopaev.androidacademyproject.data.json
 
 import android.content.Context
+import com.alexanderpodkopaev.androidacademyproject.data.model.Actor
+import com.alexanderpodkopaev.androidacademyproject.data.model.Genre
+import com.alexanderpodkopaev.androidacademyproject.data.model.Movie
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.SerialName
