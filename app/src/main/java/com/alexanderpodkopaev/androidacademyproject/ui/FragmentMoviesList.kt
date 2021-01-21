@@ -14,9 +14,9 @@ import com.alexanderpodkopaev.androidacademyproject.adapter.MovieClickListener
 import com.alexanderpodkopaev.androidacademyproject.adapter.MoviesAdapter
 import com.alexanderpodkopaev.androidacademyproject.data.MoviesDatabase
 import com.alexanderpodkopaev.androidacademyproject.data.RetrofitModule
-import com.alexanderpodkopaev.androidacademyproject.repo.DatabaseMoviesRepo
+import com.alexanderpodkopaev.androidacademyproject.repo.DBDataSource
 import com.alexanderpodkopaev.androidacademyproject.repo.MoviesRepository
-import com.alexanderpodkopaev.androidacademyproject.repo.NetworkMoviesRepo
+import com.alexanderpodkopaev.androidacademyproject.repo.MoviesRepoImpl
 import com.alexanderpodkopaev.androidacademyproject.utils.OffsetItemDecoration
 import com.alexanderpodkopaev.androidacademyproject.utils.UiUtils.calculateNoOfColumns
 import com.alexanderpodkopaev.androidacademyproject.viewmodel.MoviesFactory
@@ -28,7 +28,7 @@ class FragmentMoviesList : Fragment(), MovieClickListener {
     private lateinit var progressBar: ProgressBar
     private lateinit var moviesAdapter: MoviesAdapter
     private lateinit var moviesRepository: MoviesRepository
-    private lateinit var dbRepository: DatabaseMoviesRepo
+    private lateinit var dbDataSource: DBDataSource
     private lateinit var database: MoviesDatabase
 
 
@@ -41,11 +41,11 @@ class FragmentMoviesList : Fragment(), MovieClickListener {
         initRecycler(view)
         progressBar = view.findViewById(R.id.pbMovies)
         database = MoviesDatabase.create(requireContext())
-        moviesRepository = NetworkMoviesRepo(RetrofitModule.moviesApi)
-        dbRepository = DatabaseMoviesRepo(database)
+        dbDataSource = DBDataSource(database)
+        moviesRepository = MoviesRepoImpl(RetrofitModule.moviesApi,dbDataSource)
         val viewModel = ViewModelProvider(
             this,
-            MoviesFactory(moviesRepository, dbRepository)
+            MoviesFactory(moviesRepository)
         ).get(MoviesListViewModel::class.java)
         viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
             progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
