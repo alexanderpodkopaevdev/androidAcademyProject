@@ -6,6 +6,6 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "genres")
 data class GenreEntity(
     @PrimaryKey
-    val gId: Long,
+    val gId: Int,
     val name: String
 )

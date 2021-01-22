@@ -13,10 +13,10 @@ import com.alexanderpodkopaev.androidacademyproject.data.entity.MovieWithGenres
 interface MoviesDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertMovie(movie: MovieEntity) : Long
+    suspend fun insertMovie(movie: MovieEntity)
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertGenre(genre: GenreEntity) : Long
+    suspend fun insertGenre(genre: GenreEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertMovieGenres(movieGenre: MovieGenre)

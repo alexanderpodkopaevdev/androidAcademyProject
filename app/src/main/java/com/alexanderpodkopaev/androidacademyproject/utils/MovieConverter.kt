@@ -27,7 +27,7 @@ fun MovieJsonModel.convertToModel(
 
 fun MovieWithGenres.convertToModel(): Movie {
     return Movie(
-        id = this.movie.mId.toInt(),
+        id = this.movie.mId,
         title = this.movie.title,
         overview = this.movie.overview,
         poster = this.movie.poster,
@@ -43,7 +43,7 @@ fun MovieWithGenres.convertToModel(): Movie {
 
 fun Movie.convertToEntityModel(): MovieEntity {
     return MovieEntity(
-        mId = this.id.toLong(),
+        mId = this.id,
         title = this.title,
         overview = this.overview,
         poster = this.poster,
@@ -56,9 +56,9 @@ fun Movie.convertToEntityModel(): MovieEntity {
 }
 
 fun GenreEntity.convertToModel(): Genre {
-    return Genre(id = this.gId.toInt(), name = this.name)
+    return Genre(id = this.gId, name = this.name)
 }
 
 fun Genre.convertToEntityModel(): GenreEntity {
-    return GenreEntity(gId = this.id.toLong(), name = this.name)
+    return GenreEntity(gId = this.id, name = this.name)
 }

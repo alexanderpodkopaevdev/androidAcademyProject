@@ -8,7 +8,7 @@ import com.alexanderpodkopaev.androidacademyproject.data.entity.*
 
 @Database(
     entities = [GenreEntity::class, MovieEntity::class, MovieGenre::class, ActorEntity::class, MovieActor::class],
-    version = 2
+    version = 1
 )
 abstract class MoviesDatabase : RoomDatabase() {
 

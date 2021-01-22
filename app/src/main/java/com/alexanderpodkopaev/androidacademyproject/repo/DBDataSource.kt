@@ -14,7 +14,7 @@ class DBDataSource(private val db: MoviesDatabase) {
         db.moviesDao.insertMovie(movie.convertToEntityModel())
         for (genre in movie.genres) {
             db.moviesDao.insertGenre(genre.convertToEntityModel())
-            db.moviesDao.insertMovieGenres(MovieGenre(movie.id.toLong(), genre.id.toLong()))
+            db.moviesDao.insertMovieGenres(MovieGenre(movie.id, genre.id))
         }
     }
 
