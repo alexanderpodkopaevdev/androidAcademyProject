@@ -22,8 +22,8 @@ class DBDataSource(private val db: MoviesDatabase) {
         }
     }
 
-    suspend fun getMovie(id: Int): Movie {
-        TODO("Not yet implemented")
+    suspend fun getMovie(id: Int): Movie? {
+        return db.moviesDao.getMovieById(id.toLong())?.convertToModel()
     }
 
     suspend fun insertMovies(movies: List<Movie>) {

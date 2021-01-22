@@ -13,7 +13,7 @@ class MoviesRepoImpl(private val moviesApi: MoviesApi, private val dbDataSource:
         return if (isNeedOnline || moviesFromDB.isEmpty()) {
             val moviesJsonModel = moviesApi.getMovies(BuildConfig.API_KEY).movies
             val moviesFromNetwork = moviesJsonModel.map { movieJsonModel ->
-                getMovie(movieJsonModel.id)
+                getMovie(movieJsonModel.id, true)
             }
             dbDataSource.insertMovies(moviesFromNetwork)
             moviesFromNetwork
@@ -23,9 +23,14 @@ class MoviesRepoImpl(private val moviesApi: MoviesApi, private val dbDataSource:
     }
 
     override suspend fun getMovie(id: Int, isNeedOnline: Boolean): Movie {
-        val movie = moviesApi.getMovie(id, BuildConfig.API_KEY)
-        val imageBaseUrl = moviesApi.getConfig(BuildConfig.API_KEY).images.base_url
-        return movie.convertToModel(imageBaseUrl)
+        val movieFromDB = dbDataSource.getMovie(id)
+        return if (isNeedOnline || movieFromDB == null) {
+            val movie = moviesApi.getMovie(id, BuildConfig.API_KEY)
+            val imageBaseUrl = moviesApi.getConfig(BuildConfig.API_KEY).images.base_url
+            movie.convertToModel(imageBaseUrl)
+        } else {
+            return movieFromDB
+        }
     }
 
 }
