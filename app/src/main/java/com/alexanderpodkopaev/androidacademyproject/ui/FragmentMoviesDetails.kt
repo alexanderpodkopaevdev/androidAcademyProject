@@ -54,7 +54,7 @@ class FragmentMoviesDetails : Fragment() {
             database = MoviesDatabase.create(requireContext())
             dbDataSource = DBDataSource(database)
             moviesRepository = MoviesRepoImpl(RetrofitModule.moviesApi, dbDataSource)
-            actorsRepository = NetworkActorsRepo(RetrofitModule.moviesApi)
+            actorsRepository = ActorsRepoImpl(RetrofitModule.moviesApi, dbDataSource)
             val movieDetailsViewModel = ViewModelProvider(
                 this,
                 MovieDetailsFactory(moviesRepository, actorsRepository, movieId)
