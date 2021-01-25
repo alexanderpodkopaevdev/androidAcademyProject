@@ -1,5 +1,6 @@
 package com.alexanderpodkopaev.androidacademyproject.repo
 
+import androidx.room.withTransaction
 import com.alexanderpodkopaev.androidacademyproject.data.MoviesDatabase
 import com.alexanderpodkopaev.androidacademyproject.data.entity.MovieActor
 import com.alexanderpodkopaev.androidacademyproject.data.entity.MovieGenre
@@ -13,14 +14,18 @@ class DBDataSource(private val db: MoviesDatabase) {
     private suspend fun insertMovie(movie: Movie) {
         db.moviesDao.insertMovie(movie.convertToEntityModel())
         for (genre in movie.genres) {
-            db.moviesDao.insertGenre(genre.convertToEntityModel())
-            db.moviesDao.insertMovieGenres(MovieGenre(movie.id, genre.id))
+            db.withTransaction {
+                db.moviesDao.insertGenre(genre.convertToEntityModel())
+                db.moviesDao.insertMovieGenres(MovieGenre(movie.id, genre.id))
+            }
         }
     }
 
     private suspend fun insertActor(movieId: Int, actor: Actor) {
-        db.actorsDao.insertActor(actor.convertToEntityModel())
-        db.actorsDao.insertMovieActor(MovieActor(movieId, actor.id))
+        db.withTransaction {
+            db.actorsDao.insertActor(actor.convertToEntityModel())
+            db.actorsDao.insertMovieActor(MovieActor(movieId, actor.id))
+        }
     }
 
     suspend fun getMovies(): List<Movie> {

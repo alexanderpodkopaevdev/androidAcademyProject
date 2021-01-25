@@ -1,9 +1,6 @@
 package com.alexanderpodkopaev.androidacademyproject.data
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.alexanderpodkopaev.androidacademyproject.data.entity.ActorEntity
 import com.alexanderpodkopaev.androidacademyproject.data.entity.MovieActor
 import com.alexanderpodkopaev.androidacademyproject.data.entity.MovieWithActors
@@ -17,6 +14,7 @@ interface ActorsDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertMovieActor(movieActor: MovieActor)
 
+    @Transaction
     @Query("SELECT * FROM movies WHERE mId = :id")
     suspend fun getActorsById(id: Int): MovieWithActors
 }
