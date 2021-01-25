@@ -8,9 +8,9 @@ import com.alexanderpodkopaev.androidacademyproject.utils.convertToModel
 class MoviesRepoImpl(private val moviesApi: MoviesApi, private val dbDataSource: DBDataSource) :
     MoviesRepository {
 
-    override suspend fun getMovies(isNeedOnline: Boolean): List<Movie> {
+    override suspend fun getMovies(force: Boolean): List<Movie> {
         val moviesFromDB = dbDataSource.getMovies()
-        return if (isNeedOnline || moviesFromDB.isEmpty()) {
+        return if (force || moviesFromDB.isEmpty()) {
             val moviesJsonModel = moviesApi.getMovies(BuildConfig.API_KEY).movies
             val moviesFromNetwork = moviesJsonModel.map { movieJsonModel ->
                 getMovie(movieJsonModel.id, true)
@@ -22,9 +22,9 @@ class MoviesRepoImpl(private val moviesApi: MoviesApi, private val dbDataSource:
         }
     }
 
-    override suspend fun getMovie(id: Int, isNeedOnline: Boolean): Movie {
+    override suspend fun getMovie(id: Int, force: Boolean): Movie {
         val movieFromDB = dbDataSource.getMovie(id)
-        return if (isNeedOnline || movieFromDB == null) {
+        return if (force || movieFromDB == null) {
             val movie = moviesApi.getMovie(id, BuildConfig.API_KEY)
             val imageBaseUrl = moviesApi.getConfig(BuildConfig.API_KEY).images.base_url
             movie.convertToModel(imageBaseUrl)

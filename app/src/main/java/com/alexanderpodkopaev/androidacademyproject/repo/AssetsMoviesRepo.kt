@@ -6,11 +6,11 @@ import com.alexanderpodkopaev.androidacademyproject.data.model.Movie
 
 class AssetsMoviesRepo(val context: Context) : MoviesRepository {
 
-    override suspend fun getMovies(isNeedOnline: Boolean): List<Movie> {
+    override suspend fun getMovies(force: Boolean): List<Movie> {
         return loadMovies(context)
     }
 
-    override suspend fun getMovie(id: Int, isNeedOnline: Boolean): Movie {
+    override suspend fun getMovie(id: Int, force: Boolean): Movie {
         return loadMovies(context).find { it.id == id }!!
     }
 }
