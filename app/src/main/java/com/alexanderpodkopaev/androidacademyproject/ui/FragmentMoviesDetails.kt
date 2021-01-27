@@ -14,12 +14,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.alexanderpodkopaev.androidacademyproject.R
 import com.alexanderpodkopaev.androidacademyproject.adapter.ActorsAdapter
-import com.alexanderpodkopaev.androidacademyproject.data.Movie
+import com.alexanderpodkopaev.androidacademyproject.data.MoviesDatabase
 import com.alexanderpodkopaev.androidacademyproject.data.RetrofitModule
-import com.alexanderpodkopaev.androidacademyproject.repo.ActorsRepository
-import com.alexanderpodkopaev.androidacademyproject.repo.MoviesRepository
-import com.alexanderpodkopaev.androidacademyproject.repo.NetworkActorsRepo
-import com.alexanderpodkopaev.androidacademyproject.repo.NetworkMoviesRepo
+import com.alexanderpodkopaev.androidacademyproject.data.model.Movie
+import com.alexanderpodkopaev.androidacademyproject.repo.*
 import com.alexanderpodkopaev.androidacademyproject.utils.RightOffsetItemDecoration
 import com.alexanderpodkopaev.androidacademyproject.viewmodel.MovieDetailsFactory
 import com.alexanderpodkopaev.androidacademyproject.viewmodel.MovieDetailsViewModel
@@ -40,6 +38,8 @@ class FragmentMoviesDetails : Fragment() {
     private lateinit var moviesRepository: MoviesRepository
     private lateinit var actorsRepository: ActorsRepository
     private lateinit var pbActors: ProgressBar
+    private lateinit var dbDataSource: DBDataSource
+    private lateinit var database: MoviesDatabase
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,8 +51,10 @@ class FragmentMoviesDetails : Fragment() {
         if (movieId != null) {
             initView(view)
             initRecycler()
-            moviesRepository = NetworkMoviesRepo(RetrofitModule.moviesApi)
-            actorsRepository = NetworkActorsRepo(RetrofitModule.moviesApi)
+            database = MoviesDatabase.create(requireContext())
+            dbDataSource = DBDataSource(database)
+            moviesRepository = MoviesRepoImpl(RetrofitModule.moviesApi, dbDataSource)
+            actorsRepository = ActorsRepoImpl(RetrofitModule.moviesApi, dbDataSource)
             val movieDetailsViewModel = ViewModelProvider(
                 this,
                 MovieDetailsFactory(moviesRepository, actorsRepository, movieId)

@@ -1,5 +1,10 @@
 package com.alexanderpodkopaev.androidacademyproject.data
 
+import com.alexanderpodkopaev.androidacademyproject.data.json.AllActorsData
+import com.alexanderpodkopaev.androidacademyproject.data.json.AllMoviesData
+import com.alexanderpodkopaev.androidacademyproject.data.json.Configure
+import com.alexanderpodkopaev.androidacademyproject.data.json.MovieJsonModel
+import com.alexanderpodkopaev.androidacademyproject.data.model.AllGenreData
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query

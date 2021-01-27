@@ -1,6 +1,7 @@
-package com.alexanderpodkopaev.androidacademyproject.data
+package com.alexanderpodkopaev.androidacademyproject.data.json
 
 import androidx.annotation.Keep
+import com.alexanderpodkopaev.androidacademyproject.data.model.Genre
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

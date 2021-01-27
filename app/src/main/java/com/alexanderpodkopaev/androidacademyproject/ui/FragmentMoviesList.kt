@@ -9,12 +9,15 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.alexanderpodkopaev.androidacademyproject.R
 import com.alexanderpodkopaev.androidacademyproject.adapter.MovieClickListener
 import com.alexanderpodkopaev.androidacademyproject.adapter.MoviesAdapter
+import com.alexanderpodkopaev.androidacademyproject.data.MoviesDatabase
 import com.alexanderpodkopaev.androidacademyproject.data.RetrofitModule
+import com.alexanderpodkopaev.androidacademyproject.repo.DBDataSource
+import com.alexanderpodkopaev.androidacademyproject.repo.MoviesRepoImpl
 import com.alexanderpodkopaev.androidacademyproject.repo.MoviesRepository
-import com.alexanderpodkopaev.androidacademyproject.repo.NetworkMoviesRepo
 import com.alexanderpodkopaev.androidacademyproject.utils.OffsetItemDecoration
 import com.alexanderpodkopaev.androidacademyproject.utils.UiUtils.calculateNoOfColumns
 import com.alexanderpodkopaev.androidacademyproject.viewmodel.MoviesFactory
@@ -24,8 +27,12 @@ class FragmentMoviesList : Fragment(), MovieClickListener {
 
     private lateinit var recyclerViewMovies: RecyclerView
     private lateinit var progressBar: ProgressBar
+    private lateinit var srlResfresh: SwipeRefreshLayout
     private lateinit var moviesAdapter: MoviesAdapter
     private lateinit var moviesRepository: MoviesRepository
+    private lateinit var dbDataSource: DBDataSource
+    private lateinit var database: MoviesDatabase
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,7 +42,10 @@ class FragmentMoviesList : Fragment(), MovieClickListener {
         val view = inflater.inflate(R.layout.fragment_movies_list, container, false)
         initRecycler(view)
         progressBar = view.findViewById(R.id.pbMovies)
-        moviesRepository = NetworkMoviesRepo(RetrofitModule.moviesApi)
+        srlResfresh = view.findViewById(R.id.srlRefresh)
+        database = MoviesDatabase.create(requireContext())
+        dbDataSource = DBDataSource(database)
+        moviesRepository = MoviesRepoImpl(RetrofitModule.moviesApi, dbDataSource)
         val viewModel = ViewModelProvider(
             this,
             MoviesFactory(moviesRepository)
@@ -47,6 +57,11 @@ class FragmentMoviesList : Fragment(), MovieClickListener {
             moviesAdapter.bindMovies(movies)
         }
         viewModel.fetchMovies()
+        srlResfresh.setOnRefreshListener {
+            viewModel.fetchMovies(true)
+            srlResfresh.isRefreshing = false
+        }
+
         return view
     }
 

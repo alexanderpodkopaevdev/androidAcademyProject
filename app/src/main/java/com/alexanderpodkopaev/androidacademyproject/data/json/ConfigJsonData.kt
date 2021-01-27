@@ -1,4 +1,4 @@
-package com.alexanderpodkopaev.androidacademyproject.data
+package com.alexanderpodkopaev.androidacademyproject.data.json
 
 import kotlinx.serialization.Serializable
 

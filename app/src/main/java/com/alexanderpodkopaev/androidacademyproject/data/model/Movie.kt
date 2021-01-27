@@ -1,4 +1,6 @@
-package com.alexanderpodkopaev.androidacademyproject.data
+package com.alexanderpodkopaev.androidacademyproject.data.model
+
+import com.alexanderpodkopaev.androidacademyproject.data.model.Actor
 
 data class Movie(
     val id: Int,
