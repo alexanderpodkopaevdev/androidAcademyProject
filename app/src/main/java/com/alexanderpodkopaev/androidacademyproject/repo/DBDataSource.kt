@@ -23,8 +23,8 @@ class DBDataSource(private val db: MoviesDatabase) {
 
     private suspend fun insertActor(movieId: Int, actor: Actor) {
         db.withTransaction {
-            db.actorsDao.insertActor(actor.convertToEntityModel())
-            db.actorsDao.insertMovieActor(MovieActor(movieId, actor.id))
+            db.moviesDao.insertActor(actor.convertToEntityModel())
+            db.moviesDao.insertMovieActor(MovieActor(movieId, actor.id))
         }
     }
 
@@ -45,7 +45,7 @@ class DBDataSource(private val db: MoviesDatabase) {
     }
 
     suspend fun getActors(id: Int): List<Actor> {
-        return db.actorsDao.getActorsById(id).actors.map { actorEntity ->
+        return db.moviesDao.getActorsById(id).actors.map { actorEntity ->
             actorEntity.convertToModel()
         }
     }

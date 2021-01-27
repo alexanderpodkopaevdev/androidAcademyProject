@@ -1,10 +1,7 @@
 package com.alexanderpodkopaev.androidacademyproject.data
 
 import androidx.room.*
-import com.alexanderpodkopaev.androidacademyproject.data.entity.GenreEntity
-import com.alexanderpodkopaev.androidacademyproject.data.entity.MovieEntity
-import com.alexanderpodkopaev.androidacademyproject.data.entity.MovieGenre
-import com.alexanderpodkopaev.androidacademyproject.data.entity.MovieWithGenres
+import com.alexanderpodkopaev.androidacademyproject.data.entity.*
 
 @Dao
 interface MoviesDao {
@@ -25,4 +22,14 @@ interface MoviesDao {
     @Transaction
     @Query("SELECT * FROM movies WHERE mId = :id")
     suspend fun getMovieById(id: Long): MovieWithGenres?
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertActor(actor: ActorEntity)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertMovieActor(movieActor: MovieActor)
+
+    @Transaction
+    @Query("SELECT * FROM movies WHERE mId = :id")
+    suspend fun getActorsById(id: Int): MovieWithActors
 }

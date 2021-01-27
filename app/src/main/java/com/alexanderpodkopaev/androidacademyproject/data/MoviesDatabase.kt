@@ -13,7 +13,6 @@ import com.alexanderpodkopaev.androidacademyproject.data.entity.*
 abstract class MoviesDatabase : RoomDatabase() {
 
     abstract val moviesDao: MoviesDao
-    abstract val actorsDao: ActorsDao
 
     companion object {
         fun create(context: Context): MoviesDatabase =
