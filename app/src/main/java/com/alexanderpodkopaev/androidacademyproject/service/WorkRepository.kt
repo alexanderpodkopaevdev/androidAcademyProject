@@ -8,10 +8,10 @@ import java.util.concurrent.TimeUnit
 class WorkRepository {
     private val constraints = Constraints.Builder()
         .setRequiredNetworkType(NetworkType.UNMETERED)
-        .setRequiresCharging(true)
+//        .setRequiresCharging(true)
         .build()
     val constrainedRequest =
-        PeriodicWorkRequest.Builder(MoviesUpdateWorker::class.java, 8, TimeUnit.HOURS)
+        PeriodicWorkRequest.Builder(MoviesUpdateWorker::class.java, 8, TimeUnit.SECONDS)
             .setConstraints(constraints)
             .build()
 }

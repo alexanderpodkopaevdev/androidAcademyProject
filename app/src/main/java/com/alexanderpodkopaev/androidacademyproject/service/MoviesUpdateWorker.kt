@@ -1,18 +1,20 @@
 package com.alexanderpodkopaev.androidacademyproject.service
 
 import android.content.Context
+import android.util.Log
 import androidx.work.CoroutineWorker
-import androidx.work.Worker
 import androidx.work.WorkerParameters
-import com.alexanderpodkopaev.androidacademyproject.repo.MoviesRepository
+import com.alexanderpodkopaev.androidacademyproject.MyApp
 
-class MoviesUpdateWorker(context: Context, workerParameters: WorkerParameters, private val moviesRepository: MoviesRepository) : CoroutineWorker(context, workerParameters) {
+class MoviesUpdateWorker(context: Context, workerParameters: WorkerParameters) :
+    CoroutineWorker(context, workerParameters) {
     override suspend fun doWork(): Result {
-        return if (moviesRepository.getMovies(true).isNotEmpty()) {
+        val container = (applicationContext as MyApp).container
+        Log.d("MyWorker", "Start worker")
+        return if (container.moviesRepository.getMovies(true).isNotEmpty()) {
             Result.success()
         } else {
             Result.failure()
         }
-
     }
 }
