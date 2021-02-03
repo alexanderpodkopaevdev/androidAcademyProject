@@ -12,12 +12,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.alexanderpodkopaev.androidacademyproject.MyApp
 import com.alexanderpodkopaev.androidacademyproject.R
 import com.alexanderpodkopaev.androidacademyproject.adapter.ActorsAdapter
-import com.alexanderpodkopaev.androidacademyproject.data.MoviesDatabase
-import com.alexanderpodkopaev.androidacademyproject.data.RetrofitModule
 import com.alexanderpodkopaev.androidacademyproject.data.model.Movie
-import com.alexanderpodkopaev.androidacademyproject.repo.*
 import com.alexanderpodkopaev.androidacademyproject.utils.RightOffsetItemDecoration
 import com.alexanderpodkopaev.androidacademyproject.viewmodel.MovieDetailsFactory
 import com.alexanderpodkopaev.androidacademyproject.viewmodel.MovieDetailsViewModel
@@ -35,11 +33,7 @@ class FragmentMoviesDetails : Fragment() {
     private lateinit var tvCast: TextView
     private lateinit var rvActors: RecyclerView
     private lateinit var actorsAdapter: ActorsAdapter
-    private lateinit var moviesRepository: MoviesRepository
-    private lateinit var actorsRepository: ActorsRepository
     private lateinit var pbActors: ProgressBar
-    private lateinit var dbDataSource: DBDataSource
-    private lateinit var database: MoviesDatabase
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,13 +45,14 @@ class FragmentMoviesDetails : Fragment() {
         if (movieId != null) {
             initView(view)
             initRecycler()
-            database = MoviesDatabase.create(requireContext())
-            dbDataSource = DBDataSource(database)
-            moviesRepository = MoviesRepoImpl(RetrofitModule.moviesApi, dbDataSource)
-            actorsRepository = ActorsRepoImpl(RetrofitModule.moviesApi, dbDataSource)
+            val appContainer = (activity?.application as MyApp).container
             val movieDetailsViewModel = ViewModelProvider(
                 this,
-                MovieDetailsFactory(moviesRepository, actorsRepository, movieId)
+                MovieDetailsFactory(
+                    appContainer.moviesRepository,
+                    appContainer.actorsRepository,
+                    movieId
+                )
             ).get(
                 MovieDetailsViewModel::class.java
             )
