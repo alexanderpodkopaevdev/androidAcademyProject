@@ -10,14 +10,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.alexanderpodkopaev.androidacademyproject.MyApp
 import com.alexanderpodkopaev.androidacademyproject.R
 import com.alexanderpodkopaev.androidacademyproject.adapter.MovieClickListener
 import com.alexanderpodkopaev.androidacademyproject.adapter.MoviesAdapter
-import com.alexanderpodkopaev.androidacademyproject.data.MoviesDatabase
-import com.alexanderpodkopaev.androidacademyproject.data.RetrofitModule
-import com.alexanderpodkopaev.androidacademyproject.repo.DBDataSource
-import com.alexanderpodkopaev.androidacademyproject.repo.MoviesRepoImpl
-import com.alexanderpodkopaev.androidacademyproject.repo.MoviesRepository
 import com.alexanderpodkopaev.androidacademyproject.utils.OffsetItemDecoration
 import com.alexanderpodkopaev.androidacademyproject.utils.UiUtils.calculateNoOfColumns
 import com.alexanderpodkopaev.androidacademyproject.viewmodel.MoviesFactory
@@ -29,10 +25,6 @@ class FragmentMoviesList : Fragment(), MovieClickListener {
     private lateinit var progressBar: ProgressBar
     private lateinit var srlResfresh: SwipeRefreshLayout
     private lateinit var moviesAdapter: MoviesAdapter
-    private lateinit var moviesRepository: MoviesRepository
-    private lateinit var dbDataSource: DBDataSource
-    private lateinit var database: MoviesDatabase
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,12 +35,10 @@ class FragmentMoviesList : Fragment(), MovieClickListener {
         initRecycler(view)
         progressBar = view.findViewById(R.id.pbMovies)
         srlResfresh = view.findViewById(R.id.srlRefresh)
-        database = MoviesDatabase.create(requireContext())
-        dbDataSource = DBDataSource(database)
-        moviesRepository = MoviesRepoImpl(RetrofitModule.moviesApi, dbDataSource)
+        val appContainer = MyApp.container
         val viewModel = ViewModelProvider(
             this,
-            MoviesFactory(moviesRepository)
+            MoviesFactory(appContainer.moviesRepository)
         ).get(MoviesListViewModel::class.java)
         viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
             progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
