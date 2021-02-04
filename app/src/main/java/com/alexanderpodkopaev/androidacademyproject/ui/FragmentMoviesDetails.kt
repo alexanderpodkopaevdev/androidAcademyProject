@@ -45,7 +45,7 @@ class FragmentMoviesDetails : Fragment() {
         if (movieId != null) {
             initView(view)
             initRecycler()
-            val appContainer = (activity?.application as MyApp).container
+            val appContainer = MyApp.container
             val movieDetailsViewModel = ViewModelProvider(
                 this,
                 MovieDetailsFactory(

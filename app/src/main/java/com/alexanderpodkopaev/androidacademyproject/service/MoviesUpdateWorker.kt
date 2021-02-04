@@ -8,8 +8,9 @@ import com.alexanderpodkopaev.androidacademyproject.MyApp
 
 class MoviesUpdateWorker(context: Context, workerParameters: WorkerParameters) :
     CoroutineWorker(context, workerParameters) {
+
     override suspend fun doWork(): Result {
-        val container = (applicationContext as MyApp).container
+        val container = MyApp.container
         Log.d("MyWorker", "Start worker")
         return if (container.moviesRepository.getMovies(true).isNotEmpty()) {
             Result.success()

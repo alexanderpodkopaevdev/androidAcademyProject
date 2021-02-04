@@ -35,7 +35,7 @@ class FragmentMoviesList : Fragment(), MovieClickListener {
         initRecycler(view)
         progressBar = view.findViewById(R.id.pbMovies)
         srlResfresh = view.findViewById(R.id.srlRefresh)
-        val appContainer = (activity?.application as MyApp).container
+        val appContainer = MyApp.container
         val viewModel = ViewModelProvider(
             this,
             MoviesFactory(appContainer.moviesRepository)
