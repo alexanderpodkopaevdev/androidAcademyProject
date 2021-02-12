@@ -16,4 +16,5 @@
     <string name="chris_hemsworth">Chris Hemsworth</string>
     <string name="movies_list">Movies list</string>
     <string name="text_length">%1$s MIN</string>
+    <string name="add_to_calendar">Add to calendar</string>
 </resources>

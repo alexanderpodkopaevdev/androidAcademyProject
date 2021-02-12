@@ -4,10 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.RatingBar
-import android.widget.TextView
+import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -34,6 +31,7 @@ class FragmentMoviesDetails : Fragment() {
     private lateinit var rvActors: RecyclerView
     private lateinit var actorsAdapter: ActorsAdapter
     private lateinit var pbActors: ProgressBar
+    private lateinit var btnAddToCalendar: Button
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -85,6 +83,7 @@ class FragmentMoviesDetails : Fragment() {
         tvCast = view.findViewById(R.id.tvCast)
         rvActors = view.findViewById(R.id.rvActors)
         pbActors = view.findViewById(R.id.pbActors)
+        btnAddToCalendar = view.findViewById(R.id.btnAddToCalendar)
     }
 
     private fun initRecycler() {

@@ -127,12 +127,24 @@
             app:layout_constraintTop_toBottomOf="@+id/tvGenre"
             tools:text="@string/text_review" />
 
+        <Button
+            android:id="@+id/btnAddToCalendar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/standard"
+            android:layout_marginTop="@dimen/small"
+            android:text="@string/add_to_calendar"
+            android:backgroundTint="@color/colorGrey"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rbStar" />
+
+
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/barrier"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:barrierDirection="bottom"
-            app:constraint_referenced_ids="tvReview,rbStar" />
+            app:constraint_referenced_ids="tvReview,rbStar,btnAddToCalendar" />
 
         <TextView
             android:id="@+id/tvStoryline"
@@ -184,7 +196,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvCast"/>
+            app:layout_constraintTop_toBottomOf="@+id/tvCast" />
 
 
         <androidx.recyclerview.widget.RecyclerView
@@ -195,6 +207,7 @@
             android:clipToPadding="false"
             android:paddingStart="@dimen/standard"
             android:paddingEnd="@dimen/standard"
+            android:paddingBottom="@dimen/standard"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
