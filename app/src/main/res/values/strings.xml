@@ -17,4 +17,9 @@
     <string name="movies_list">Movies list</string>
     <string name="text_length">%1$s MIN</string>
     <string name="add_to_calendar">Add to calendar</string>
+    <string name="open_settings">Данная функция недоступна без доступа к календарю. Открыть настройки приложения?</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
+    <string name="acces_to_calendar">Для продолжения дайте доступ к календарю</string>
+    <string name="calendar_permission_not_granted">Нет доступа к календарю</string>
 </resources>

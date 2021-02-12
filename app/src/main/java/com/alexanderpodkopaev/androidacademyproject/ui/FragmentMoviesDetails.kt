@@ -1,10 +1,19 @@
 package com.alexanderpodkopaev.androidacademyproject.ui
 
+import android.app.AlertDialog
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,6 +41,9 @@ class FragmentMoviesDetails : Fragment() {
     private lateinit var actorsAdapter: ActorsAdapter
     private lateinit var pbActors: ProgressBar
     private lateinit var btnAddToCalendar: Button
+    private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
+    private var isRationaleShown = false
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -64,9 +76,83 @@ class FragmentMoviesDetails : Fragment() {
                 pbActors.visibility = if (isLoading) View.VISIBLE else View.GONE
             }
             movieDetailsViewModel.fetchMovie()
+            btnAddToCalendar.setOnClickListener { addMovieToCalendar() }
         }
         return view
     }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        requestPermissionLauncher =
+            registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+                if (isGranted) onCalendarPermissionGranted() else onCalendarPermissionNotGranted()
+            }
+    }
+
+    private fun onCalendarPermissionNotGranted() {
+        Toast.makeText(requireContext(),getString(R.string.calendar_permission_not_granted), Toast.LENGTH_SHORT).show()
+    }
+
+    private fun onCalendarPermissionGranted() {
+        Toast.makeText(requireContext(),"Календарь", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun addMovieToCalendar() {
+        activity?.let {
+            when {
+                ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    android.Manifest.permission.WRITE_CALENDAR
+                ) == PackageManager.PERMISSION_GRANTED -> onCalendarPermissionGranted()
+                shouldShowRequestPermissionRationale(android.Manifest.permission.WRITE_CALENDAR) -> showCalendarPermissionExplanationDialog()
+                isRationaleShown -> showCalendarPermissionDeniedDialog()
+                else -> requestCalendarPermission()
+            }
+        }
+    }
+
+    private fun showCalendarPermissionDeniedDialog() {
+        context?.let {
+            AlertDialog.Builder(it)
+                .setMessage(getString(R.string.open_settings))
+                .setPositiveButton(getString(R.string.ok)) { dialog, _ ->
+                    startActivity(
+                        Intent(
+                            Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                            Uri.parse("package:" + it.packageName)
+                        )
+                    )
+                    dialog.dismiss()
+                }
+                .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .show()
+        }
+    }
+
+    private fun showCalendarPermissionExplanationDialog() {
+        context?.let {
+            AlertDialog.Builder(it)
+                .setMessage(getString(R.string.acces_to_calendar))
+                .setPositiveButton(getString(R.string.ok)) { dialog, _ ->
+                    isRationaleShown = true
+                    requestCalendarPermission()
+                    dialog.dismiss()
+                }
+                .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .show()
+        }
+    }
+
+    private fun requestCalendarPermission() {
+        context?.let {
+            requestPermissionLauncher.launch(android.Manifest.permission.WRITE_CALENDAR)
+        }
+    }
+
 
     private fun initView(view: View) {
         val tvBack = view.findViewById<TextView>(R.id.tvBack)
