@@ -56,10 +56,10 @@ class FragmentMoviesList : Fragment(), MovieClickListener {
     }
 
     override fun onMovieClick(movieId: Int) {
-        fragmentManager?.beginTransaction()
-            ?.replace(R.id.flFragment, FragmentMoviesDetails.newInstance(movieId))
-            ?.addToBackStack(null)
-            ?.commit()
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.flFragment, FragmentMoviesDetails.newInstance(movieId))
+            .addToBackStack(null)
+            .commit()
     }
 
     private fun initRecycler(view: View) {

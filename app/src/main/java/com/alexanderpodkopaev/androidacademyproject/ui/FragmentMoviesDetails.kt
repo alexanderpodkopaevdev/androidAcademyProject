@@ -172,9 +172,9 @@ class FragmentMoviesDetails : Fragment() {
 
     private fun initView(view: View) {
         val tvBack = view.findViewById<TextView>(R.id.tvBack)
-        tvBack.setOnClickListener { fragmentManager?.popBackStack() }
+        tvBack.setOnClickListener { parentFragmentManager.popBackStack() }
         val ivBack = view.findViewById<ImageView>(R.id.ivBack)
-        ivBack.setOnClickListener { fragmentManager?.popBackStack() }
+        ivBack.setOnClickListener { parentFragmentManager.popBackStack() }
         ivBackground = view.findViewById(R.id.ivBackground)
         tvTitle = view.findViewById(R.id.tvTitle)
         tvAge = view.findViewById(R.id.tvAge)
