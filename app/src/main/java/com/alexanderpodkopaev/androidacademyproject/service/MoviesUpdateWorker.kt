@@ -1,7 +1,6 @@
 package com.alexanderpodkopaev.androidacademyproject.service
 
 import android.content.Context
-import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.alexanderpodkopaev.androidacademyproject.MyApp
@@ -12,7 +11,6 @@ class MoviesUpdateWorker(val context: Context, workerParameters: WorkerParameter
 
     override suspend fun doWork(): Result {
         val container = MyApp.container
-        Log.d("MyWorker", "Start worker")
         val moviesFromDB = container.moviesRepository.getMovies()
         val moviesFromNetwork = container.moviesRepository.getMovies(true)
         if (moviesFromDB.isNotEmpty() && moviesFromNetwork.isNotEmpty()) findNewMostPopularAndSendNotification(
@@ -43,7 +41,10 @@ class MoviesUpdateWorker(val context: Context, workerParameters: WorkerParameter
         moviesFromDB: List<Movie>,
         moviesFromNetwork: List<Movie>
     ): List<Movie> {
-        return moviesFromNetwork.toSet().minus(moviesFromDB.toSet()).toList()
+        val sum = moviesFromNetwork + moviesFromDB
+        return sum.groupBy { it.id }
+            .filter { it.value.size == 1 }
+            .flatMap { it.value }
     }
 
     private fun findMostPopular(diff: List<Movie>): Movie? {
