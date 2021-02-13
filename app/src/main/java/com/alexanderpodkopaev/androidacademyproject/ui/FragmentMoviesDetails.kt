@@ -43,6 +43,7 @@ class FragmentMoviesDetails : Fragment() {
     private lateinit var btnAddToCalendar: Button
     private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
     private var isRationaleShown = false
+    private lateinit var movie: Movie
 
 
     override fun onCreateView(
@@ -66,8 +67,9 @@ class FragmentMoviesDetails : Fragment() {
             ).get(
                 MovieDetailsViewModel::class.java
             )
-            movieDetailsViewModel.movie.observe(viewLifecycleOwner) { movie ->
-                bindMovie(movie)
+            movieDetailsViewModel.movie.observe(viewLifecycleOwner) { movieFromModel ->
+                movie = movieFromModel
+                bindMovie()
             }
             movieDetailsViewModel.actors.observe(viewLifecycleOwner) { actors ->
                 actorsAdapter.bindActors(actors)
@@ -90,11 +92,25 @@ class FragmentMoviesDetails : Fragment() {
     }
 
     private fun onCalendarPermissionNotGranted() {
-        Toast.makeText(requireContext(),getString(R.string.calendar_permission_not_granted), Toast.LENGTH_SHORT).show()
+        Toast.makeText(
+            requireContext(),
+            getString(R.string.calendar_permission_not_granted),
+            Toast.LENGTH_SHORT
+        ).show()
     }
 
     private fun onCalendarPermissionGranted() {
-        Toast.makeText(requireContext(),"Календарь", Toast.LENGTH_SHORT).show()
+        sendMovieInfoToCalendar()
+    }
+
+    private fun sendMovieInfoToCalendar() {
+        parentFragmentManager.beginTransaction()
+            .replace(
+                R.id.flFragment,
+                FragmentCalendar.newInstance(movie.id, movie.title, movie.overview, movie.runtime)
+            )
+            .addToBackStack(null)
+            .commit()
     }
 
     private fun addMovieToCalendar() {
@@ -184,7 +200,7 @@ class FragmentMoviesDetails : Fragment() {
         )
     }
 
-    private fun bindMovie(movie: Movie) {
+    private fun bindMovie() {
         Glide.with(requireContext()).load(movie.backdrop).into(ivBackground)
         tvTitle.text = movie.title
         tvAge.text = getString(
