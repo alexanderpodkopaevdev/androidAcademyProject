@@ -114,16 +114,11 @@ class FragmentMoviesDetails : Fragment() {
     }
 
     private fun addMovieToCalendar() {
-        activity?.let {
-            when {
-                ContextCompat.checkSelfPermission(
-                    requireContext(),
-                    android.Manifest.permission.WRITE_CALENDAR
-                ) == PackageManager.PERMISSION_GRANTED -> onCalendarPermissionGranted()
-                shouldShowRequestPermissionRationale(android.Manifest.permission.WRITE_CALENDAR) -> showCalendarPermissionExplanationDialog()
-                isRationaleShown -> showCalendarPermissionDeniedDialog()
-                else -> requestCalendarPermission()
-            }
+        when {
+            checkCalendarPermission() -> onCalendarPermissionGranted()
+            shouldShowRequestPermissionRationale(android.Manifest.permission.WRITE_CALENDAR) -> showCalendarPermissionExplanationDialog()
+            isRationaleShown -> showCalendarPermissionDeniedDialog()
+            else -> requestCalendarPermission()
         }
     }
 
