@@ -20,7 +20,7 @@ class MoviesUpdateWorker(val context: Context, workerParameters: WorkerParameter
                 moviesFromNetwork
             )
             if (newMovie != null) {
-                MoviesNotificationManager(context).showNotification(newMovie)
+                MyApp.container.moviesNotificationManager.showNotification(newMovie)
             }
         }
         return if (moviesFromNetwork.isNotEmpty()) {
