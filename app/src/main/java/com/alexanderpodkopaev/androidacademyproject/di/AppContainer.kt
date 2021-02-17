@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.work.WorkManager
 import com.alexanderpodkopaev.androidacademyproject.data.MoviesDatabase
 import com.alexanderpodkopaev.androidacademyproject.data.RetrofitModule
-import com.alexanderpodkopaev.androidacademyproject.notifications.MoviesNotification
+import com.alexanderpodkopaev.androidacademyproject.notifications.MoviesNotificationManager
 import com.alexanderpodkopaev.androidacademyproject.repo.*
 import com.alexanderpodkopaev.androidacademyproject.service.MoviesSyncSchedule
 
@@ -16,5 +16,5 @@ class AppContainer(context: Context) {
     val moviesRepository: MoviesRepository = MoviesRepoImpl(RetrofitModule.moviesApi, dbDataSource)
     val actorsRepository: ActorsRepository = ActorsRepoImpl(RetrofitModule.moviesApi, dbDataSource)
     val moviesSyncSchedule: MoviesSyncSchedule = MoviesSyncSchedule(workManager)
-    val moviesNotification: MoviesNotification = MoviesNotification(context)
+    val moviesNotificationManager: MoviesNotificationManager = MoviesNotificationManager(context)
 }

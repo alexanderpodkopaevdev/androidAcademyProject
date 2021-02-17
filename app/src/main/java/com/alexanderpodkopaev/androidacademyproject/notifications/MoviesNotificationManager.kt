@@ -11,7 +11,7 @@ import androidx.core.net.toUri
 import com.alexanderpodkopaev.androidacademyproject.R
 import com.alexanderpodkopaev.androidacademyproject.data.model.Movie
 
-class MoviesNotification(val context: Context) {
+class MoviesNotificationManager(val context: Context) {
 
     private val notificationManagerCompat: NotificationManagerCompat =
         NotificationManagerCompat.from(context)

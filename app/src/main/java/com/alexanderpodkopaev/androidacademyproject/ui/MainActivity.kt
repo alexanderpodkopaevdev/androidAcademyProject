@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
             .replace(R.id.flFragment, FragmentMoviesDetails.newInstance(id))
             .addToBackStack(null)
             .commit()
-        MyApp.container.moviesNotification.dismissNotification(id)
+        MyApp.container.moviesNotificationManager.dismissNotification(id)
     }
 
 }
