@@ -127,46 +127,48 @@ class FragmentMoviesDetails : Fragment() {
         }
     }
 
+    private fun checkCalendarPermission(): Boolean {
+        return ContextCompat.checkSelfPermission(
+            requireContext(),
+            android.Manifest.permission.WRITE_CALENDAR
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+
     private fun showCalendarPermissionDeniedDialog() {
-        context?.let {
-            AlertDialog.Builder(it)
-                .setMessage(getString(R.string.open_settings))
-                .setPositiveButton(getString(R.string.ok)) { dialog, _ ->
-                    startActivity(
-                        Intent(
-                            Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                            Uri.parse("package:" + it.packageName)
-                        )
+        AlertDialog.Builder(requireContext())
+            .setMessage(getString(R.string.open_settings))
+            .setPositiveButton(getString(R.string.ok)) { dialog, _ ->
+                startActivity(
+                    Intent(
+                        Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                        Uri.parse("package:" + requireContext().packageName)
                     )
-                    dialog.dismiss()
-                }
-                .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
-                    dialog.dismiss()
-                }
-                .show()
-        }
+                )
+                dialog.dismiss()
+            }
+            .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
     }
 
     private fun showCalendarPermissionExplanationDialog() {
-        context?.let {
-            AlertDialog.Builder(it)
-                .setMessage(getString(R.string.acces_to_calendar))
-                .setPositiveButton(getString(R.string.ok)) { dialog, _ ->
-                    isRationaleShown = true
-                    requestCalendarPermission()
-                    dialog.dismiss()
-                }
-                .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
-                    dialog.dismiss()
-                }
-                .show()
-        }
+        AlertDialog.Builder(requireContext())
+            .setMessage(getString(R.string.acces_to_calendar))
+            .setPositiveButton(getString(R.string.ok)) { dialog, _ ->
+                isRationaleShown = true
+                requestCalendarPermission()
+                dialog.dismiss()
+            }
+            .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
+
     }
 
     private fun requestCalendarPermission() {
-        context?.let {
-            requestPermissionLauncher.launch(android.Manifest.permission.WRITE_CALENDAR)
-        }
+        requestPermissionLauncher.launch(android.Manifest.permission.WRITE_CALENDAR)
     }
 
 
