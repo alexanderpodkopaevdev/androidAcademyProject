@@ -2,7 +2,6 @@ package com.alexanderpodkopaev.androidacademyproject.ui
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import android.content.ContentValues
 import android.os.Bundle
 import android.provider.CalendarContract
 import android.util.Log
@@ -13,7 +12,9 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.alexanderpodkopaev.androidacademyproject.R
+import com.alexanderpodkopaev.androidacademyproject.viewmodel.CalendarViewModel
 import java.util.*
 
 
@@ -21,95 +22,83 @@ class FragmentCalendar : Fragment() {
 
     private lateinit var etDate: EditText
     private lateinit var etTime: EditText
-    private lateinit var currentDate: Calendar
-    private var year: Int = 0
-    private var month: Int = 0
-    private var day: Int = 0
-    private var hourOfDay: Int = 0
-    private var minute: Int = 0
+    private lateinit var calendarViewModel: CalendarViewModel
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_calendar, container, false)
-        etDate = view.findViewById<EditText>(R.id.etDate)
+        calendarViewModel = ViewModelProvider(this).get(CalendarViewModel::class.java)
+        etDate = view.findViewById(R.id.etDate)
         etDate.setOnClickListener {
-            val cldr: Calendar = Calendar.getInstance()
-            day = cldr.get(Calendar.DAY_OF_MONTH)
-            month = cldr.get(Calendar.MONTH)
-            year = cldr.get(Calendar.YEAR)
-            val picker =
-                DatePickerDialog(
-                    requireContext(),
-                    { view, checkYear, monthOfYear, dayOfMonth ->
-                        year = checkYear
-                        month = monthOfYear
-                        day = dayOfMonth
-                        etDate.setText(dayOfMonth.toString() + "/" + (monthOfYear + 1) + "/" + checkYear)
-                    },
-                    year,
-                    month,
-                    day
-                )
-            picker.show()
+            showDataPicker()
         }
-        etTime = view.findViewById<EditText>(R.id.etTime)
+        etTime = view.findViewById(R.id.etTime)
         etTime.setOnClickListener {
-            val cldr: Calendar = Calendar.getInstance()
-            hourOfDay = cldr.get(Calendar.HOUR_OF_DAY)
-            minute = cldr.get(Calendar.MINUTE)
-            val picker =
-                TimePickerDialog(
-                    requireContext(), { view, checkHourOfDay, checkMinute ->
-                        hourOfDay = checkHourOfDay
-                        minute = checkMinute
-                        val minuteStr = if (checkMinute < 10) "0$checkMinute" else checkMinute
-                        etTime.setText("$hourOfDay:$minuteStr")
-                    }, hourOfDay, minute, true
-                )
-            picker.show()
+            showTimePicker()
         }
         val btnSave = view.findViewById<Button>(R.id.btnSave)
         btnSave.setOnClickListener {
             if (etDate.text.isNotEmpty() && etTime.text.isNotEmpty()) {
-                saveToCalendar()
+                calendarViewModel.saveToCalendar(
+                    id = arguments?.getInt(ID) ?: 0,
+                    title = arguments?.getString(TITLE) ?: "",
+                    overview = arguments?.getString(OVERVIEW) ?: "",
+                    runtime = arguments?.getInt(RUNTIME) ?: 0
+                )
             } else {
                 Toast.makeText(
                     requireContext(),
-                    getString(R.string.check_date_time),
+                    R.string.check_date_time,
                     Toast.LENGTH_SHORT
                 ).show()
             }
         }
+        calendarViewModel.date.observe(viewLifecycleOwner) {
+            etDate.setText(it)
+        }
+        calendarViewModel.time.observe(viewLifecycleOwner) {
+            etTime.setText(it)
+        }
+        calendarViewModel.values.observe(viewLifecycleOwner) {
+            val uri =
+                requireContext().contentResolver.insert(CalendarContract.Events.CONTENT_URI, it)
+            Log.d("MyWork", "saveToCalendar: $uri")
+            Toast.makeText(
+                requireContext(), R.string.saved, Toast.LENGTH_SHORT
+            ).show()
+        }
         return view
     }
 
-    private fun saveToCalendar() {
-        val startMillis: Long = Calendar.getInstance().run {
-            set(year, month, day, hourOfDay, minute)
-            timeInMillis
-        }
-        Log.d("MyWork", "startMillis: $startMillis")
-        val runtime = arguments?.getInt(RUNTIME) ?: 0
-        val endMillis: Long = startMillis + runtime * 60 * 1000
+    private fun showDataPicker() {
+        val cldr: Calendar = Calendar.getInstance()
+        val picker =
+            DatePickerDialog(
+                requireContext(),
+                { _, checkYear, monthOfYear, dayOfMonth ->
+                    calendarViewModel.setDate(checkYear, monthOfYear, dayOfMonth)
+                },
+                cldr.get(Calendar.YEAR),
+                cldr.get(Calendar.MONTH),
+                cldr.get(Calendar.DAY_OF_MONTH)
+            )
+        picker.show()
+    }
 
-        val values = ContentValues().apply {
-            put(CalendarContract.Events.DTSTART, startMillis)
-            put(CalendarContract.Events.DTEND, endMillis)
-            put(CalendarContract.Events.TITLE, arguments?.getString(TITLE))
-            put(CalendarContract.Events.DESCRIPTION, arguments?.getString(OVERVIEW))
-            put(CalendarContract.Events.CALENDAR_ID, arguments?.getInt(ID) ?: 0)
-            put(CalendarContract.Events.EVENT_TIMEZONE, TimeZone.getDefault().id)
-        }
-        val uri =
-            requireContext().contentResolver.insert(CalendarContract.Events.CONTENT_URI, values)
-        Log.d("MyWork", "saveToCalendar: $uri")
-        Toast.makeText(
-            requireContext(), getString(R.string.saved), Toast.LENGTH_SHORT
-        ).show()
+    private fun showTimePicker() {
+        val cldr: Calendar = Calendar.getInstance()
+        val picker =
+            TimePickerDialog(
+                requireContext(), { _, hourOfDay, minute ->
+                    calendarViewModel.setTime(hourOfDay, minute)
+                },
+                cldr.get(Calendar.HOUR_OF_DAY),
+                cldr.get(Calendar.MINUTE), true
+            )
+        picker.show()
     }
 
     companion object {
