@@ -14,7 +14,7 @@ class MoviesUpdateWorker(val context: Context, workerParameters: WorkerParameter
         val container = MyApp.container
         val moviesFromDB = container.moviesRepository.getMovies()
         val moviesFromNetwork = container.moviesRepository.getMovies(true)
-        if (moviesFromDB.isNotEmpty() && moviesFromNetwork.isNotEmpty()) {
+        if (moviesFromNetwork.isNotEmpty()) {
             val newMovie = findNewFilms(
                 moviesFromDB,
                 moviesFromNetwork
@@ -34,7 +34,7 @@ class MoviesUpdateWorker(val context: Context, workerParameters: WorkerParameter
         moviesFromDB: List<Movie>,
         moviesFromNetwork: List<Movie>
     ): Movie? {
-        val idsMoviesFromDB = moviesFromDB.map { it.id }
+        val idsMoviesFromDB = moviesFromDB.map { it.id }.toSet()
         return moviesFromNetwork.filter { !idsMoviesFromDB.contains(it.id) }
             .maxByOrNull { it.ratings }
     }
