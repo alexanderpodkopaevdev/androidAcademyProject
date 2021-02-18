@@ -17,4 +17,5 @@ class AppContainer(context: Context) {
     val actorsRepository: ActorsRepository = ActorsRepoImpl(RetrofitModule.moviesApi, dbDataSource)
     val moviesSyncSchedule: MoviesSyncSchedule = MoviesSyncSchedule(workManager)
     val moviesNotificationManager: MoviesNotificationManager = MoviesNotificationManager(context)
+    val calendarRepository : CalendarRepository = CalendarRepoImpl(context)
 }

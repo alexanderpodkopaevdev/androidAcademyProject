@@ -41,7 +41,7 @@ class CalendarViewModel(val movie: MovieToCalendar, val calendarRepository: Cale
                 timeInMillis
             }
             val endMillis: Long = startMillis + movie.runtime * 60 * 1000
-            if (calendarRepository.insertData(startMillis, endMillis, movie) != null) {
+            if (calendarRepository.insertData(startMillis, endMillis, movie)) {
                 _isSaved.value = true
             } else {
                 _isError.value = true

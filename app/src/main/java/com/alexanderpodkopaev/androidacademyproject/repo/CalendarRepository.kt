@@ -4,5 +4,5 @@ import android.net.Uri
 import com.alexanderpodkopaev.androidacademyproject.data.model.MovieToCalendar
 
 interface CalendarRepository {
-    fun insertData(startDate: Long, endDate: Long, movie: MovieToCalendar) : Uri?
+    fun insertData(startDate: Long, endDate: Long, movie: MovieToCalendar) : Boolean
 }

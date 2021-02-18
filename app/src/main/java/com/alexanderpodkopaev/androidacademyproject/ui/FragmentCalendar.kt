@@ -11,6 +11,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.alexanderpodkopaev.androidacademyproject.MyApp
 import com.alexanderpodkopaev.androidacademyproject.R
 import com.alexanderpodkopaev.androidacademyproject.data.model.MovieToCalendar
 import com.alexanderpodkopaev.androidacademyproject.repo.CalendarRepoImpl
@@ -37,8 +38,9 @@ class FragmentCalendar : Fragment() {
             overview = arguments?.getString(OVERVIEW) ?: "",
             runtime = arguments?.getInt(RUNTIME) ?: 0
         )
+        val calendarRepository = MyApp.container.calendarRepository
         calendarViewModel =
-            ViewModelProvider(this, CalendarFactory(movie, CalendarRepoImpl(requireContext()))).get(
+            ViewModelProvider(this, CalendarFactory(movie, calendarRepository)).get(
                 CalendarViewModel::class.java
             )
         etDate = view.findViewById(R.id.etDate)
