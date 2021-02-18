@@ -1,14 +1,15 @@
 package com.alexanderpodkopaev.androidacademyproject.viewmodel
 
 import android.content.ContentValues
-import android.provider.CalendarContract
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.alexanderpodkopaev.androidacademyproject.data.model.MovieToCalendar
+import com.alexanderpodkopaev.androidacademyproject.repo.CalendarRepository
 import java.util.*
 
-class CalendarViewModel : ViewModel() {
+class CalendarViewModel(val movie: MovieToCalendar, val calendarRepository: CalendarRepository) :
+    ViewModel() {
 
     private var year: Int = 0
     private var month: Int = 0
@@ -25,21 +26,28 @@ class CalendarViewModel : ViewModel() {
     private val _values = MutableLiveData<ContentValues>()
     val values: LiveData<ContentValues> = _values
 
-    fun saveToCalendar(id: Int, title: String, overview: String, runtime: Int) {
-        val startMillis: Long = Calendar.getInstance().run {
-            set(year, month, day, hour, minute)
-            timeInMillis
-        }
-        Log.d("MyWork", "startMillis: $startMillis")
-        val endMillis: Long = startMillis + runtime * 60 * 1000
+    private val _isError = MutableLiveData(false)
+    val isError: LiveData<Boolean> = _isError
 
-        _values.value = ContentValues().apply {
-            put(CalendarContract.Events.DTSTART, startMillis)
-            put(CalendarContract.Events.DTEND, endMillis)
-            put(CalendarContract.Events.TITLE, title)
-            put(CalendarContract.Events.DESCRIPTION, overview)
-            put(CalendarContract.Events.CALENDAR_ID, id)
-            put(CalendarContract.Events.EVENT_TIMEZONE, TimeZone.getDefault().id)
+    private val _isSaved = MutableLiveData(false)
+    val isSaved: LiveData<Boolean> = _isSaved
+
+    fun saveToCalendar() {
+        _isError.value = false
+        _isSaved.value = false
+        if (!date.value.isNullOrEmpty() && !time.value.isNullOrEmpty()) {
+            val startMillis: Long = Calendar.getInstance().run {
+                set(year, month, day, hour, minute)
+                timeInMillis
+            }
+            val endMillis: Long = startMillis + movie.runtime * 60 * 1000
+            if (calendarRepository.insertData(startMillis, endMillis, movie) != null) {
+                _isSaved.value = true
+            } else {
+                _isError.value = true
+            }
+        } else {
+            _isError.value = true
         }
     }
 

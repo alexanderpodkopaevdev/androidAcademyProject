@@ -3,8 +3,6 @@ package com.alexanderpodkopaev.androidacademyproject.ui
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
-import android.provider.CalendarContract
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +12,9 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.alexanderpodkopaev.androidacademyproject.R
+import com.alexanderpodkopaev.androidacademyproject.data.model.MovieToCalendar
+import com.alexanderpodkopaev.androidacademyproject.repo.CalendarRepoImpl
+import com.alexanderpodkopaev.androidacademyproject.viewmodel.CalendarFactory
 import com.alexanderpodkopaev.androidacademyproject.viewmodel.CalendarViewModel
 import java.util.*
 
@@ -30,7 +31,16 @@ class FragmentCalendar : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_calendar, container, false)
-        calendarViewModel = ViewModelProvider(this).get(CalendarViewModel::class.java)
+        val movie = MovieToCalendar(
+            id = arguments?.getInt(ID) ?: 0,
+            title = arguments?.getString(TITLE) ?: "",
+            overview = arguments?.getString(OVERVIEW) ?: "",
+            runtime = arguments?.getInt(RUNTIME) ?: 0
+        )
+        calendarViewModel =
+            ViewModelProvider(this, CalendarFactory(movie, CalendarRepoImpl(requireContext()))).get(
+                CalendarViewModel::class.java
+            )
         etDate = view.findViewById(R.id.etDate)
         etDate.setOnClickListener {
             showDataPicker()
@@ -41,20 +51,15 @@ class FragmentCalendar : Fragment() {
         }
         val btnSave = view.findViewById<Button>(R.id.btnSave)
         btnSave.setOnClickListener {
-            if (etDate.text.isNotEmpty() && etTime.text.isNotEmpty()) {
-                calendarViewModel.saveToCalendar(
-                    id = arguments?.getInt(ID) ?: 0,
-                    title = arguments?.getString(TITLE) ?: "",
-                    overview = arguments?.getString(OVERVIEW) ?: "",
-                    runtime = arguments?.getInt(RUNTIME) ?: 0
-                )
-            } else {
+            calendarViewModel.saveToCalendar()
+        }
+        calendarViewModel.isError.observe(viewLifecycleOwner) { isError ->
+            if (isError)
                 Toast.makeText(
                     requireContext(),
                     R.string.check_date_time,
                     Toast.LENGTH_SHORT
                 ).show()
-            }
         }
         calendarViewModel.date.observe(viewLifecycleOwner) {
             etDate.setText(it)
@@ -62,41 +67,41 @@ class FragmentCalendar : Fragment() {
         calendarViewModel.time.observe(viewLifecycleOwner) {
             etTime.setText(it)
         }
-        calendarViewModel.values.observe(viewLifecycleOwner) {
-            val uri =
-                requireContext().contentResolver.insert(CalendarContract.Events.CONTENT_URI, it)
-            Log.d("MyWork", "saveToCalendar: $uri")
-            Toast.makeText(
-                requireContext(), R.string.saved, Toast.LENGTH_SHORT
-            ).show()
+        calendarViewModel.isSaved.observe(viewLifecycleOwner) { isSaved ->
+            if (isSaved)
+                Toast.makeText(
+                    requireContext(),
+                    R.string.saved,
+                    Toast.LENGTH_SHORT
+                ).show()
         }
         return view
     }
 
     private fun showDataPicker() {
-        val cldr: Calendar = Calendar.getInstance()
+        val calendar: Calendar = Calendar.getInstance()
         val picker =
             DatePickerDialog(
                 requireContext(),
                 { _, checkYear, monthOfYear, dayOfMonth ->
                     calendarViewModel.setDate(checkYear, monthOfYear, dayOfMonth)
                 },
-                cldr.get(Calendar.YEAR),
-                cldr.get(Calendar.MONTH),
-                cldr.get(Calendar.DAY_OF_MONTH)
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)
             )
         picker.show()
     }
 
     private fun showTimePicker() {
-        val cldr: Calendar = Calendar.getInstance()
+        val calendar: Calendar = Calendar.getInstance()
         val picker =
             TimePickerDialog(
                 requireContext(), { _, hourOfDay, minute ->
                     calendarViewModel.setTime(hourOfDay, minute)
                 },
-                cldr.get(Calendar.HOUR_OF_DAY),
-                cldr.get(Calendar.MINUTE), true
+                calendar.get(Calendar.HOUR_OF_DAY),
+                calendar.get(Calendar.MINUTE), true
             )
         picker.show()
     }
