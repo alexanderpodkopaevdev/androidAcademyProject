@@ -2,21 +2,23 @@ package com.alexanderpodkopaev.androidacademyproject.ui
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.alexanderpodkopaev.androidacademyproject.MyApp
 import com.alexanderpodkopaev.androidacademyproject.R
 import com.alexanderpodkopaev.androidacademyproject.data.model.MovieToCalendar
-import com.alexanderpodkopaev.androidacademyproject.repo.CalendarRepoImpl
 import com.alexanderpodkopaev.androidacademyproject.viewmodel.CalendarFactory
 import com.alexanderpodkopaev.androidacademyproject.viewmodel.CalendarViewModel
+import com.google.android.material.transition.MaterialContainerTransform
 import java.util.*
 
 
@@ -78,6 +80,22 @@ class FragmentCalendar : Fragment() {
                 ).show()
         }
         return view
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        sharedElementEnterTransition = MaterialContainerTransform().apply {
+            duration = resources.getInteger(R.integer.reply_motion_duration_large).toLong()
+            scrimColor = Color.TRANSPARENT
+        }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val tvAddToCalendar = view.findViewById<TextView>(R.id.tvAddToCalendar)
+        tvAddToCalendar.transitionName = requireContext().resources.getString(
+            R.string.transition_name_cal, arguments?.getInt(ID)
+        )
     }
 
     private fun showDataPicker() {

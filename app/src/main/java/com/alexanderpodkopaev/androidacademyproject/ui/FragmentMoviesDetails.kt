@@ -140,6 +140,7 @@ class FragmentMoviesDetails : Fragment() {
                 R.id.flFragment,
                 FragmentCalendar.newInstance(movie.id, movie.title, movie.overview, movie.runtime)
             )
+            .addSharedElement(btnAddToCalendar, btnAddToCalendar.transitionName)
             .addToBackStack(null)
             .commit()
     }
@@ -214,6 +215,9 @@ class FragmentMoviesDetails : Fragment() {
         rvActors = view.findViewById(R.id.rvActors)
         pbActors = view.findViewById(R.id.pbActors)
         btnAddToCalendar = view.findViewById(R.id.btnAddToCalendar)
+        btnAddToCalendar.transitionName = requireContext().resources.getString(
+            R.string.transition_name_cal, arguments?.getInt(ID)
+        )
         clMovieDetails = view.findViewById(R.id.clMovieDetails)
     }
 
