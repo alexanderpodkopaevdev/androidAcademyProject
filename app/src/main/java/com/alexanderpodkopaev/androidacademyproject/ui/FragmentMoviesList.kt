@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
+import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -18,6 +19,7 @@ import com.alexanderpodkopaev.androidacademyproject.utils.OffsetItemDecoration
 import com.alexanderpodkopaev.androidacademyproject.utils.UiUtils.calculateNoOfColumns
 import com.alexanderpodkopaev.androidacademyproject.viewmodel.MoviesFactory
 import com.alexanderpodkopaev.androidacademyproject.viewmodel.MoviesListViewModel
+import com.google.android.material.transition.MaterialElevationScale
 
 class FragmentMoviesList : Fragment(), MovieClickListener {
 
@@ -55,9 +57,22 @@ class FragmentMoviesList : Fragment(), MovieClickListener {
         return view
     }
 
-    override fun onMovieClick(movieId: Int) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        postponeEnterTransition()
+        view.doOnPreDraw { startPostponedEnterTransition() }
+        super.onViewCreated(view, savedInstanceState)
+    }
+
+    override fun onMovieClick(clMovie: View, movieId: Int) {
+        exitTransition = MaterialElevationScale(false).apply {
+            duration = resources.getInteger(R.integer.reply_motion_duration_large).toLong()
+        }
+        reenterTransition = MaterialElevationScale(true).apply {
+            duration = resources.getInteger(R.integer.reply_motion_duration_large).toLong()
+        }
         parentFragmentManager.beginTransaction()
             .replace(R.id.flFragment, FragmentMoviesDetails.newInstance(movieId))
+            .addSharedElement(clMovie, clMovie.transitionName)
             .addToBackStack(null)
             .commit()
     }
