@@ -1,13 +1,19 @@
 package com.alexanderpodkopaev.androidacademyproject.ui
 
+import android.app.AlertDialog
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.RatingBar
-import android.widget.TextView
+import android.widget.*
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -34,6 +40,11 @@ class FragmentMoviesDetails : Fragment() {
     private lateinit var rvActors: RecyclerView
     private lateinit var actorsAdapter: ActorsAdapter
     private lateinit var pbActors: ProgressBar
+    private lateinit var btnAddToCalendar: Button
+    private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
+    private var isRationaleShown = false
+    private lateinit var movie: Movie
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -56,8 +67,9 @@ class FragmentMoviesDetails : Fragment() {
             ).get(
                 MovieDetailsViewModel::class.java
             )
-            movieDetailsViewModel.movie.observe(viewLifecycleOwner) { movie ->
-                bindMovie(movie)
+            movieDetailsViewModel.movie.observe(viewLifecycleOwner) { movieFromModel ->
+                movie = movieFromModel
+                bindMovie()
             }
             movieDetailsViewModel.actors.observe(viewLifecycleOwner) { actors ->
                 actorsAdapter.bindActors(actors)
@@ -66,15 +78,100 @@ class FragmentMoviesDetails : Fragment() {
                 pbActors.visibility = if (isLoading) View.VISIBLE else View.GONE
             }
             movieDetailsViewModel.fetchMovie()
+            btnAddToCalendar.setOnClickListener { addMovieToCalendar() }
         }
         return view
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        requestPermissionLauncher =
+            registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+                if (isGranted) onCalendarPermissionGranted() else onCalendarPermissionNotGranted()
+            }
+    }
+
+    private fun onCalendarPermissionNotGranted() {
+        Toast.makeText(
+            requireContext(),
+            getString(R.string.calendar_permission_not_granted),
+            Toast.LENGTH_SHORT
+        ).show()
+    }
+
+    private fun onCalendarPermissionGranted() {
+        sendMovieInfoToCalendar()
+    }
+
+    private fun sendMovieInfoToCalendar() {
+        parentFragmentManager.beginTransaction()
+            .replace(
+                R.id.flFragment,
+                FragmentCalendar.newInstance(movie.id, movie.title, movie.overview, movie.runtime)
+            )
+            .addToBackStack(null)
+            .commit()
+    }
+
+    private fun addMovieToCalendar() {
+        when {
+            checkCalendarPermission() -> onCalendarPermissionGranted()
+            shouldShowRequestPermissionRationale(android.Manifest.permission.WRITE_CALENDAR) -> showCalendarPermissionExplanationDialog()
+            isRationaleShown -> showCalendarPermissionDeniedDialog()
+            else -> requestCalendarPermission()
+        }
+    }
+
+    private fun checkCalendarPermission(): Boolean {
+        return ContextCompat.checkSelfPermission(
+            requireContext(),
+            android.Manifest.permission.WRITE_CALENDAR
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun showCalendarPermissionDeniedDialog() {
+        AlertDialog.Builder(requireContext())
+            .setMessage(getString(R.string.open_settings))
+            .setPositiveButton(getString(R.string.ok)) { dialog, _ ->
+                startActivity(
+                    Intent(
+                        Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                        Uri.parse("package:" + requireContext().packageName)
+                    )
+                )
+                dialog.dismiss()
+            }
+            .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
+    }
+
+    private fun showCalendarPermissionExplanationDialog() {
+        AlertDialog.Builder(requireContext())
+            .setMessage(getString(R.string.acces_to_calendar))
+            .setPositiveButton(getString(R.string.ok)) { dialog, _ ->
+                isRationaleShown = true
+                requestCalendarPermission()
+                dialog.dismiss()
+            }
+            .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
+
+    }
+
+    private fun requestCalendarPermission() {
+        requestPermissionLauncher.launch(android.Manifest.permission.WRITE_CALENDAR)
+    }
+
+
     private fun initView(view: View) {
         val tvBack = view.findViewById<TextView>(R.id.tvBack)
-        tvBack.setOnClickListener { fragmentManager?.popBackStack() }
+        tvBack.setOnClickListener { parentFragmentManager.popBackStack() }
         val ivBack = view.findViewById<ImageView>(R.id.ivBack)
-        ivBack.setOnClickListener { fragmentManager?.popBackStack() }
+        ivBack.setOnClickListener { parentFragmentManager.popBackStack() }
         ivBackground = view.findViewById(R.id.ivBackground)
         tvTitle = view.findViewById(R.id.tvTitle)
         tvAge = view.findViewById(R.id.tvAge)
@@ -85,6 +182,7 @@ class FragmentMoviesDetails : Fragment() {
         tvCast = view.findViewById(R.id.tvCast)
         rvActors = view.findViewById(R.id.rvActors)
         pbActors = view.findViewById(R.id.pbActors)
+        btnAddToCalendar = view.findViewById(R.id.btnAddToCalendar)
     }
 
     private fun initRecycler() {
@@ -99,7 +197,7 @@ class FragmentMoviesDetails : Fragment() {
         )
     }
 
-    private fun bindMovie(movie: Movie) {
+    private fun bindMovie() {
         Glide.with(requireContext()).load(movie.backdrop).into(ivBackground)
         tvTitle.text = movie.title
         tvAge.text = getString(
