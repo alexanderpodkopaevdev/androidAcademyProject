@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
@@ -13,6 +14,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -26,6 +28,7 @@ import com.alexanderpodkopaev.androidacademyproject.utils.RightOffsetItemDecorat
 import com.alexanderpodkopaev.androidacademyproject.viewmodel.MovieDetailsFactory
 import com.alexanderpodkopaev.androidacademyproject.viewmodel.MovieDetailsViewModel
 import com.bumptech.glide.Glide
+import com.google.android.material.transition.MaterialContainerTransform
 
 class FragmentMoviesDetails : Fragment() {
 
@@ -44,6 +47,7 @@ class FragmentMoviesDetails : Fragment() {
     private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
     private var isRationaleShown = false
     private lateinit var movie: Movie
+    private lateinit var clMovieDetails: ConstraintLayout
 
 
     override fun onCreateView(
@@ -83,6 +87,33 @@ class FragmentMoviesDetails : Fragment() {
         return view
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        sharedElementEnterTransition = MaterialContainerTransform().apply {
+            duration = resources.getInteger(R.integer.reply_motion_duration_large).toLong()
+            scrimColor = Color.TRANSPARENT
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                setAllContainerColors(
+                    requireContext().resources.getColor(
+                        R.color.colorBackground,
+                        requireContext().theme
+                    )
+                )
+            } else {
+                setAllContainerColors(requireContext().resources.getColor(R.color.colorBackground))
+            }
+        }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        clMovieDetails.transitionName = requireContext().resources.getString(
+            R.string.transition_name, arguments?.getInt(
+                ID
+            )
+        )
+    }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         requestPermissionLauncher =
@@ -109,6 +140,7 @@ class FragmentMoviesDetails : Fragment() {
                 R.id.flFragment,
                 FragmentCalendar.newInstance(movie.id, movie.title, movie.overview, movie.runtime)
             )
+            .addSharedElement(btnAddToCalendar, btnAddToCalendar.transitionName)
             .addToBackStack(null)
             .commit()
     }
@@ -183,6 +215,10 @@ class FragmentMoviesDetails : Fragment() {
         rvActors = view.findViewById(R.id.rvActors)
         pbActors = view.findViewById(R.id.pbActors)
         btnAddToCalendar = view.findViewById(R.id.btnAddToCalendar)
+        btnAddToCalendar.transitionName = requireContext().resources.getString(
+            R.string.transition_name_cal, arguments?.getInt(ID)
+        )
+        clMovieDetails = view.findViewById(R.id.clMovieDetails)
     }
 
     private fun initRecycler() {

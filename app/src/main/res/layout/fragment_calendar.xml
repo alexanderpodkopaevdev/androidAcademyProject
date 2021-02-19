@@ -10,6 +10,17 @@
     tools:context=".ui.FragmentCalendar">
 
     <TextView
+        android:id="@+id/tvAddToCalendar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/add_to_calendar"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
         android:id="@+id/tvDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -17,23 +28,23 @@
         android:text="@string/check_the_date"
         android:textColor="@color/white"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@id/etDate"
+        app:layout_constraintBaseline_toBaselineOf="@id/etDate"
         app:layout_constraintEnd_toStartOf="@id/etDate"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/etDate" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/etDate"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/small"
+        android:layout_marginTop="@dimen/standard"
         android:layout_marginEnd="@dimen/small"
         android:focusable="false"
         android:inputType="date"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/tvDate"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/tvAddToCalendar" />
 
     <TextView
         android:id="@+id/tvTime"
@@ -43,10 +54,9 @@
         android:text="@string/check_the_time"
         android:textColor="@color/white"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@id/etTime"
+        app:layout_constraintBaseline_toBaselineOf="@id/etTime"
         app:layout_constraintEnd_toStartOf="@id/etTime"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/etTime" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/etTime"

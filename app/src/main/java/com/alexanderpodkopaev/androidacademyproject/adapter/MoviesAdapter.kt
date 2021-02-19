@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.alexanderpodkopaev.androidacademyproject.R
 import com.alexanderpodkopaev.androidacademyproject.data.model.Movie
@@ -39,11 +40,12 @@ class MoviesAdapter : RecyclerView.Adapter<MoviesViewHolder>() {
 }
 
 interface MovieClickListener {
-    fun onMovieClick(movieId: Int)
+    fun onMovieClick(clMovie: View, movieId: Int)
 }
 
 class MoviesViewHolder(itemView: View, private val onMovieClickListener: MovieClickListener?) :
     RecyclerView.ViewHolder(itemView) {
+    val clMovie = itemView.findViewById<ConstraintLayout>(R.id.clMovie)
     val ivMovie = itemView.findViewById<ImageView>(R.id.ivMovie)
     val tvAge = itemView.findViewById<TextView>(R.id.tvAge)
     val ivFavorite = itemView.findViewById<ImageView>(R.id.ivFavorite)
@@ -62,6 +64,8 @@ class MoviesViewHolder(itemView: View, private val onMovieClickListener: MovieCl
                     ).toInt()
                 )
             ).into(ivMovie)
+        clMovie.transitionName =
+            clMovie.context.resources.getString(R.string.transition_name, movie.id)
         tvAge.text = itemView.context.getString(
             R.string.text_age,
             if (movie.adult) itemView.context.getString(R.string.text_age_adult) else itemView.context.getString(
@@ -76,7 +80,7 @@ class MoviesViewHolder(itemView: View, private val onMovieClickListener: MovieCl
             itemView.context.getString(R.string.text_length, movie.runtime.toString())
         tvTitle.text = movie.title
         itemView.setOnClickListener {
-            onMovieClickListener?.onMovieClick(movie.id)
+            onMovieClickListener?.onMovieClick(clMovie, movie.id)
         }
     }
 }
