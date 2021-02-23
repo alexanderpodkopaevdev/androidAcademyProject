@@ -18,6 +18,8 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.alexanderpodkopaev.androidacademyproject.MyApp
@@ -48,6 +50,7 @@ class FragmentMoviesDetails : Fragment() {
     private var isRationaleShown = false
     private lateinit var movie: Movie
     private lateinit var clMovieDetails: ConstraintLayout
+    private val args: FragmentMoviesDetailsArgs by navArgs()
 
 
     override fun onCreateView(
@@ -56,7 +59,7 @@ class FragmentMoviesDetails : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_movies_details, container, false)
-        val movieId = arguments?.getInt(ID)
+        val movieId = args.movieId//arguments?.getInt(ID)
         if (movieId != null) {
             initView(view)
             initRecycler()
@@ -108,9 +111,7 @@ class FragmentMoviesDetails : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         clMovieDetails.transitionName = requireContext().resources.getString(
-            R.string.transition_name, arguments?.getInt(
-                ID
-            )
+            R.string.transition_name, args.movieId
         )
     }
 
@@ -135,14 +136,16 @@ class FragmentMoviesDetails : Fragment() {
     }
 
     private fun sendMovieInfoToCalendar() {
-        parentFragmentManager.beginTransaction()
+        val action = FragmentMoviesDetailsDirections.actionFragmentMoviesDetailsToFragmentCalendar(movie.id, movie.title, movie.overview, movie.runtime)
+        findNavController().navigate(action)
+/*        parentFragmentManager.beginTransaction()
             .replace(
                 R.id.flFragment,
                 FragmentCalendar.newInstance(movie.id, movie.title, movie.overview, movie.runtime)
             )
             .addSharedElement(btnAddToCalendar, btnAddToCalendar.transitionName)
             .addToBackStack(null)
-            .commit()
+            .commit()*/
     }
 
     private fun addMovieToCalendar() {
@@ -201,9 +204,9 @@ class FragmentMoviesDetails : Fragment() {
 
     private fun initView(view: View) {
         val tvBack = view.findViewById<TextView>(R.id.tvBack)
-        tvBack.setOnClickListener { parentFragmentManager.popBackStack() }
+        tvBack.setOnClickListener { findNavController().popBackStack() }
         val ivBack = view.findViewById<ImageView>(R.id.ivBack)
-        ivBack.setOnClickListener { parentFragmentManager.popBackStack() }
+        ivBack.setOnClickListener { findNavController().popBackStack() }
         ivBackground = view.findViewById(R.id.ivBackground)
         tvTitle = view.findViewById(R.id.tvTitle)
         tvAge = view.findViewById(R.id.tvAge)
@@ -216,7 +219,7 @@ class FragmentMoviesDetails : Fragment() {
         pbActors = view.findViewById(R.id.pbActors)
         btnAddToCalendar = view.findViewById(R.id.btnAddToCalendar)
         btnAddToCalendar.transitionName = requireContext().resources.getString(
-            R.string.transition_name_cal, arguments?.getInt(ID)
+            R.string.transition_name_cal, args.movieId
         )
         clMovieDetails = view.findViewById(R.id.clMovieDetails)
     }
@@ -250,7 +253,7 @@ class FragmentMoviesDetails : Fragment() {
 
 
     companion object {
-        private const val ID = "ID"
+/*        private const val ID = "ID"
 
         fun newInstance(movieId: Int): FragmentMoviesDetails {
             val movieFragment = FragmentMoviesDetails()
@@ -258,7 +261,7 @@ class FragmentMoviesDetails : Fragment() {
             bundle.putInt(ID, movieId)
             movieFragment.arguments = bundle
             return movieFragment
-        }
+        }*/
     }
 }
 

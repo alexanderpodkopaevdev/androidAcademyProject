@@ -13,9 +13,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
+ /*           supportFragmentManager.beginTransaction()
                 .add(R.id.flFragment, FragmentMoviesList())
-                .commit()
+                .commit()*/
             if (intent != null) {
                 handleIntent(intent)
             }
@@ -41,10 +41,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun openMovie(id: Int) {
-        supportFragmentManager.beginTransaction()
+/*        supportFragmentManager.beginTransaction()
             .replace(R.id.flFragment, FragmentMoviesDetails.newInstance(id))
             .addToBackStack(null)
-            .commit()
+            .commit()*/
         MyApp.container.moviesNotificationManager.dismissNotification(id)
     }
 
