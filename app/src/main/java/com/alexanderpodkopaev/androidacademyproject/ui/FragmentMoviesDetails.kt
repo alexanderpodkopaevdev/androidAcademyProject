@@ -18,6 +18,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -137,15 +138,8 @@ class FragmentMoviesDetails : Fragment() {
 
     private fun sendMovieInfoToCalendar() {
         val action = FragmentMoviesDetailsDirections.actionFragmentMoviesDetailsToFragmentCalendar(movie.id, movie.title, movie.overview, movie.runtime)
-        findNavController().navigate(action)
-/*        parentFragmentManager.beginTransaction()
-            .replace(
-                R.id.flFragment,
-                FragmentCalendar.newInstance(movie.id, movie.title, movie.overview, movie.runtime)
-            )
-            .addSharedElement(btnAddToCalendar, btnAddToCalendar.transitionName)
-            .addToBackStack(null)
-            .commit()*/
+        val extras = FragmentNavigatorExtras(btnAddToCalendar to btnAddToCalendar.transitionName)
+        findNavController().navigate(action, extras)
     }
 
     private fun addMovieToCalendar() {
@@ -249,19 +243,6 @@ class FragmentMoviesDetails : Fragment() {
         tvReview.text = getString(R.string.text_review, movie.voteCount.toString())
         tvDescription.text = movie.overview
         tvCast.visibility = if (movie.actors.isEmpty()) View.GONE else View.VISIBLE
-    }
-
-
-    companion object {
-/*        private const val ID = "ID"
-
-        fun newInstance(movieId: Int): FragmentMoviesDetails {
-            val movieFragment = FragmentMoviesDetails()
-            val bundle = Bundle()
-            bundle.putInt(ID, movieId)
-            movieFragment.arguments = bundle
-            return movieFragment
-        }*/
     }
 }
 
