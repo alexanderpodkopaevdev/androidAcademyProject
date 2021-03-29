@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/fragmentMoviesList"
         android:name="com.alexanderpodkopaev.androidacademyproject.ui.FragmentMoviesList"
-        android:label="FragmentMoviesList" >
+        android:label="FragmentMoviesList">
         <action
             android:id="@+id/action_fragmentMoviesList_to_fragmentMoviesDetails"
             app:destination="@id/fragmentMoviesDetails" />
@@ -16,18 +16,23 @@
     <fragment
         android:id="@+id/fragmentMoviesDetails"
         android:name="com.alexanderpodkopaev.androidacademyproject.ui.FragmentMoviesDetails"
-        android:label="FragmentMoviesDetails" >
+        android:label="FragmentMoviesDetails">
         <action
             android:id="@+id/action_fragmentMoviesDetails_to_fragmentCalendar"
             app:destination="@id/fragmentCalendar" />
-        <argument android:name="movieId"
+        <argument
+            android:name="movieId"
             app:argType="integer" />
+        <deepLink
+            android:id="@+id/deepLink"
+            app:action="ACTION_VIEW"
+            app:uri="com.alexanderpodkopaev.androidacademyproject://movies/movie/{movieId}" />
     </fragment>
     <fragment
         android:id="@+id/fragmentCalendar"
         android:name="com.alexanderpodkopaev.androidacademyproject.ui.FragmentCalendar"
         android:label="fragment_calendar"
-        tools:layout="@layout/fragment_calendar" >
+        tools:layout="@layout/fragment_calendar">
         <argument
             android:name="id"
             app:argType="integer" />

@@ -17,19 +17,12 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".ui.MainActivity"
-            android:launchMode="singleTop">
+            >
+            <nav-graph android:value="@navigation/nav_graph" />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT"/>
-                <data
-                    android:host="movies"
-                    android:pathPattern="/movie/.*"
-                    android:scheme="com.alexanderpodkopaev.androidacademyproject" />
             </intent-filter>
         </activity>
 

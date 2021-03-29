@@ -60,34 +60,33 @@ class FragmentMoviesDetails : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_movies_details, container, false)
-        val movieId = args.movieId//arguments?.getInt(ID)
-        if (movieId != null) {
-            initView(view)
-            initRecycler()
-            val appContainer = MyApp.container
-            val movieDetailsViewModel = ViewModelProvider(
-                this,
-                MovieDetailsFactory(
-                    appContainer.moviesRepository,
-                    appContainer.actorsRepository,
-                    movieId
-                )
-            ).get(
-                MovieDetailsViewModel::class.java
+        val movieId = args.movieId
+        initView(view)
+        initRecycler()
+        val appContainer = MyApp.container
+        val movieDetailsViewModel = ViewModelProvider(
+            this,
+            MovieDetailsFactory(
+                appContainer.moviesRepository,
+                appContainer.actorsRepository,
+                movieId
             )
-            movieDetailsViewModel.movie.observe(viewLifecycleOwner) { movieFromModel ->
-                movie = movieFromModel
-                bindMovie()
-            }
-            movieDetailsViewModel.actors.observe(viewLifecycleOwner) { actors ->
-                actorsAdapter.bindActors(actors)
-            }
-            movieDetailsViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
-                pbActors.visibility = if (isLoading) View.VISIBLE else View.GONE
-            }
-            movieDetailsViewModel.fetchMovie()
-            btnAddToCalendar.setOnClickListener { addMovieToCalendar() }
+        ).get(
+            MovieDetailsViewModel::class.java
+        )
+        movieDetailsViewModel.movie.observe(viewLifecycleOwner) { movieFromModel ->
+            movie = movieFromModel
+            bindMovie()
         }
+        movieDetailsViewModel.actors.observe(viewLifecycleOwner) { actors ->
+            actorsAdapter.bindActors(actors)
+        }
+        movieDetailsViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+            pbActors.visibility = if (isLoading) View.VISIBLE else View.GONE
+        }
+        movieDetailsViewModel.fetchMovie()
+        btnAddToCalendar.setOnClickListener { addMovieToCalendar() }
+        appContainer.moviesNotificationManager.dismissNotification(movieId)
         return view
     }
 
@@ -137,7 +136,12 @@ class FragmentMoviesDetails : Fragment() {
     }
 
     private fun sendMovieInfoToCalendar() {
-        val action = FragmentMoviesDetailsDirections.actionFragmentMoviesDetailsToFragmentCalendar(movie.id, movie.title, movie.overview, movie.runtime)
+        val action = FragmentMoviesDetailsDirections.actionFragmentMoviesDetailsToFragmentCalendar(
+            movie.id,
+            movie.title,
+            movie.overview,
+            movie.runtime
+        )
         val extras = FragmentNavigatorExtras(btnAddToCalendar to btnAddToCalendar.transitionName)
         findNavController().navigate(action, extras)
     }
