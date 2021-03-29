@@ -13,6 +13,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.navArgs
 import com.alexanderpodkopaev.androidacademyproject.MyApp
 import com.alexanderpodkopaev.androidacademyproject.R
 import com.alexanderpodkopaev.androidacademyproject.data.model.MovieToCalendar
@@ -27,6 +28,7 @@ class FragmentCalendar : Fragment() {
     private lateinit var etDate: EditText
     private lateinit var etTime: EditText
     private lateinit var calendarViewModel: CalendarViewModel
+    private val args : FragmentCalendarArgs by navArgs()
 
 
     override fun onCreateView(
@@ -34,11 +36,12 @@ class FragmentCalendar : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_calendar, container, false)
+
         val movie = MovieToCalendar(
-            id = arguments?.getInt(ID) ?: 0,
-            title = arguments?.getString(TITLE) ?: "",
-            overview = arguments?.getString(OVERVIEW) ?: "",
-            runtime = arguments?.getInt(RUNTIME) ?: 0
+            id = args.id,
+            title = args.title,
+            overview = args.overview,
+            runtime = args.runtime
         )
         val calendarRepository = MyApp.container.calendarRepository
         calendarViewModel =
@@ -94,7 +97,7 @@ class FragmentCalendar : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val tvAddToCalendar = view.findViewById<TextView>(R.id.tvAddToCalendar)
         tvAddToCalendar.transitionName = requireContext().resources.getString(
-            R.string.transition_name_cal, arguments?.getInt(ID)
+            R.string.transition_name_cal, args.id
         )
     }
 
@@ -126,7 +129,7 @@ class FragmentCalendar : Fragment() {
         picker.show()
     }
 
-    companion object {
+/*    companion object {
 
         private const val ID = "ID"
         private const val TITLE = "TITLE"
@@ -142,5 +145,5 @@ class FragmentCalendar : Fragment() {
                     putInt(RUNTIME, runtime)
                 }
             }
-    }
+    }*/
 }

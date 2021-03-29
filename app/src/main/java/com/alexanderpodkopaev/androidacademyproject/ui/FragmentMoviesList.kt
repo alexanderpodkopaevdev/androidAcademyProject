@@ -8,6 +8,8 @@ import android.widget.ProgressBar
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.FragmentNavigatorExtras
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -70,11 +72,9 @@ class FragmentMoviesList : Fragment(), MovieClickListener {
         reenterTransition = MaterialElevationScale(true).apply {
             duration = resources.getInteger(R.integer.reply_motion_duration_large).toLong()
         }
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.flFragment, FragmentMoviesDetails.newInstance(movieId))
-            .addSharedElement(clMovie, clMovie.transitionName)
-            .addToBackStack(null)
-            .commit()
+        val action = FragmentMoviesListDirections.actionFragmentMoviesListToFragmentMoviesDetails(movieId)
+        val extras = FragmentNavigatorExtras(clMovie to clMovie.transitionName)
+        findNavController().navigate(action, extras)
     }
 
     private fun initRecycler(view: View) {

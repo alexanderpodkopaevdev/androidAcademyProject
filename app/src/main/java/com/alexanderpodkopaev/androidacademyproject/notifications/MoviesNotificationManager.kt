@@ -31,7 +31,6 @@ class MoviesNotificationManager(val context: Context) {
 
     fun showNotification(mostPopularMovie: Movie) {
         initialize()
-        Log.d("MyWorker", "Start notification")
         val uri =
             "com.alexanderpodkopaev.androidacademyproject://movies/movie/${mostPopularMovie.id}".toUri()
         Log.d("MyWorker uri", uri.toString())
@@ -49,8 +48,10 @@ class MoviesNotificationManager(val context: Context) {
             .setSmallIcon(R.drawable.star_icon_disable)
             .setPriority(NotificationManagerCompat.IMPORTANCE_HIGH)
             .setContentIntent(pendingIntent)
-            .setStyle(NotificationCompat.BigTextStyle()
-                .bigText(mostPopularMovie.overview))
+            .setStyle(
+                NotificationCompat.BigTextStyle()
+                    .bigText(mostPopularMovie.overview)
+            )
             .build()
         notificationManagerCompat.notify(MOVIE_TAG, mostPopularMovie.id, notify)
     }
