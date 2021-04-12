@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">androidAcademyProject</string>
+    <string name="app_name">All movies</string>
     <string name="text_back">Back</string>
     <string name="text_age">%1$s+</string>
     <string name="text_age_adult">18</string>
