@@ -27,11 +27,11 @@ import com.alexanderpodkopaev.androidacademyproject.MyApp
 import com.alexanderpodkopaev.androidacademyproject.R
 import com.alexanderpodkopaev.androidacademyproject.adapter.ActorsAdapter
 import com.alexanderpodkopaev.androidacademyproject.data.model.Movie
+import com.alexanderpodkopaev.androidacademyproject.di.ViewModelFactory
 import com.alexanderpodkopaev.androidacademyproject.notifications.MoviesNotificationManager
 import com.alexanderpodkopaev.androidacademyproject.repo.ActorsRepository
 import com.alexanderpodkopaev.androidacademyproject.repo.MoviesRepository
 import com.alexanderpodkopaev.androidacademyproject.utils.RightOffsetItemDecoration
-import com.alexanderpodkopaev.androidacademyproject.viewmodel.MovieDetailsFactory
 import com.alexanderpodkopaev.androidacademyproject.viewmodel.MovieDetailsViewModel
 import com.bumptech.glide.Glide
 import com.google.android.material.transition.MaterialContainerTransform
@@ -66,6 +66,9 @@ class FragmentMoviesDetails : Fragment() {
     @Inject
     lateinit var moviesNotificationManager: MoviesNotificationManager
 
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+    lateinit var movieDetailsViewModel: MovieDetailsViewModel
 
 
     override fun onCreateView(
@@ -77,16 +80,8 @@ class FragmentMoviesDetails : Fragment() {
         val movieId = args.movieId
         initView(view)
         initRecycler()
-        val movieDetailsViewModel = ViewModelProvider(
-            this,
-            MovieDetailsFactory(
-                moviesRepository,
-                actorsRepository,
-                movieId
-            )
-        ).get(
-            MovieDetailsViewModel::class.java
-        )
+        movieDetailsViewModel =
+            ViewModelProvider(this, viewModelFactory).get(MovieDetailsViewModel::class.java)
         movieDetailsViewModel.movie.observe(viewLifecycleOwner) { movieFromModel ->
             movie = movieFromModel
             bindMovie()
@@ -97,7 +92,7 @@ class FragmentMoviesDetails : Fragment() {
         movieDetailsViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
             pbActors.visibility = if (isLoading) View.VISIBLE else View.GONE
         }
-        movieDetailsViewModel.fetchMovie()
+        movieDetailsViewModel.fetchMovie(movieId)
         btnAddToCalendar.setOnClickListener { addMovieToCalendar() }
         moviesNotificationManager.dismissNotification(movieId)
         return view

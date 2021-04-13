@@ -10,8 +10,9 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.net.toUri
 import com.alexanderpodkopaev.androidacademyproject.R
 import com.alexanderpodkopaev.androidacademyproject.data.model.Movie
+import javax.inject.Inject
 
-class MoviesNotificationManager(val context: Context) {
+class MoviesNotificationManager @Inject constructor(val context: Context) {
 
     private val notificationManagerCompat: NotificationManagerCompat =
         NotificationManagerCompat.from(context)

@@ -18,8 +18,8 @@ import androidx.navigation.fragment.navArgs
 import com.alexanderpodkopaev.androidacademyproject.MyApp
 import com.alexanderpodkopaev.androidacademyproject.R
 import com.alexanderpodkopaev.androidacademyproject.data.model.MovieToCalendar
+import com.alexanderpodkopaev.androidacademyproject.di.ViewModelFactory
 import com.alexanderpodkopaev.androidacademyproject.repo.CalendarRepository
-import com.alexanderpodkopaev.androidacademyproject.viewmodel.CalendarFactory
 import com.alexanderpodkopaev.androidacademyproject.viewmodel.CalendarViewModel
 import com.google.android.material.transition.MaterialContainerTransform
 import java.util.*
@@ -30,11 +30,14 @@ class FragmentCalendar : Fragment() {
 
     private lateinit var etDate: EditText
     private lateinit var etTime: EditText
-    private lateinit var calendarViewModel: CalendarViewModel
-    private val args : FragmentCalendarArgs by navArgs()
+    private val args: FragmentCalendarArgs by navArgs()
 
     @Inject
     lateinit var calendarRepository: CalendarRepository
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+    lateinit var calendarViewModel: CalendarViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,7 +52,7 @@ class FragmentCalendar : Fragment() {
             runtime = args.runtime
         )
         calendarViewModel =
-            ViewModelProvider(this, CalendarFactory(movie, calendarRepository)).get(
+            ViewModelProvider(this, viewModelFactory).get(
                 CalendarViewModel::class.java
             )
         etDate = view.findViewById(R.id.etDate)
@@ -62,7 +65,7 @@ class FragmentCalendar : Fragment() {
         }
         val btnSave = view.findViewById<Button>(R.id.btnSave)
         btnSave.setOnClickListener {
-            calendarViewModel.saveToCalendar()
+            calendarViewModel.saveToCalendar(movie)
         }
         calendarViewModel.isError.observe(viewLifecycleOwner) { isError ->
             if (isError)

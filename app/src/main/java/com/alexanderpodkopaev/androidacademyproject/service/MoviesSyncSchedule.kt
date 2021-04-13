@@ -2,15 +2,20 @@ package com.alexanderpodkopaev.androidacademyproject.service
 
 import androidx.work.*
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
-class MoviesSyncSchedule(private val workManager: WorkManager) {
+class MoviesSyncSchedule @Inject constructor(private val workManager: WorkManager) {
 
     private val constraints = Constraints.Builder()
         .setRequiredNetworkType(NetworkType.UNMETERED)
         .setRequiresCharging(true)
         .build()
     private val constrainedRequest =
-        PeriodicWorkRequest.Builder(MoviesUpdateWorker::class.java, REPEAT_INTERVAL_8, TimeUnit.HOURS)
+        PeriodicWorkRequest.Builder(
+            MoviesUpdateWorker::class.java,
+            REPEAT_INTERVAL_8,
+            TimeUnit.HOURS
+        )
             .setConstraints(constraints)
             .build()
 

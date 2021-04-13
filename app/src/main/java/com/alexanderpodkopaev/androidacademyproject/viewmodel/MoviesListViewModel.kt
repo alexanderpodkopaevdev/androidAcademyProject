@@ -7,8 +7,9 @@ import androidx.lifecycle.viewModelScope
 import com.alexanderpodkopaev.androidacademyproject.data.model.Movie
 import com.alexanderpodkopaev.androidacademyproject.repo.MoviesRepository
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MoviesListViewModel(
+class MoviesListViewModel @Inject constructor(
     private val repository: MoviesRepository
 ) : ViewModel() {
 

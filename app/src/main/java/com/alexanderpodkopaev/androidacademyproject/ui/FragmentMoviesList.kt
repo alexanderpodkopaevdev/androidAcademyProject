@@ -18,10 +18,10 @@ import com.alexanderpodkopaev.androidacademyproject.MyApp
 import com.alexanderpodkopaev.androidacademyproject.R
 import com.alexanderpodkopaev.androidacademyproject.adapter.MovieClickListener
 import com.alexanderpodkopaev.androidacademyproject.adapter.MoviesAdapter
+import com.alexanderpodkopaev.androidacademyproject.di.ViewModelFactory
 import com.alexanderpodkopaev.androidacademyproject.repo.MoviesRepository
 import com.alexanderpodkopaev.androidacademyproject.utils.OffsetItemDecoration
 import com.alexanderpodkopaev.androidacademyproject.utils.UiUtils.calculateNoOfColumns
-import com.alexanderpodkopaev.androidacademyproject.viewmodel.MoviesFactory
 import com.alexanderpodkopaev.androidacademyproject.viewmodel.MoviesListViewModel
 import com.google.android.material.transition.MaterialElevationScale
 import javax.inject.Inject
@@ -36,6 +36,11 @@ class FragmentMoviesList : Fragment(), MovieClickListener {
     @Inject
     lateinit var moviesRepository: MoviesRepository
 
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+    lateinit var viewModel: MoviesListViewModel
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -45,10 +50,8 @@ class FragmentMoviesList : Fragment(), MovieClickListener {
         initRecycler(view)
         progressBar = view.findViewById(R.id.pbMovies)
         srlResfresh = view.findViewById(R.id.srlRefresh)
-        val viewModel = ViewModelProvider(
-            this,
-            MoviesFactory(moviesRepository)
-        ).get(MoviesListViewModel::class.java)
+
+        viewModel = ViewModelProvider(this, viewModelFactory).get(MoviesListViewModel::class.java)
         viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
             progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
         }
