@@ -13,13 +13,13 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import com.alexanderpodkopaev.androidacademyproject.MyApp
 import com.alexanderpodkopaev.androidacademyproject.R
 import com.alexanderpodkopaev.androidacademyproject.data.model.MovieToCalendar
 import com.alexanderpodkopaev.androidacademyproject.di.ViewModelFactory
 import com.alexanderpodkopaev.androidacademyproject.repo.CalendarRepository
+import com.alexanderpodkopaev.androidacademyproject.utils.injectViewModel
 import com.alexanderpodkopaev.androidacademyproject.viewmodel.CalendarViewModel
 import com.google.android.material.transition.MaterialContainerTransform
 import java.util.*
@@ -51,10 +51,7 @@ class FragmentCalendar : Fragment() {
             overview = args.overview,
             runtime = args.runtime
         )
-        calendarViewModel =
-            ViewModelProvider(this, viewModelFactory).get(
-                CalendarViewModel::class.java
-            )
+        calendarViewModel = injectViewModel(viewModelFactory)
         etDate = view.findViewById(R.id.etDate)
         etDate.setOnClickListener {
             showDataPicker()

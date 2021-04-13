@@ -32,6 +32,7 @@ import com.alexanderpodkopaev.androidacademyproject.notifications.MoviesNotifica
 import com.alexanderpodkopaev.androidacademyproject.repo.ActorsRepository
 import com.alexanderpodkopaev.androidacademyproject.repo.MoviesRepository
 import com.alexanderpodkopaev.androidacademyproject.utils.RightOffsetItemDecoration
+import com.alexanderpodkopaev.androidacademyproject.utils.injectViewModel
 import com.alexanderpodkopaev.androidacademyproject.viewmodel.MovieDetailsViewModel
 import com.bumptech.glide.Glide
 import com.google.android.material.transition.MaterialContainerTransform
@@ -80,8 +81,7 @@ class FragmentMoviesDetails : Fragment() {
         val movieId = args.movieId
         initView(view)
         initRecycler()
-        movieDetailsViewModel =
-            ViewModelProvider(this, viewModelFactory).get(MovieDetailsViewModel::class.java)
+        movieDetailsViewModel = injectViewModel(viewModelFactory)
         movieDetailsViewModel.movie.observe(viewLifecycleOwner) { movieFromModel ->
             movie = movieFromModel
             bindMovie()

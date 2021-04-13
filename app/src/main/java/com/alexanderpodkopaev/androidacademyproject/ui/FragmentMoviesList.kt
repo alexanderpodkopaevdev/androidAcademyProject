@@ -22,6 +22,7 @@ import com.alexanderpodkopaev.androidacademyproject.di.ViewModelFactory
 import com.alexanderpodkopaev.androidacademyproject.repo.MoviesRepository
 import com.alexanderpodkopaev.androidacademyproject.utils.OffsetItemDecoration
 import com.alexanderpodkopaev.androidacademyproject.utils.UiUtils.calculateNoOfColumns
+import com.alexanderpodkopaev.androidacademyproject.utils.injectViewModel
 import com.alexanderpodkopaev.androidacademyproject.viewmodel.MoviesListViewModel
 import com.google.android.material.transition.MaterialElevationScale
 import javax.inject.Inject
@@ -51,7 +52,7 @@ class FragmentMoviesList : Fragment(), MovieClickListener {
         progressBar = view.findViewById(R.id.pbMovies)
         srlResfresh = view.findViewById(R.id.srlRefresh)
 
-        viewModel = ViewModelProvider(this, viewModelFactory).get(MoviesListViewModel::class.java)
+        viewModel = injectViewModel(viewModelFactory)
         viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
             progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
         }
