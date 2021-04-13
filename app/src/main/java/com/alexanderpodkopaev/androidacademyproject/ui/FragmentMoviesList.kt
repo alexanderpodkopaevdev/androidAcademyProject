@@ -1,5 +1,6 @@
 package com.alexanderpodkopaev.androidacademyproject.ui
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,11 +18,13 @@ import com.alexanderpodkopaev.androidacademyproject.MyApp
 import com.alexanderpodkopaev.androidacademyproject.R
 import com.alexanderpodkopaev.androidacademyproject.adapter.MovieClickListener
 import com.alexanderpodkopaev.androidacademyproject.adapter.MoviesAdapter
+import com.alexanderpodkopaev.androidacademyproject.repo.MoviesRepository
 import com.alexanderpodkopaev.androidacademyproject.utils.OffsetItemDecoration
 import com.alexanderpodkopaev.androidacademyproject.utils.UiUtils.calculateNoOfColumns
 import com.alexanderpodkopaev.androidacademyproject.viewmodel.MoviesFactory
 import com.alexanderpodkopaev.androidacademyproject.viewmodel.MoviesListViewModel
 import com.google.android.material.transition.MaterialElevationScale
+import javax.inject.Inject
 
 class FragmentMoviesList : Fragment(), MovieClickListener {
 
@@ -29,6 +32,9 @@ class FragmentMoviesList : Fragment(), MovieClickListener {
     private lateinit var progressBar: ProgressBar
     private lateinit var srlResfresh: SwipeRefreshLayout
     private lateinit var moviesAdapter: MoviesAdapter
+
+    @Inject
+    lateinit var moviesRepository: MoviesRepository
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,10 +45,9 @@ class FragmentMoviesList : Fragment(), MovieClickListener {
         initRecycler(view)
         progressBar = view.findViewById(R.id.pbMovies)
         srlResfresh = view.findViewById(R.id.srlRefresh)
-        val appContainer = MyApp.container
         val viewModel = ViewModelProvider(
             this,
-            MoviesFactory(appContainer.moviesRepository)
+            MoviesFactory(moviesRepository)
         ).get(MoviesListViewModel::class.java)
         viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
             progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
@@ -59,6 +64,11 @@ class FragmentMoviesList : Fragment(), MovieClickListener {
         return view
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (requireActivity().application as MyApp).appComponent.inject(this)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         postponeEnterTransition()
         view.doOnPreDraw { startPostponedEnterTransition() }
@@ -72,7 +82,8 @@ class FragmentMoviesList : Fragment(), MovieClickListener {
         reenterTransition = MaterialElevationScale(true).apply {
             duration = resources.getInteger(R.integer.reply_motion_duration_large).toLong()
         }
-        val action = FragmentMoviesListDirections.actionFragmentMoviesListToFragmentMoviesDetails(movieId)
+        val action =
+            FragmentMoviesListDirections.actionFragmentMoviesListToFragmentMoviesDetails(movieId)
         val extras = FragmentNavigatorExtras(clMovie to clMovie.transitionName)
         findNavController().navigate(action, extras)
     }

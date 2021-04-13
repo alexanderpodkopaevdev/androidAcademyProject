@@ -6,14 +6,19 @@ import androidx.work.WorkerParameters
 import com.alexanderpodkopaev.androidacademyproject.MyApp
 import com.alexanderpodkopaev.androidacademyproject.data.model.Movie
 import com.alexanderpodkopaev.androidacademyproject.notifications.MoviesNotificationManager
+import com.alexanderpodkopaev.androidacademyproject.repo.MoviesRepository
+import javax.inject.Inject
 
 class MoviesUpdateWorker(val context: Context, workerParameters: WorkerParameters) :
     CoroutineWorker(context, workerParameters) {
 
+    @Inject
+    lateinit var moviesRepository: MoviesRepository
+
     override suspend fun doWork(): Result {
         val container = MyApp.container
-        val moviesFromDB = container.moviesRepository.getMovies()
-        val moviesFromNetwork = container.moviesRepository.getMovies(true)
+        val moviesFromDB = moviesRepository.getMovies()
+        val moviesFromNetwork = moviesRepository.getMovies(true)
         if (moviesFromNetwork.isNotEmpty()) {
             val newMovie = findNewFilms(
                 moviesFromDB,

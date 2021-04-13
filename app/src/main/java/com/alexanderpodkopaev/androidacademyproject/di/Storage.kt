@@ -15,9 +15,4 @@ class Storage {
     fun provideDataBase(context: Context): MoviesDatabase = MoviesDatabase.create(context)
 
 
-    @Singleton
-    @Provides
-    fun provideDbDataSource(database: MoviesDatabase) : DBDataSource = DBDataSource(database)
-
-
 }

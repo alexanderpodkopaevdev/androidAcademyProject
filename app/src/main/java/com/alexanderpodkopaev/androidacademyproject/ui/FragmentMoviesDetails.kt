@@ -27,11 +27,14 @@ import com.alexanderpodkopaev.androidacademyproject.MyApp
 import com.alexanderpodkopaev.androidacademyproject.R
 import com.alexanderpodkopaev.androidacademyproject.adapter.ActorsAdapter
 import com.alexanderpodkopaev.androidacademyproject.data.model.Movie
+import com.alexanderpodkopaev.androidacademyproject.repo.ActorsRepository
+import com.alexanderpodkopaev.androidacademyproject.repo.MoviesRepository
 import com.alexanderpodkopaev.androidacademyproject.utils.RightOffsetItemDecoration
 import com.alexanderpodkopaev.androidacademyproject.viewmodel.MovieDetailsFactory
 import com.alexanderpodkopaev.androidacademyproject.viewmodel.MovieDetailsViewModel
 import com.bumptech.glide.Glide
 import com.google.android.material.transition.MaterialContainerTransform
+import javax.inject.Inject
 
 class FragmentMoviesDetails : Fragment() {
 
@@ -53,6 +56,12 @@ class FragmentMoviesDetails : Fragment() {
     private lateinit var clMovieDetails: ConstraintLayout
     private val args: FragmentMoviesDetailsArgs by navArgs()
 
+    @Inject
+    lateinit var moviesRepository: MoviesRepository
+
+    @Inject
+    lateinit var actorsRepository: ActorsRepository
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -67,8 +76,8 @@ class FragmentMoviesDetails : Fragment() {
         val movieDetailsViewModel = ViewModelProvider(
             this,
             MovieDetailsFactory(
-                appContainer.moviesRepository,
-                appContainer.actorsRepository,
+                moviesRepository,
+                actorsRepository,
                 movieId
             )
         ).get(
@@ -116,6 +125,7 @@ class FragmentMoviesDetails : Fragment() {
     }
 
     override fun onAttach(context: Context) {
+        (requireActivity().application as MyApp).appComponent.inject(this)
         super.onAttach(context)
         requestPermissionLauncher =
             registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->

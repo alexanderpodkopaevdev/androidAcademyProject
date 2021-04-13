@@ -8,8 +8,9 @@ import com.alexanderpodkopaev.androidacademyproject.data.model.Actor
 import com.alexanderpodkopaev.androidacademyproject.data.model.Movie
 import com.alexanderpodkopaev.androidacademyproject.utils.convertToEntityModel
 import com.alexanderpodkopaev.androidacademyproject.utils.convertToModel
+import javax.inject.Inject
 
-class DBDataSource(private val db: MoviesDatabase) {
+class DBDataSource @Inject constructor(private val db: MoviesDatabase) {
 
     private suspend fun insertMovie(movie: Movie) {
         db.moviesDao.insertMovie(movie.convertToEntityModel())
