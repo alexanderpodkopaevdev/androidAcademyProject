@@ -27,6 +27,7 @@ import com.alexanderpodkopaev.androidacademyproject.MyApp
 import com.alexanderpodkopaev.androidacademyproject.R
 import com.alexanderpodkopaev.androidacademyproject.adapter.ActorsAdapter
 import com.alexanderpodkopaev.androidacademyproject.data.model.Movie
+import com.alexanderpodkopaev.androidacademyproject.notifications.MoviesNotificationManager
 import com.alexanderpodkopaev.androidacademyproject.repo.ActorsRepository
 import com.alexanderpodkopaev.androidacademyproject.repo.MoviesRepository
 import com.alexanderpodkopaev.androidacademyproject.utils.RightOffsetItemDecoration
@@ -62,6 +63,10 @@ class FragmentMoviesDetails : Fragment() {
     @Inject
     lateinit var actorsRepository: ActorsRepository
 
+    @Inject
+    lateinit var moviesNotificationManager: MoviesNotificationManager
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -72,7 +77,6 @@ class FragmentMoviesDetails : Fragment() {
         val movieId = args.movieId
         initView(view)
         initRecycler()
-        val appContainer = MyApp.container
         val movieDetailsViewModel = ViewModelProvider(
             this,
             MovieDetailsFactory(
@@ -95,7 +99,7 @@ class FragmentMoviesDetails : Fragment() {
         }
         movieDetailsViewModel.fetchMovie()
         btnAddToCalendar.setOnClickListener { addMovieToCalendar() }
-        appContainer.moviesNotificationManager.dismissNotification(movieId)
+        moviesNotificationManager.dismissNotification(movieId)
         return view
     }
 

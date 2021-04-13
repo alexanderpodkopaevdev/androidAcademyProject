@@ -1,5 +1,6 @@
 package com.alexanderpodkopaev.androidacademyproject.di
 
+import android.content.Context
 import com.alexanderpodkopaev.androidacademyproject.data.MoviesApi
 import com.alexanderpodkopaev.androidacademyproject.repo.*
 import dagger.Module
@@ -22,4 +23,6 @@ class Repository {
     ): ActorsRepository =
         ActorsRepoImpl(moviesApi, dbDataSource)
 
+    @Provides
+    fun provideCalendarRepository(context: Context): CalendarRepository = CalendarRepoImpl(context)
 }

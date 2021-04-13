@@ -2,6 +2,7 @@ package com.alexanderpodkopaev.androidacademyproject.ui
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -17,10 +18,12 @@ import androidx.navigation.fragment.navArgs
 import com.alexanderpodkopaev.androidacademyproject.MyApp
 import com.alexanderpodkopaev.androidacademyproject.R
 import com.alexanderpodkopaev.androidacademyproject.data.model.MovieToCalendar
+import com.alexanderpodkopaev.androidacademyproject.repo.CalendarRepository
 import com.alexanderpodkopaev.androidacademyproject.viewmodel.CalendarFactory
 import com.alexanderpodkopaev.androidacademyproject.viewmodel.CalendarViewModel
 import com.google.android.material.transition.MaterialContainerTransform
 import java.util.*
+import javax.inject.Inject
 
 
 class FragmentCalendar : Fragment() {
@@ -30,6 +33,8 @@ class FragmentCalendar : Fragment() {
     private lateinit var calendarViewModel: CalendarViewModel
     private val args : FragmentCalendarArgs by navArgs()
 
+    @Inject
+    lateinit var calendarRepository: CalendarRepository
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,7 +48,6 @@ class FragmentCalendar : Fragment() {
             overview = args.overview,
             runtime = args.runtime
         )
-        val calendarRepository = MyApp.container.calendarRepository
         calendarViewModel =
             ViewModelProvider(this, CalendarFactory(movie, calendarRepository)).get(
                 CalendarViewModel::class.java
@@ -101,6 +105,11 @@ class FragmentCalendar : Fragment() {
         )
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (requireActivity().application as MyApp).appComponent.inject(this)
+    }
+
     private fun showDataPicker() {
         val calendar: Calendar = Calendar.getInstance()
         val picker =
@@ -129,21 +138,5 @@ class FragmentCalendar : Fragment() {
         picker.show()
     }
 
-/*    companion object {
 
-        private const val ID = "ID"
-        private const val TITLE = "TITLE"
-        private const val OVERVIEW = "OVERVIEW"
-        private const val RUNTIME = "RUNTIME"
-
-        fun newInstance(id: Int, title: String, overview: String, runtime: Int) =
-            FragmentCalendar().apply {
-                arguments = Bundle().apply {
-                    putInt(ID, id)
-                    putString(TITLE, title)
-                    putString(OVERVIEW, overview)
-                    putInt(RUNTIME, runtime)
-                }
-            }
-    }*/
 }

@@ -15,8 +15,10 @@ class MoviesUpdateWorker(val context: Context, workerParameters: WorkerParameter
     @Inject
     lateinit var moviesRepository: MoviesRepository
 
+    @Inject
+    lateinit var moviesNotificationManager: MoviesNotificationManager
+
     override suspend fun doWork(): Result {
-        val container = MyApp.container
         val moviesFromDB = moviesRepository.getMovies()
         val moviesFromNetwork = moviesRepository.getMovies(true)
         if (moviesFromNetwork.isNotEmpty()) {
@@ -25,7 +27,7 @@ class MoviesUpdateWorker(val context: Context, workerParameters: WorkerParameter
                 moviesFromNetwork
             )
             if (newMovie != null) {
-                MyApp.container.moviesNotificationManager.showNotification(newMovie)
+                moviesNotificationManager.showNotification(newMovie)
             }
         }
         return if (moviesFromNetwork.isNotEmpty()) {
