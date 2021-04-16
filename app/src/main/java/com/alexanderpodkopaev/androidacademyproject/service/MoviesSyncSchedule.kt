@@ -1,10 +1,11 @@
 package com.alexanderpodkopaev.androidacademyproject.service
 
+import android.content.Context
 import androidx.work.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-class MoviesSyncSchedule @Inject constructor(private val workManager: WorkManager) {
+class MoviesSyncSchedule @Inject constructor(private val context: Context) {
 
     private val constraints = Constraints.Builder()
         .setRequiredNetworkType(NetworkType.UNMETERED)
@@ -20,7 +21,7 @@ class MoviesSyncSchedule @Inject constructor(private val workManager: WorkManage
             .build()
 
     fun schedule() {
-        workManager.enqueueUniquePeriodicWork(
+        WorkManager.getInstance(context).enqueueUniquePeriodicWork(
             WORK_TAG,
             ExistingPeriodicWorkPolicy.KEEP,
             constrainedRequest

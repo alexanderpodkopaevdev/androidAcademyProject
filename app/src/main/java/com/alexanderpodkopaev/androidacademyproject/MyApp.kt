@@ -2,17 +2,10 @@ package com.alexanderpodkopaev.androidacademyproject
 
 import android.app.Application
 import androidx.work.Configuration
-import androidx.work.WorkManager
-import androidx.work.WorkerFactory
 import com.alexanderpodkopaev.androidacademyproject.di.AppComponent
 import com.alexanderpodkopaev.androidacademyproject.di.DaggerAppComponent
-import com.alexanderpodkopaev.androidacademyproject.service.AppWorkerFactory
-import javax.inject.Inject
 
-class MyApp : Application() {
-
-    @Inject
-    lateinit var workerFactory: WorkerFactory
+class MyApp : Application(), Configuration.Provider {
 
     val appComponent: AppComponent by lazy {
         DaggerAppComponent.factory().create(applicationContext)
@@ -21,7 +14,9 @@ class MyApp : Application() {
     override fun onCreate() {
         super.onCreate()
         appComponent.moviesSyncSchedule().schedule()
-        //val factory: AppWorkerFactory = appComponent.workerFactory()
-        WorkManager.initialize(this,Configuration.Builder().setWorkerFactory(workerFactory).build())
+    }
+
+    override fun getWorkManagerConfiguration(): Configuration {
+        return Configuration.Builder().setWorkerFactory(appComponent.workerFactory()).build()
     }
 }
