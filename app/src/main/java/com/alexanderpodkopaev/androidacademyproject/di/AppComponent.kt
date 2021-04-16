@@ -7,6 +7,7 @@ import com.alexanderpodkopaev.androidacademyproject.notifications.MoviesNotifica
 import com.alexanderpodkopaev.androidacademyproject.repo.ActorsRepository
 import com.alexanderpodkopaev.androidacademyproject.repo.DBDataSource
 import com.alexanderpodkopaev.androidacademyproject.repo.MoviesRepository
+import com.alexanderpodkopaev.androidacademyproject.service.AppWorkerFactory
 import com.alexanderpodkopaev.androidacademyproject.service.MoviesSyncSchedule
 import com.alexanderpodkopaev.androidacademyproject.ui.FragmentCalendar
 import com.alexanderpodkopaev.androidacademyproject.ui.FragmentMoviesDetails
@@ -16,7 +17,7 @@ import dagger.Component
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [Storage::class, Network::class, Repository::class, Schedule::class, ViewModelModule::class])
+@Component(modules = [Storage::class, Network::class, Repository::class, Schedule::class, ViewModelModule::class, WorkerModule::class, AppAssistedInjectModule::class])
 interface AppComponent {
 
     @Component.Factory
@@ -35,5 +36,7 @@ interface AppComponent {
     fun inject(fragment: FragmentMoviesDetails)
     fun inject(fragment: FragmentMoviesList)
     fun inject(fragment: FragmentCalendar)
+
+    fun workerFactory(): AppWorkerFactory
 
 }

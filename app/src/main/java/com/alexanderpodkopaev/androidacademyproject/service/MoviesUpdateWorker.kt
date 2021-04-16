@@ -3,20 +3,19 @@ package com.alexanderpodkopaev.androidacademyproject.service
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.alexanderpodkopaev.androidacademyproject.MyApp
 import com.alexanderpodkopaev.androidacademyproject.data.model.Movie
 import com.alexanderpodkopaev.androidacademyproject.notifications.MoviesNotificationManager
 import com.alexanderpodkopaev.androidacademyproject.repo.MoviesRepository
-import javax.inject.Inject
+import com.squareup.inject.assisted.Assisted
+import com.squareup.inject.assisted.AssistedInject
 
-class MoviesUpdateWorker(val context: Context, workerParameters: WorkerParameters) :
+class MoviesUpdateWorker @AssistedInject constructor(
+    @Assisted val context: Context,
+    @Assisted val workerParameters: WorkerParameters,
+    var moviesRepository: MoviesRepository,
+    var moviesNotificationManager: MoviesNotificationManager
+) :
     CoroutineWorker(context, workerParameters) {
-
-    @Inject
-    lateinit var moviesRepository: MoviesRepository
-
-    @Inject
-    lateinit var moviesNotificationManager: MoviesNotificationManager
 
     override suspend fun doWork(): Result {
         val moviesFromDB = moviesRepository.getMovies()
@@ -45,5 +44,8 @@ class MoviesUpdateWorker(val context: Context, workerParameters: WorkerParameter
         return moviesFromNetwork.filter { !idsMoviesFromDB.contains(it.id) }
             .maxByOrNull { it.ratings }
     }
+
+    @AssistedInject.Factory
+    interface Factory : ChildWorkerFactory
 
 }
