@@ -1,11 +1,12 @@
 package com.alexanderpodkopaev.androidacademyproject
 
-import android.app.Application
 import androidx.work.Configuration
 import com.alexanderpodkopaev.androidacademyproject.di.AppComponent
 import com.alexanderpodkopaev.androidacademyproject.di.DaggerAppComponent
+import dagger.android.AndroidInjector
+import dagger.android.DaggerApplication
 
-class MyApp : Application(), Configuration.Provider {
+class MyApp : DaggerApplication(), Configuration.Provider {
 
     val appComponent: AppComponent by lazy {
         DaggerAppComponent.factory().create(applicationContext)
@@ -14,6 +15,10 @@ class MyApp : Application(), Configuration.Provider {
     override fun onCreate() {
         super.onCreate()
         appComponent.moviesSyncSchedule().schedule()
+    }
+
+    override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
+        return appComponent
     }
 
     override fun getWorkManagerConfiguration(): Configuration {

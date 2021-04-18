@@ -2,7 +2,6 @@ package com.alexanderpodkopaev.androidacademyproject.ui
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,21 +11,20 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
-import com.alexanderpodkopaev.androidacademyproject.MyApp
 import com.alexanderpodkopaev.androidacademyproject.R
 import com.alexanderpodkopaev.androidacademyproject.data.model.MovieToCalendar
-import com.alexanderpodkopaev.androidacademyproject.di.ViewModelFactory
+import com.alexanderpodkopaev.androidacademyproject.di.viewmodel.ViewModelFactory
 import com.alexanderpodkopaev.androidacademyproject.repo.CalendarRepository
 import com.alexanderpodkopaev.androidacademyproject.utils.injectViewModel
 import com.alexanderpodkopaev.androidacademyproject.viewmodel.CalendarViewModel
 import com.google.android.material.transition.MaterialContainerTransform
+import dagger.android.support.DaggerFragment
 import java.util.*
 import javax.inject.Inject
 
 
-class FragmentCalendar : Fragment() {
+class FragmentCalendar : DaggerFragment() {
 
     private lateinit var etDate: EditText
     private lateinit var etTime: EditText
@@ -103,11 +101,6 @@ class FragmentCalendar : Fragment() {
         tvAddToCalendar.transitionName = requireContext().resources.getString(
             R.string.transition_name_cal, args.id
         )
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        (requireActivity().application as MyApp).appComponent.inject(this)
     }
 
     private fun showDataPicker() {

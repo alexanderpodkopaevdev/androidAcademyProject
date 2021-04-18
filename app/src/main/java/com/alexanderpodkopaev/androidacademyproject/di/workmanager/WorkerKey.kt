@@ -1,4 +1,4 @@
-package com.alexanderpodkopaev.androidacademyproject.di
+package com.alexanderpodkopaev.androidacademyproject.di.workmanager
 
 import androidx.work.ListenableWorker
 import dagger.MapKey

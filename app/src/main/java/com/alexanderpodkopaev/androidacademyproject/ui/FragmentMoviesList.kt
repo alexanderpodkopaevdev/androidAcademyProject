@@ -1,33 +1,30 @@
 package com.alexanderpodkopaev.androidacademyproject.ui
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import androidx.core.view.doOnPreDraw
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.alexanderpodkopaev.androidacademyproject.MyApp
 import com.alexanderpodkopaev.androidacademyproject.R
 import com.alexanderpodkopaev.androidacademyproject.adapter.MovieClickListener
 import com.alexanderpodkopaev.androidacademyproject.adapter.MoviesAdapter
-import com.alexanderpodkopaev.androidacademyproject.di.ViewModelFactory
+import com.alexanderpodkopaev.androidacademyproject.di.viewmodel.ViewModelFactory
 import com.alexanderpodkopaev.androidacademyproject.repo.MoviesRepository
 import com.alexanderpodkopaev.androidacademyproject.utils.OffsetItemDecoration
 import com.alexanderpodkopaev.androidacademyproject.utils.UiUtils.calculateNoOfColumns
 import com.alexanderpodkopaev.androidacademyproject.utils.injectViewModel
 import com.alexanderpodkopaev.androidacademyproject.viewmodel.MoviesListViewModel
 import com.google.android.material.transition.MaterialElevationScale
+import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
-class FragmentMoviesList : Fragment(), MovieClickListener {
+class FragmentMoviesList : DaggerFragment(), MovieClickListener {
 
     private lateinit var recyclerViewMovies: RecyclerView
     private lateinit var progressBar: ProgressBar
@@ -66,11 +63,6 @@ class FragmentMoviesList : Fragment(), MovieClickListener {
         }
 
         return view
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        (requireActivity().application as MyApp).appComponent.inject(this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

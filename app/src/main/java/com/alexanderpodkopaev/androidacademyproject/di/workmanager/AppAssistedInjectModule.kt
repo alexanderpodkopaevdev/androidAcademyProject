@@ -1,6 +1,5 @@
-package com.alexanderpodkopaev.androidacademyproject.di
+package com.alexanderpodkopaev.androidacademyproject.di.workmanager
 
-import com.squareup.inject.assisted.AssistedInject
 import com.squareup.inject.assisted.dagger2.AssistedModule
 import dagger.Module
 

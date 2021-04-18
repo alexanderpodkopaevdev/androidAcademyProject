@@ -1,8 +1,8 @@
 package com.alexanderpodkopaev.androidacademyproject.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import com.alexanderpodkopaev.androidacademyproject.R
+import dagger.android.support.DaggerAppCompatActivity
 
-class MainActivity : AppCompatActivity(R.layout.activity_main) {
+class MainActivity : DaggerAppCompatActivity(R.layout.activity_main) {
 
 }

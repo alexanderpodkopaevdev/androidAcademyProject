@@ -16,18 +16,15 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.alexanderpodkopaev.androidacademyproject.MyApp
 import com.alexanderpodkopaev.androidacademyproject.R
 import com.alexanderpodkopaev.androidacademyproject.adapter.ActorsAdapter
 import com.alexanderpodkopaev.androidacademyproject.data.model.Movie
-import com.alexanderpodkopaev.androidacademyproject.di.ViewModelFactory
+import com.alexanderpodkopaev.androidacademyproject.di.viewmodel.ViewModelFactory
 import com.alexanderpodkopaev.androidacademyproject.notifications.MoviesNotificationManager
 import com.alexanderpodkopaev.androidacademyproject.repo.ActorsRepository
 import com.alexanderpodkopaev.androidacademyproject.repo.MoviesRepository
@@ -36,9 +33,10 @@ import com.alexanderpodkopaev.androidacademyproject.utils.injectViewModel
 import com.alexanderpodkopaev.androidacademyproject.viewmodel.MovieDetailsViewModel
 import com.bumptech.glide.Glide
 import com.google.android.material.transition.MaterialContainerTransform
+import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
-class FragmentMoviesDetails : Fragment() {
+class FragmentMoviesDetails : DaggerFragment() {
 
     private lateinit var ivBackground: ImageView
     private lateinit var tvTitle: TextView
@@ -124,7 +122,6 @@ class FragmentMoviesDetails : Fragment() {
     }
 
     override fun onAttach(context: Context) {
-        (requireActivity().application as MyApp).appComponent.inject(this)
         super.onAttach(context)
         requestPermissionLauncher =
             registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->

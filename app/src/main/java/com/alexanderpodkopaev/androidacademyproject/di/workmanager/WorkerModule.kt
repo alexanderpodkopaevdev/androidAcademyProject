@@ -1,4 +1,4 @@
-package com.alexanderpodkopaev.androidacademyproject.di
+package com.alexanderpodkopaev.androidacademyproject.di.workmanager
 
 import com.alexanderpodkopaev.androidacademyproject.service.ChildWorkerFactory
 import com.alexanderpodkopaev.androidacademyproject.service.MoviesUpdateWorker

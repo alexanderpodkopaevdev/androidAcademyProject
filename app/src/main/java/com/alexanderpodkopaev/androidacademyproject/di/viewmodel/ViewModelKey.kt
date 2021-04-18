@@ -1,4 +1,4 @@
-package com.alexanderpodkopaev.androidacademyproject.di
+package com.alexanderpodkopaev.androidacademyproject.di.viewmodel
 
 import androidx.lifecycle.ViewModel
 import dagger.MapKey
