@@ -80,6 +80,20 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
+    //Dagger
+    def dagger_version = "2.34"
+    implementation "com.google.dagger:dagger:$dagger_version"
+    kapt "com.google.dagger:dagger-compiler:$dagger_version"
+    //Dagger-Android
+    implementation "com.google.dagger:dagger-android:$dagger_version"
+    implementation "com.google.dagger:dagger-android-support:$dagger_version"
+    kapt "com.google.dagger:dagger-android-processor:$dagger_version"
+    kapt "com.google.dagger:dagger-android-support:$dagger_version"
+
+    def dagger_assist_version = "0.3.3"
+    compileOnly "com.squareup.inject:assisted-inject-annotations-dagger2:$dagger_assist_version"
+    kapt "com.squareup.inject:assisted-inject-processor-dagger2:$dagger_assist_version"
+
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'

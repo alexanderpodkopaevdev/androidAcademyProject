@@ -11,25 +11,31 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
-import com.alexanderpodkopaev.androidacademyproject.MyApp
 import com.alexanderpodkopaev.androidacademyproject.R
 import com.alexanderpodkopaev.androidacademyproject.data.model.MovieToCalendar
-import com.alexanderpodkopaev.androidacademyproject.viewmodel.CalendarFactory
+import com.alexanderpodkopaev.androidacademyproject.di.viewmodel.ViewModelFactory
+import com.alexanderpodkopaev.androidacademyproject.repo.CalendarRepository
+import com.alexanderpodkopaev.androidacademyproject.utils.injectViewModel
 import com.alexanderpodkopaev.androidacademyproject.viewmodel.CalendarViewModel
 import com.google.android.material.transition.MaterialContainerTransform
+import dagger.android.support.DaggerFragment
 import java.util.*
+import javax.inject.Inject
 
 
-class FragmentCalendar : Fragment() {
+class FragmentCalendar : DaggerFragment() {
 
     private lateinit var etDate: EditText
     private lateinit var etTime: EditText
-    private lateinit var calendarViewModel: CalendarViewModel
-    private val args : FragmentCalendarArgs by navArgs()
+    private val args: FragmentCalendarArgs by navArgs()
 
+    @Inject
+    lateinit var calendarRepository: CalendarRepository
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+    lateinit var calendarViewModel: CalendarViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,11 +49,7 @@ class FragmentCalendar : Fragment() {
             overview = args.overview,
             runtime = args.runtime
         )
-        val calendarRepository = MyApp.container.calendarRepository
-        calendarViewModel =
-            ViewModelProvider(this, CalendarFactory(movie, calendarRepository)).get(
-                CalendarViewModel::class.java
-            )
+        calendarViewModel = injectViewModel(viewModelFactory)
         etDate = view.findViewById(R.id.etDate)
         etDate.setOnClickListener {
             showDataPicker()
@@ -58,7 +60,7 @@ class FragmentCalendar : Fragment() {
         }
         val btnSave = view.findViewById<Button>(R.id.btnSave)
         btnSave.setOnClickListener {
-            calendarViewModel.saveToCalendar()
+            calendarViewModel.saveToCalendar(movie)
         }
         calendarViewModel.isError.observe(viewLifecycleOwner) { isError ->
             if (isError)
@@ -129,21 +131,5 @@ class FragmentCalendar : Fragment() {
         picker.show()
     }
 
-/*    companion object {
 
-        private const val ID = "ID"
-        private const val TITLE = "TITLE"
-        private const val OVERVIEW = "OVERVIEW"
-        private const val RUNTIME = "RUNTIME"
-
-        fun newInstance(id: Int, title: String, overview: String, runtime: Int) =
-            FragmentCalendar().apply {
-                arguments = Bundle().apply {
-                    putInt(ID, id)
-                    putString(TITLE, title)
-                    putString(OVERVIEW, overview)
-                    putInt(RUNTIME, runtime)
-                }
-            }
-    }*/
 }

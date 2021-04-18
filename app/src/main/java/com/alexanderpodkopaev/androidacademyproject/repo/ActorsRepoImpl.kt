@@ -4,8 +4,9 @@ import com.alexanderpodkopaev.androidacademyproject.BuildConfig
 import com.alexanderpodkopaev.androidacademyproject.data.MoviesApi
 import com.alexanderpodkopaev.androidacademyproject.data.model.Actor
 import com.alexanderpodkopaev.androidacademyproject.utils.convertToModel
+import javax.inject.Inject
 
-class ActorsRepoImpl(private val moviesApi: MoviesApi, private val dbDataSource: DBDataSource) :
+class ActorsRepoImpl @Inject constructor(private val moviesApi: MoviesApi, private val dbDataSource: DBDataSource) :
     ActorsRepository {
 
     override suspend fun getActors(id: Int): List<Actor> {

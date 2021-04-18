@@ -7,8 +7,9 @@ import androidx.lifecycle.ViewModel
 import com.alexanderpodkopaev.androidacademyproject.data.model.MovieToCalendar
 import com.alexanderpodkopaev.androidacademyproject.repo.CalendarRepository
 import java.util.*
+import javax.inject.Inject
 
-class CalendarViewModel(val movie: MovieToCalendar, val calendarRepository: CalendarRepository) :
+class CalendarViewModel @Inject constructor(val calendarRepository: CalendarRepository) :
     ViewModel() {
 
     private var year: Int = 0
@@ -32,7 +33,7 @@ class CalendarViewModel(val movie: MovieToCalendar, val calendarRepository: Cale
     private val _isSaved = MutableLiveData(false)
     val isSaved: LiveData<Boolean> = _isSaved
 
-    fun saveToCalendar() {
+    fun saveToCalendar(movie: MovieToCalendar) {
         _isError.value = false
         _isSaved.value = false
         if (!date.value.isNullOrEmpty() && !time.value.isNullOrEmpty()) {

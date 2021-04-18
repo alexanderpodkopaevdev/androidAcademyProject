@@ -3,24 +3,30 @@ package com.alexanderpodkopaev.androidacademyproject.service
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.alexanderpodkopaev.androidacademyproject.MyApp
 import com.alexanderpodkopaev.androidacademyproject.data.model.Movie
 import com.alexanderpodkopaev.androidacademyproject.notifications.MoviesNotificationManager
+import com.alexanderpodkopaev.androidacademyproject.repo.MoviesRepository
+import com.squareup.inject.assisted.Assisted
+import com.squareup.inject.assisted.AssistedInject
 
-class MoviesUpdateWorker(val context: Context, workerParameters: WorkerParameters) :
+class MoviesUpdateWorker @AssistedInject constructor(
+    @Assisted val context: Context,
+    @Assisted val workerParameters: WorkerParameters,
+    var moviesRepository: MoviesRepository,
+    var moviesNotificationManager: MoviesNotificationManager
+) :
     CoroutineWorker(context, workerParameters) {
 
     override suspend fun doWork(): Result {
-        val container = MyApp.container
-        val moviesFromDB = container.moviesRepository.getMovies()
-        val moviesFromNetwork = container.moviesRepository.getMovies(true)
+        val moviesFromDB = moviesRepository.getMovies()
+        val moviesFromNetwork = moviesRepository.getMovies(true)
         if (moviesFromNetwork.isNotEmpty()) {
             val newMovie = findNewFilms(
                 moviesFromDB,
                 moviesFromNetwork
             )
             if (newMovie != null) {
-                MyApp.container.moviesNotificationManager.showNotification(newMovie)
+                moviesNotificationManager.showNotification(newMovie)
             }
         }
         return if (moviesFromNetwork.isNotEmpty()) {
@@ -38,5 +44,8 @@ class MoviesUpdateWorker(val context: Context, workerParameters: WorkerParameter
         return moviesFromNetwork.filter { !idsMoviesFromDB.contains(it.id) }
             .maxByOrNull { it.ratings }
     }
+
+    @AssistedInject.Factory
+    interface Factory : ChildWorkerFactory
 
 }

@@ -6,29 +6,38 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import androidx.core.view.doOnPreDraw
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.alexanderpodkopaev.androidacademyproject.MyApp
 import com.alexanderpodkopaev.androidacademyproject.R
 import com.alexanderpodkopaev.androidacademyproject.adapter.MovieClickListener
 import com.alexanderpodkopaev.androidacademyproject.adapter.MoviesAdapter
+import com.alexanderpodkopaev.androidacademyproject.di.viewmodel.ViewModelFactory
+import com.alexanderpodkopaev.androidacademyproject.repo.MoviesRepository
 import com.alexanderpodkopaev.androidacademyproject.utils.OffsetItemDecoration
 import com.alexanderpodkopaev.androidacademyproject.utils.UiUtils.calculateNoOfColumns
-import com.alexanderpodkopaev.androidacademyproject.viewmodel.MoviesFactory
+import com.alexanderpodkopaev.androidacademyproject.utils.injectViewModel
 import com.alexanderpodkopaev.androidacademyproject.viewmodel.MoviesListViewModel
 import com.google.android.material.transition.MaterialElevationScale
+import dagger.android.support.DaggerFragment
+import javax.inject.Inject
 
-class FragmentMoviesList : Fragment(), MovieClickListener {
+class FragmentMoviesList : DaggerFragment(), MovieClickListener {
 
     private lateinit var recyclerViewMovies: RecyclerView
     private lateinit var progressBar: ProgressBar
     private lateinit var srlResfresh: SwipeRefreshLayout
     private lateinit var moviesAdapter: MoviesAdapter
+
+    @Inject
+    lateinit var moviesRepository: MoviesRepository
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+    lateinit var viewModel: MoviesListViewModel
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,11 +48,8 @@ class FragmentMoviesList : Fragment(), MovieClickListener {
         initRecycler(view)
         progressBar = view.findViewById(R.id.pbMovies)
         srlResfresh = view.findViewById(R.id.srlRefresh)
-        val appContainer = MyApp.container
-        val viewModel = ViewModelProvider(
-            this,
-            MoviesFactory(appContainer.moviesRepository)
-        ).get(MoviesListViewModel::class.java)
+
+        viewModel = injectViewModel(viewModelFactory)
         viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
             progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
         }
@@ -72,7 +78,8 @@ class FragmentMoviesList : Fragment(), MovieClickListener {
         reenterTransition = MaterialElevationScale(true).apply {
             duration = resources.getInteger(R.integer.reply_motion_duration_large).toLong()
         }
-        val action = FragmentMoviesListDirections.actionFragmentMoviesListToFragmentMoviesDetails(movieId)
+        val action =
+            FragmentMoviesListDirections.actionFragmentMoviesListToFragmentMoviesDetails(movieId)
         val extras = FragmentNavigatorExtras(clMovie to clMovie.transitionName)
         findNavController().navigate(action, extras)
     }

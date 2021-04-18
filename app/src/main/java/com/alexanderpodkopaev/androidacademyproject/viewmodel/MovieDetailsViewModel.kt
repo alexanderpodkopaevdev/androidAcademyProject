@@ -9,11 +9,11 @@ import com.alexanderpodkopaev.androidacademyproject.data.model.Movie
 import com.alexanderpodkopaev.androidacademyproject.repo.ActorsRepository
 import com.alexanderpodkopaev.androidacademyproject.repo.MoviesRepository
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MovieDetailsViewModel(
+class MovieDetailsViewModel @Inject constructor(
     private val moviesRepository: MoviesRepository,
-    private val actorsRepository: ActorsRepository,
-    private val id: Int
+    private val actorsRepository: ActorsRepository
 ) :
     ViewModel() {
 
@@ -24,7 +24,7 @@ class MovieDetailsViewModel(
     private val _isLoading = MutableLiveData(false)
     val isLoading: LiveData<Boolean> = _isLoading
 
-    fun fetchMovie() {
+    fun fetchMovie(id: Int) {
         if (movie.value == null) {
             viewModelScope.launch {
                 _isLoading.value = true

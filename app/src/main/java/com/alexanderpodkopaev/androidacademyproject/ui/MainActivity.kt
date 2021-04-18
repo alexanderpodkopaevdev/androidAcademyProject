@@ -1,15 +1,8 @@
 package com.alexanderpodkopaev.androidacademyproject.ui
 
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import com.alexanderpodkopaev.androidacademyproject.R
+import dagger.android.support.DaggerAppCompatActivity
 
-class MainActivity : AppCompatActivity() {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-    }
-
+class MainActivity : DaggerAppCompatActivity(R.layout.activity_main) {
 
 }
