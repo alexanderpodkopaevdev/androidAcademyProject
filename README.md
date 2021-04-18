@@ -15,9 +15,10 @@
 - Navigation
 - Notification
 - WorkManager
-
+- Dagger
+ 
 ## Планы развития
-- Dagger/Hilt (заменить кастомную разработку di)
+- ~~Dagger~~/Hilt ~~(заменить кастомную разработку di)~~
 - Многомодульность (с di)
 - Flow (заменить livedata)
 - Тестирование
