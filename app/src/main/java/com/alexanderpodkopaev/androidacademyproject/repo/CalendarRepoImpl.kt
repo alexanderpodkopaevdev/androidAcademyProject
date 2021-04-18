@@ -5,8 +5,9 @@ import android.content.Context
 import android.provider.CalendarContract
 import com.alexanderpodkopaev.androidacademyproject.data.model.MovieToCalendar
 import java.util.*
+import javax.inject.Inject
 
-class CalendarRepoImpl(val context: Context) : CalendarRepository {
+class CalendarRepoImpl @Inject constructor(val context: Context) : CalendarRepository {
     override fun insertData(startDate: Long, endDate: Long, movie: MovieToCalendar): Boolean {
         val values = ContentValues().apply {
             put(CalendarContract.Events.DTSTART, startDate)

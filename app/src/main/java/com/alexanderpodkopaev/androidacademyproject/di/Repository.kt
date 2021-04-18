@@ -1,28 +1,18 @@
 package com.alexanderpodkopaev.androidacademyproject.di
 
-import android.content.Context
-import com.alexanderpodkopaev.androidacademyproject.data.MoviesApi
 import com.alexanderpodkopaev.androidacademyproject.repo.*
+import dagger.Binds
 import dagger.Module
-import dagger.Provides
 
 @Module
-class Repository {
+abstract class Repository {
 
-    @Provides
-    fun provideMoviesRepository(
-        moviesApi: MoviesApi,
-        dbDataSource: DBDataSource
-    ): MoviesRepository =
-        MoviesRepoImpl(moviesApi, dbDataSource)
+    @Binds
+    abstract fun provideMoviesRepository(moviesRepoImpl: MoviesRepoImpl): MoviesRepository
 
-    @Provides
-    fun provideActorsRepository(
-        moviesApi: MoviesApi,
-        dbDataSource: DBDataSource
-    ): ActorsRepository =
-        ActorsRepoImpl(moviesApi, dbDataSource)
+    @Binds
+    abstract fun provideActorsRepoImpl(actorsRepoImpl: ActorsRepoImpl): ActorsRepository
 
-    @Provides
-    fun provideCalendarRepository(context: Context): CalendarRepository = CalendarRepoImpl(context)
+    @Binds
+    abstract fun provideCalendarRepoImpl(calendarRepoImpl: CalendarRepoImpl): CalendarRepository
 }
